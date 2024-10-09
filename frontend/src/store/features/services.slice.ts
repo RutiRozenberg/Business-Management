@@ -1,6 +1,6 @@
 import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit';
 import { Service } from '../../models/service.model';
-import { getAllServices } from '../../api/service.api';
+import { getAllServices } from '../../utils/api/service.api';
 
 interface ServiceState {
     services: Service[];

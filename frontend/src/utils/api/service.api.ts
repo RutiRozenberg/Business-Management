@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Service } from "../models/service.model";
+import { Service } from "../../models/service.model";
 
 const API_URL: string = import.meta.env.VITE_BASE_URL_SERVER ?? '';
 
