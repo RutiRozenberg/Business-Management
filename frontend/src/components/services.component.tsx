@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../store/store"
 import { fetchServices } from "../store/features/services.slice";
-import { Box, Typography, useTheme } from "@mui/material";
-import { Helmet } from 'react-helmet';
+import { Box, ImageList, ImageListItem, Typography, useMediaQuery, useTheme } from "@mui/material";
+import ServiceCard from "./serviceCard.component";
+import TitlePage from "./titlePage.componenets";
 
 export default function Services() {
 
@@ -14,12 +15,23 @@ export default function Services() {
     dispatch(fetchServices());
   }, [dispatch]);
 
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const isMediumScreen = useMediaQuery(theme.breakpoints.between('md','lg'));
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'))
+  
+  let cols:number = 4; 
+  if (isSmallScreen) {
+    cols = 1;
+  } else if (isMediumScreen) {
+    cols = 2;
+  } else if (isLargeScreen) {
+    cols = 3;
+  }
+
   return (
     <>
-      <Helmet>
-        <title>Racheli - Services</title>
-      </Helmet>
-      
+      <TitlePage title="Service"></TitlePage>
+
       <Box
         sx={{
           width: '100%',
@@ -32,7 +44,7 @@ export default function Services() {
         }}
       >
         <Typography
-          variant="h1"
+          variant="h3"
           align="center"
           sx={{
             color: theme.palette.secondary.dark,
@@ -44,9 +56,18 @@ export default function Services() {
           Our Services
         </Typography>
       </Box>
-      {services.map((service) => (
-        <div key={service.id}>{service.name}</div>
-      ))}
+
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <ImageList variant="masonry" cols={cols} gap={35} sx={{ width: '90%' }}>
+          {services.map((service) => (
+            <ImageListItem key={service.id}>
+              <ServiceCard service={service} />
+            </ImageListItem>
+          ))}
+        </ImageList>
+      </Box>
+
+
     </>
   )
 }
