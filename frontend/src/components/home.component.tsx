@@ -1,14 +1,12 @@
-import { Helmet } from 'react-helmet';
+import TitlePage from './titlePage.componenets';
 
-export default function Home() {
-
+const Home = () => {
   return (
     <>
-      <Helmet>
-        <title>Racheli - HomePage</title>
-      </Helmet>
+      <TitlePage title="Home"></TitlePage>
     </>
-  )
+  );
 }
 
+export default Home;
 

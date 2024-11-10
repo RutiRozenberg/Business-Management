@@ -1,14 +1,13 @@
-import { Helmet } from 'react-helmet';
+import TitlePage from "./titlePage.componenets";
 
-export default function Meetings() {
+const Meetings = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Racheli - Meetings</title>
-      </Helmet>
+       <TitlePage title="Meeting"></TitlePage>
     </>
   )
 }
 
+export default  Meetings;
 
