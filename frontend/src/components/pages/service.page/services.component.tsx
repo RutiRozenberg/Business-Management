@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../store/store"
-import { fetchServices } from "../store/features/services.slice";
+import { useAppDispatch, useAppSelector } from "../../../store/store"
+import { fetchServices } from "../../../store/features/services.slice";
 import { Box, ImageList, ImageListItem, Typography, useMediaQuery, useTheme } from "@mui/material";
-import ServiceCard from "./serviceCard.component";
-import TitlePage from "./titlePage.componenets";
+import ServiceCard from "./service.page.components/serviceCard.component";
+import TitlePage from "../../utils.components/titlePage.componenets";
 
 export default function Services() {
 

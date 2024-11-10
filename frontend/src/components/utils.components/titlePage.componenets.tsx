@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet"
 import React, { useEffect } from "react";
-import { fetchBusiness } from "../store/features/business.slice";
-import { useAppDispatch, useAppSelector } from "../store/store";
+import { fetchBusiness } from "../../store/features/business.slice";
+import { useAppDispatch, useAppSelector } from "../../store/store";
 
 
 interface TitlePageProps {

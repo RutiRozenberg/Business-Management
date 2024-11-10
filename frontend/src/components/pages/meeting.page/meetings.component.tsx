@@ -1,4 +1,4 @@
-import TitlePage from "./titlePage.componenets";
+import TitlePage from "../../utils.components/titlePage.componenets";
 
 const Meetings = () => {
 

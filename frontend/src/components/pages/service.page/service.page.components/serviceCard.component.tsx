@@ -1,10 +1,10 @@
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { Service } from '../models/service.model';
+import { Service } from '../../../../models/service.model';
 import { Box, useTheme } from '@mui/material';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import PaidIcon from '@mui/icons-material/Paid';
-import ResponsiveTypography from './responsiveTypography.component';
+import ResponsiveTypography from '../../../utils.components/responsiveTypography.component';
 
 interface ServiceCardProps {
   service: Service;
