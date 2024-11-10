@@ -1,6 +1,6 @@
 import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit';
 import { Service } from '../../models/service.model';
-import { getAllServices } from '../../utils/api/service.api';
+import { getAllData } from '../../utils/api/crud.api';
 
 interface ServiceState {
     services: Service[];
@@ -26,8 +26,14 @@ const serviceSlice = createSlice({
 
 export const fetchServices = () => async (dispatch: Dispatch) => {
     try {
-        const services:Service[] = await getAllServices();
-        dispatch(setServices(services));
+        const servicesData: Service[] | null = await getAllData<Service>('services');
+
+        if (servicesData !== null) {
+            const services: Service[] = servicesData;
+            dispatch(setServices(services));
+        } else {
+            console.error('Error fetching services: Data is null');
+        }
     } catch (error) {
         console.error('Error fetching services:', error);
     }
@@ -36,3 +42,5 @@ export const fetchServices = () => async (dispatch: Dispatch) => {
 export const { addService , setServices } = serviceSlice.actions;
 
 export default serviceSlice.reducer;
+
+
