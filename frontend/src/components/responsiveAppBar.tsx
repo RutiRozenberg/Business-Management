@@ -1,11 +1,10 @@
 import { MenuItem, Tooltip, Button, Avatar, Container, Menu, Box, AppBar, Toolbar, IconButton, Typography, useTheme } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import CameraEnhanceRoundedIcon from '@mui/icons-material/CameraEnhanceRounded';
 import { useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-const pages = [{ text: 'Services', url: '/services' }, { text: 'Meetings', url: '/meetings' }];
+const pages = [{ text: 'Home', url: '/' },{ text: 'Services', url: '/services' }, { text: 'Meetings', url: '/meetings' }];
 const settings = [{ text: 'profile', url: '/' }, { text: 'Logout', url: '/' }];
 
 export default function ResponsiveAppBar() {
@@ -45,31 +44,6 @@ export default function ResponsiveAppBar() {
         }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <CameraEnhanceRoundedIcon
-              sx=
-              {{
-                display: { xs: 'none', md: 'flex' },
-                mr: 1,
-                fontSize: 30,
-              }} />
-            <Typography
-              variant="h6"
-              noWrap
-              component={Link}
-              to="/"
-              sx={{
-                fontSize: 30,
-                mr: 2,
-                display: { xs: 'none', md: 'flex' },
-                fontFamily: 'default',
-                fontWeight: 700,
-                letterSpacing: '.1rem',
-                textDecoration: 'none',
-                color: theme.palette.primary.dark
-              }}
-            >
-              Racheli
-            </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
               <IconButton
@@ -107,25 +81,7 @@ export default function ResponsiveAppBar() {
                 ))}
               </Menu>
             </Box>
-            <CameraEnhanceRoundedIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-            <Typography
-              variant="h5"
-              noWrap
-              component={Link}
-              to="/"
-              sx={{
-                mr: 2,
-                display: { xs: 'flex', md: 'none' },
-                flexGrow: 1,
-                fontFamily: 'default',
-                fontWeight: 700,
-                letterSpacing: '.1rem',
-                color: 'inherit',
-                textDecoration: 'none',
-              }}
-            >
-              Racheli
-            </Typography>
+
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               {pages.map((page, index) => (
                 <Button
