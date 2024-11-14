@@ -5,7 +5,7 @@ import { useTheme } from '@material-ui/core/styles';
 type Variant = "inherit" | "button" | "caption" | "overline" | "subtitle1" | "subtitle2" | "body1" | "body2" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
 interface ResponsiveTypographyProps extends Omit<TypographyProps, 'variant'> {
-  variant: { xs: Variant; sm: Variant; md: Variant; lg: Variant; xl: Variant };
+  variant: { xs?: Variant; sm?: Variant; md?: Variant; lg?: Variant; xl?: Variant };
   additionalText: string; 
 }
 
@@ -20,13 +20,13 @@ const ResponsiveTypography: React.FC<ResponsiveTypographyProps> = ({ variant, ad
     let selectedVariant: Variant = 'body1'; 
 
     if (isXl) {
-      selectedVariant = variant.xl || 'body1';
+      selectedVariant = variant.xl || variant.lg || variant.md || variant.sm || variant.xs || 'body1';
     } else if (isLg) {
-      selectedVariant = variant.lg || 'body1';
+      selectedVariant = variant.lg || variant.md || variant.sm || variant.xs || 'body1';
     } else if (isMd) {
-      selectedVariant = variant.md || 'body1';
+      selectedVariant = variant.md || variant.sm || variant.xs || 'body1';
     } else if (isSm) {
-      selectedVariant = variant.sm || 'body1';
+      selectedVariant = variant.sm || variant.xs || 'body1';
     } else {
       selectedVariant = variant.xs || 'body1';
     }
