@@ -1,21 +1,37 @@
 import { MenuItem, Tooltip, Button, Avatar, Container, Menu, Box, AppBar, Toolbar, IconButton, Typography, useTheme } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../store/store';
+import { fetchUser } from '../store/features/user.slice';
 
-const pages = [{ text: 'Home', url: '/' },{ text: 'Services', url: '/services' }, { text: 'Meetings', url: '/meetings' }];
-const settings = [{ text: 'profile', url: '/' }, { text: 'Logout', url: '/' }];
 
-export default function ResponsiveAppBar() {
+const ResponsiveAppBar = () => {
+
+  const signOut = () => {
+    sessionStorage.removeItem('token');
+    setIsSignOut(true);
+  }
+
+  const pages = [{ text: 'Home', url: '/' },{ text: 'Services', url: '/services' }, { text: 'Meetings', url: '/meetings' }];
+  const settings = [{ text: 'profile', url: '/', callback: undefined }, { text: 'Sign Out', url: '/', callback: signOut }];
 
   const theme = useTheme();
+  const user = useAppSelector(state => state.user.user );
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const [isSignOut, setIsSignOut] = useState(false);
 
-  const navigate = useNavigate();
+  useEffect(()=>{
+    (dispatch(fetchUser()));
+  },[dispatch , isSignOut]);
 
+ 
+  
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -28,7 +44,10 @@ export default function ResponsiveAppBar() {
     navigate(url);
   };
 
-  const handleCloseUserMenu = (url: string) => {
+  const handleCloseUserMenu = (url: string , callback?: () => void) => {
+    if(callback){
+      callback();
+    }
     setAnchorElUser(null);
     navigate(url);
   };
@@ -125,13 +144,19 @@ export default function ResponsiveAppBar() {
                   horizontal: 'right',
                 }}
                 open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
+                onClose={(event, reason) => {
+                  if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
+                    setAnchorElUser(null);
+                  }
+                }}
               >
-                {settings.map((setting, index) => (
-                  <MenuItem key={index} onClick={() => handleCloseUserMenu(setting.url)}>
+              { user? settings.map((setting, index) => (
+                  <MenuItem key={index} onClick={() => handleCloseUserMenu(setting.url , setting.callback)}>
                     <Typography textAlign="center">{setting.text}</Typography>
                   </MenuItem>
-                ))}
+                )) : <MenuItem key={1} onClick={() => handleCloseUserMenu('login') }>
+                <Typography textAlign="center">Sign In</Typography>
+              </MenuItem> }
               </Menu>
             </Box>
           </Toolbar>
@@ -141,3 +166,5 @@ export default function ResponsiveAppBar() {
     </>
   );
 }
+
+export default ResponsiveAppBar;

@@ -36,16 +36,16 @@ const signup = async (email: string, password: string, name: string) => {
 const signin = async (email :string , password :string ) => {
     const user: User | null = await userService.getUserByEmail(email);
     if( user && await comparePassword(password, user.password)){
-        return await createToken(user.email , user.password , false);
+        return await createToken(user.email , user.name , false);
     }
     return null;
 }
 
 
-const createToken = async( email : string , password: string , isAdmin:boolean)=>{
+const createToken = async( email : string , name: string , isAdmin:boolean)=>{
     const secret:string | undefined = process.env.SECRET;
     if(secret){
-        const token = jwt.sign({ _id:email, password , isAdmin},
+        const token = jwt.sign({ _id:email, name , isAdmin},
             secret, {
                 expiresIn: "2h",
             }
