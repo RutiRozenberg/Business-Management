@@ -1,8 +1,9 @@
 
 export interface Meeting {
-    id: string;
+    _id: string;
     userId: string;
-    timeId: string;
+    startTime: Date;
+    endTime: Date;
     serviceId: string;
     textMessage: string;
   }
