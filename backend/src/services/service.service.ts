@@ -1,8 +1,8 @@
 
-import { Service, servicetModel } from "../models/services.model"
+import { Service, ServiceDetails, servicetModel } from "../models/services.model"
 
 
-const createService = async (serviceData : Service)=>{
+const createService = async (serviceData : ServiceDetails)=>{
     try {
         const newService  = new servicetModel(serviceData);
         const savedService = await newService.save();
@@ -28,7 +28,7 @@ const getAllServices = async () => {
 
 const getServiceById = async (id:string)=>{
     try{
-        const service = await servicetModel.findOne({id});
+        const service = await servicetModel.findById(id);
         return service
     }
     catch{
@@ -41,7 +41,7 @@ const getServiceById = async (id:string)=>{
 
 const updateService = async ( id :string , updatedData : Service ) => {
     try {
-        const updatedObject = await servicetModel.updateOne({id} , updatedData);
+        const updatedObject = await servicetModel.findByIdAndUpdate(id , updatedData);
         return updatedObject;
     } catch (error) {
         throw new Error('Failed to update service in the database');
@@ -51,7 +51,7 @@ const updateService = async ( id :string , updatedData : Service ) => {
 
 const deleteService = async (id:unknown) =>{
     try{        
-        await servicetModel.deleteOne({id});
+        await servicetModel.findByIdAndDelete(id);
     }
     catch{
         throw new Error("The deletion failed");

@@ -1,5 +1,5 @@
 
-import  { Business }  from "../models/business.model"
+import  { Business, BusinessDetails }  from "../models/business.model"
 import * as businessService from "../services/business.service"
 
 
@@ -18,26 +18,20 @@ const getBusiness =async ()=>{
     }
 }
 
-const createBusiness = async (newBusiness: Business)=>{
+const createBusiness = async (newBusiness: BusinessDetails)=>{
     try{
-        const business = await businessService.getBusiness();
+        if( !newBusiness.name || 
+            !newBusiness.address || 
+            !newBusiness.email || 
+            !newBusiness.phone 
+        ) {
+            throw new Error("Invalid business details");       
+        }
+        const business:Business | null = await businessService.getBusiness();
         if(business){
             throw new Error("Business elready exist");
         }
-        if( newBusiness.name == null || 
-            newBusiness.address == null || 
-            newBusiness.email == null || 
-            newBusiness.phone == null )
-            {
-                throw new Error("Invalid business details");
-                
-            }
-            const Business = await businessService.getBusiness();
-            if(Business != null){
-                throw new Error("The business already exists");
-
-            }
-            return await businessService.createBusiness(newBusiness) as Business;
+        return await businessService.createBusiness(newBusiness) as Business;
     }
     catch(err){
         throw new Error("Business creation failed");
@@ -46,7 +40,7 @@ const createBusiness = async (newBusiness: Business)=>{
 
 
 const updateBusiness = async (id :string , business: Business)=> {
-    if(id != business.id ){
+    if(id != business._id ){
         throw new Error("Invalid parameters");
     }
     try{
@@ -78,7 +72,7 @@ const updateBusiness = async (id :string , business: Business)=> {
 const deleteBusiness = async (id: string)=>{
     try{
         const business:Business =  (await getBusiness()) as unknown as Business;
-        if(business.id != id){
+        if(business._id != id){
             throw new Error("No permissions");
         }
         await businessService.deleteBusiness(id);

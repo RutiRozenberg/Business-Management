@@ -8,19 +8,12 @@ import { User } from '../models/user.model';
 const currentUserAuthorization = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
         const currentUserRole = req.user;
-        let id: string = '';
-        if (req.body.userId) {
-            id = req.body.userId;
-        }
-        if(req.params.id)
-        {
-            id = req.params.id;
-        }
-        if(req.body.id) {
-           id = req.body.id;
+        const id: string = req.body.userId;
+        if(!id){
+            return res.status(400).send('Invalid parameters');
         }
         const user: User = await userBl.getUserById(id);
-        if (currentUserRole?._id.toString() !== user.email) {
+        if (currentUserRole?._id.toString() !== user._id.toString()) {
             return res.status(403).send("Forbidden: current User does not have the necessary role");
         }
         else {            

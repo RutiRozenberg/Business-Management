@@ -1,5 +1,5 @@
 
-import { Meeting } from "../models/meeting.model"
+import { Meeting, MeetingDetails } from "../models/meeting.model"
 import * as meetingService from "../services/meeting.service"
 import { catchTime, isValidTimes } from "./time.bl"
 import { getServiceById } from "./service.bl";
@@ -33,18 +33,11 @@ const getMeetingById = async (id: string) => {
 }
 
 
-const createMeeting = async (newMeeting: Meeting) => {
+const createMeeting = async (newMeeting: MeetingDetails) => {
     try {
         if (await isValidMeeting(newMeeting)) {            
             await catchTime(newMeeting.startTime, newMeeting.endTime);
-            const meet = {
-                userId: newMeeting.userId, 
-                serviceId:newMeeting.serviceId,
-                startTime: newMeeting.startTime,
-                endTime: newMeeting.endTime,
-                textMessage: newMeeting.textMessage
-             }
-            return await meetingService.createMeeting(meet) as Meeting;
+            return await meetingService.createMeeting(newMeeting) as Meeting;
         }
         throw new Error("Invalid parameters");
     }
@@ -54,7 +47,7 @@ const createMeeting = async (newMeeting: Meeting) => {
 }
 
 const updateMeeting = async (id: string, meeting: Meeting) => {
-    if (id != meeting.id) {
+    if (id != meeting._id) {
         throw new Error("Invalid parameters");
     }
     try {
@@ -82,7 +75,7 @@ const deleteMeeting = async (id: string) => {
     }
 }
 
-const isValidMeeting = async (meeting: Meeting) => {
+const isValidMeeting = async (meeting: MeetingDetails) => {
     if (!meeting.startTime ||
         !meeting.endTime ||
         !meeting.serviceId ||

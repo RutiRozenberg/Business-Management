@@ -1,8 +1,8 @@
 
-import { Business, businesstModel } from "../models/business.model"
+import { Business, BusinessDetails, businesstModel } from "../models/business.model"
 
 
-const createBusiness = async (BusinessData : Business)=>{
+const createBusiness = async (BusinessData : BusinessDetails)=>{
     try {
         const newBusiness = new businesstModel(BusinessData);
         const savedBusiness = await newBusiness.save();
@@ -21,7 +21,7 @@ const getBusiness = async () => {
 
 const updateBusiness = async ( id:string , updatedData : Business ) => {
     try {
-        await businesstModel.updateOne( {id} , updatedData);
+        await businesstModel.findByIdAndUpdate(id , updatedData);
         return await getBusiness();
     } 
     catch {
@@ -32,7 +32,7 @@ const updateBusiness = async ( id:string , updatedData : Business ) => {
 
 const deleteBusiness = async (id:string) =>{
     try{        
-        await businesstModel.deleteOne({id});
+        await businesstModel.findByIdAndDelete(id);
     }
     catch{
         throw new Error("The deletion failed");

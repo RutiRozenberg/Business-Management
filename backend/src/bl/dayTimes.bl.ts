@@ -1,4 +1,5 @@
-import { DayTimes } from "../models/dayTimes.model";
+import { isAfter } from "date-fns";
+import { DayTimes, DayTimesDetails } from "../models/dayTimes.model";
 import  * as dayTimesService from "../services/dayTimes.service";
 import { isSameDate } from "./time.bl";
 
@@ -33,11 +34,10 @@ const getDayTimeById = async (id: string) => {
     }
 }
 
-const createDayTimes = async (newDayTimes: DayTimes) => {
+const createDayTimes = async (newDayTimes: DayTimesDetails) => {
     try {
         if (await isValidDayTimes(newDayTimes)) {    
-            const daytimeData = {date: newDayTimes.date};  
-            const newDayTimesCreated: DayTimes | null = await dayTimesService.craeteDayTimes(daytimeData);
+            const newDayTimesCreated: DayTimes | null = await dayTimesService.craeteDayTimes(newDayTimes);
             if(newDayTimesCreated !== null){
                 return newDayTimesCreated;
             }
@@ -55,7 +55,7 @@ const createDayTimes = async (newDayTimes: DayTimes) => {
 
 const updateDayTimes = async (id: string, dayTime: DayTimes) => {
     
-    if (id != dayTime.id && !(await isValidDayTimes(dayTime))) {
+    if (id != dayTime._id && !(await isValidDayTimes(dayTime))) {
         throw new Error("Invalid parameters");
     }
     const dayTimeToUpdate = (await dayTimesService.getDayTimesById(id)) as unknown as DayTimes;
@@ -80,13 +80,13 @@ const deleteDayTimes = async (id: string) => {
     }
 }
 
-const isValidDayTimes = async (dayTimes: DayTimes) => {
+const isValidDayTimes = async (dayTimes: DayTimesDetails) => {
     const currentDate = new Date();
     const dayTimeDate = new Date(dayTimes.date);
     
-    if ((dayTimeDate != null )&& (dayTimeDate > currentDate)) {        
+    if ( dayTimeDate && (isAfter(dayTimeDate,currentDate) || isSameDate(dayTimeDate,currentDate))) {        
         const date: DayTimes | null = await dayTimesService.getDayTimeByDate(dayTimes.date);
-        if(date === null){
+        if(!date){
             return true;
         }
     }

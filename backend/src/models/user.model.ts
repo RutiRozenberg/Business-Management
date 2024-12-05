@@ -1,31 +1,22 @@
 
-import mongoose, { Schema, Document, Model } from 'mongoose';
-import { v4 as uuidv4 } from 'uuid';
+import mongoose, { Schema, Model } from 'mongoose';
 
-
-interface User extends Document {
-  id: string;
+interface UserDetails {
   name: string;
   email: string;
   password: string;
 }
 
+interface User extends UserDetails{
+  _id: string;
+}
+
 const userSchema: Schema = new Schema({
-  id: {
-    type: String,
-    default: uuidv4, 
-    unique: true
-},
   name: String,
   email: String,
   password: String,
 });
 
-userSchema.pre('save', function (next) {
-  this.id = uuidv4();
-  next();
-});
-
 const userModel: Model<User> = mongoose.model<User>('user', userSchema);
 
-export { userModel , User};
+export { userModel , User , UserDetails};

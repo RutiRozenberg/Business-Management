@@ -1,5 +1,5 @@
 
-import  { Service }  from "../models/services.model"
+import  { Service, ServiceDetails }  from "../models/services.model"
 import * as serviceService from "../services/service.service"
 
 
@@ -32,7 +32,7 @@ const getServiceById = async (id : string) =>{
     }
 }
 
-const createService = async (newService: Service)=>{
+const createService = async (newService: ServiceDetails)=>{
     if( newService.price == null 
         || newService.name == null 
         || newService.duration ==null 
@@ -51,7 +51,7 @@ const createService = async (newService: Service)=>{
 }
 
 const updateService = async (id :string , service: Service)=> {
-    if(id != service.id ){
+    if(id != service._id ){
         throw new Error("Invalid parameters");
     }
     const serviceToUpdate = ( await serviceService.getServiceById(id))  as unknown as Service;
@@ -80,7 +80,7 @@ const updateService = async (id :string , service: Service)=> {
 
 const deleteService = async (id: string)=>{
     const service:Service =  (await serviceService.getServiceById(id)) as unknown as Service;
-    if(service.id != id){
+    if(service._id != id){
         throw new Error("No permissions");
     }
     try{

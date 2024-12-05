@@ -1,9 +1,12 @@
 
 import { Schema } from 'mongoose';
 
-interface TimeRange {
+interface TimeRangeDetails{
     start: Date;
     end: Date;
+}
+
+interface TimeRange extends TimeRangeDetails {
     _id: string;
 }
 
@@ -12,4 +15,4 @@ const timeRangeSchema: Schema = new Schema({
     end: Date,
 });
 
-export { TimeRange , timeRangeSchema };
+export { TimeRange , timeRangeSchema , TimeRangeDetails };

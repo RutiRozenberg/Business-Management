@@ -1,8 +1,8 @@
 
-import { Meeting, meetingModel } from "../models/meeting.model"
+import { Meeting, MeetingDetails, meetingModel } from "../models/meeting.model"
 
 
-const createMeeting = async (meetingData: unknown)=>{
+const createMeeting = async (meetingData: MeetingDetails)=>{
     try {
         const newMeeting  = new meetingModel(meetingData);
         const savedMeeting = await newMeeting.save();

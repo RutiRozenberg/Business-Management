@@ -1,11 +1,14 @@
 
-import mongoose, { Schema, Document, Model } from 'mongoose';
+import mongoose, { Schema, Model } from 'mongoose';
 import { TimeRange, timeRangeSchema } from './timeRange.model';
 
-interface DayTimes extends Document {
-    _id: string;
+interface DayTimesDetails{
     date: Date;
     times: TimeRange[];
+}
+
+interface DayTimes extends DayTimesDetails {
+    _id: string;
 }
 
 const dayTimesSchema: Schema = new Schema({
@@ -15,4 +18,4 @@ const dayTimesSchema: Schema = new Schema({
 
 const daytimeModel: Model<DayTimes> = mongoose.model<DayTimes>('dayTimes', dayTimesSchema);
 
-export { daytimeModel, DayTimes };
+export { daytimeModel, DayTimes, DayTimesDetails };

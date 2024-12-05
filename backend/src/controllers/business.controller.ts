@@ -1,20 +1,26 @@
-import { Business } from "../models/business.model"
+import { Business, BusinessDetails } from "../models/business.model"
 import * as businessBl from "../bl/business.bl"
 import { Request, Response } from 'express';
 
+/**
+ * @swagger
+ * tags:
+ *   name: Business
+ *   description: APIs for managing business details
+ */
 
 /**
  * @swagger
  * components:
  *   schemas:
  *     Business:
- *       type: object
+ *       type: Business
  *       required:
  *         - address
  *         - name
  *         - email
  *         - phone
- *         - id 
+ *         - _id 
  *       properties:
  *         address:
  *           type: string
@@ -28,7 +34,7 @@ import { Request, Response } from 'express';
  *         phone:
  *           type: string
  *           description: The business phone number
- *         id:
+ *         _id:
  *           type: string
  *           desciption: The Business id 
  *       example:
@@ -36,15 +42,34 @@ import { Request, Response } from 'express';
  *         name: 'ABC Company'
  *         email: 'info@abccompany.com'
  *         phone: '123-456-7890'
- *         id: '124545-gvn'
+ *         _id: '124545nghg'
+ *     BusinessDetails:
+ *       type: BusinessDetails
+ *       required:
+ *         - address
+ *         - name
+ *         - email
+ *         - phone
+ *       properties:
+ *         address:
+ *           type: string
+ *           description: The business address
+ *         name:
+ *           type: string
+ *           description: The business name
+ *         email:
+ *           type: string
+ *           description: The business email
+ *         phone:
+ *           type: string
+ *           description: The business phone number 
+ *       example:
+ *         address: '123 Main Street'
+ *         name: 'ABC Company'
+ *         email: 'info@abccompany.com'
+ *         phone: '123-456-7890'    
  */
 
-/**
- * @swagger
- * tags:
- *   name: Business
- *   description: APIs for managing business details
- */
 
 /**
  * @swagger
@@ -82,7 +107,7 @@ const getBusiness = async (req: Request, res: Response): Promise<void> => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Business'
+ *              $ref: '#/components/schemas/BusinessDetails'
  *     responses:
  *       201:
  *         description: Business created successfully
@@ -95,10 +120,12 @@ const getBusiness = async (req: Request, res: Response): Promise<void> => {
  */
 const createBusiness = async (req: Request, res: Response): Promise<void> => {
     try {
-        const business: Business = req.body as unknown as Business;                
+        const business: BusinessDetails = req.body;           
         const newBusiness: Business = await businessBl.createBusiness(business);
         res.status(201).send(newBusiness);
     } catch (err) {
+        console.log(err);
+        
         res.status(400).send("Business created faild");
     }
 }

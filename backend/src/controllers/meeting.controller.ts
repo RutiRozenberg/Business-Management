@@ -1,4 +1,4 @@
-import { Meeting } from "../models/meeting.model"
+import { Meeting, MeetingDetails } from "../models/meeting.model"
 import * as meetingBl from '../bl/meeting.bl'
 import { Request, Response } from 'express';
 
@@ -41,6 +41,33 @@ import { Request, Response } from 'express';
  *           description: A text message from the user to the admin
  *       example:
  *         _id: '1dfvdvfdvfvf'
+ *         userId: '1dfvfdv878'
+ *         serviceId: '1dfv-dvfdv-fvfdsgdf'
+ *         startTime: '2025-03-03T14:50:59.744Z'
+ *         endTime: '2025-03-03T21:50:59.744Z'
+ *         textMessage: 'hhhhhh'
+ *     MeetingDetails:
+ *       type: MeetingDetails
+ *       required:
+ *         - userId
+ *         - serviceId
+ *         - startTime
+ *         - endTime
+ *         - textMessage
+ *       properties:
+ *         userId:
+ *           type: string
+ *           description: The unique identifier of the meeting user
+ *         serviceId:
+ *           type: string
+ *           description: The unique identifier of the meeting service
+ *         endTime:
+ *           type: string
+ *           description: The end time of meeting
+ *         textMessage:
+ *           type: string
+ *           description: A text message from the user to the admin
+ *       example:
  *         userId: '1dfvfdv878'
  *         serviceId: '1dfv-dvfdv-fvfdsgdf'
  *         startTime: '2025-03-03T14:50:59.744Z'
@@ -120,7 +147,7 @@ const getAllMeetings = async(req: Request, res: Response)=>{
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Meeting'
+ *             $ref: '#/components/schemas/MeetingDetails'
  *     responses:
  *       201:
  *         description: Meeting created successfully
@@ -133,7 +160,7 @@ const getAllMeetings = async(req: Request, res: Response)=>{
  */
 const createMeeting = async (req: Request, res: Response): Promise<void> => {
     try {
-        const meeting: Meeting = req.body as unknown as Meeting;
+        const meeting: MeetingDetails = req.body;
         const newMeeting: Meeting = await meetingBl.createMeeting(meeting);
         res.status(201).send(newMeeting);
     } catch (err) {

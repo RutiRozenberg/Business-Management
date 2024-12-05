@@ -1,4 +1,4 @@
-import { DayTimes, daytimeModel } from "../models/dayTimes.model"
+import { DayTimes, DayTimesDetails, daytimeModel } from "../models/dayTimes.model"
 
 
 const getAllDayTimes = async () => {
@@ -19,7 +19,7 @@ const getDayTimesById = async (id:string) => {
     }
 }
 
-const craeteDayTimes = async (dayTimes:unknown) => {
+const craeteDayTimes = async (dayTimes:DayTimesDetails) => {
     try{
         const newDayTimes = new daytimeModel(dayTimes);        
         const saveDayTimes = await newDayTimes.save();

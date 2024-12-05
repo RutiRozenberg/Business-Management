@@ -1,20 +1,20 @@
 
 import * as adminBl from '../bl/admin.bl'
 import { Request, Response } from 'express';
+import { Admin, AdminDetails } from '../models/admin.model';
 
 
 /**
  * @swagger
  * components:
  *   schemas:
- *     Admin:
- *       type: Admin
+ *     AdminDetails:
+ *       type: AdminDetails
  *       required:
  *         - email
  *         - password
  *         - name
  *         - adminPassword
- *         - id 
  *       properties:
  *         email:
  *           type: string
@@ -28,15 +28,41 @@ import { Request, Response } from 'express';
  *         adminPassword:
  *           type: string
  *           description: The admin's special password
- *         id:
- *           type: string
- *           description: The sdmin's id
  *       example:
- *         id: '4545d-dfbf'
  *         email: 'admin@example.com'
  *         password: 'admin123'
  *         name: 'Admin Name'
  *         adminPassword: 'specialPassword1234'
+ *     Admin:
+ *        type: Admin
+ *        required:
+ *          - email
+ *          - password
+ *          - name
+ *          - adminPassword
+ *          - _id
+ *        properties:
+ *          email:
+ *            type: string
+ *            description: The admin's email
+ *          password:
+ *            type: string
+ *            description: The admin's password
+ *          name:
+ *            type: string
+ *            description: The admin's name
+ *          adminPassword:
+ *            type: string
+ *            description: The admin's special password
+ *          _id:
+ *            type: string
+ *            description: The admin id 
+ *        example:
+ *          email: 'admin@example.com'
+ *          password: 'admin123'
+ *          name: 'Admin Name'
+ *          adminPassword: 'specialPassword1234'
+ *          _id: 'vbdv878'
  */
 
 /**
@@ -50,7 +76,7 @@ import { Request, Response } from 'express';
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Admin'
+ *             $ref: '#/components/schemas/AdminDetails'
  *     responses:
  *       201:
  *         description: Admin created successfully
@@ -65,13 +91,13 @@ import { Request, Response } from 'express';
  */
 const adminSignUp = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { email, password, name , adminPassword} = req.body;
-        if (!email || !password || !name || !adminPassword) {
+        const admin: AdminDetails = req.body;
+        if (!admin.email || !admin.password || !admin.name || !admin.adminPassword) {
             res.status(400).send({ error: "Email, password, name and adminPassword are required" });
         }
-        const admin = await adminBl.signup(email, password, name, adminPassword);
+        const newAdmin: Admin = await adminBl.signup(admin);
         if (admin) {
-            res.status(201).send(admin);
+            res.status(201).send(newAdmin);
         } else {            
             res.status(400).send({ error: "Admin could not be created" });
         }

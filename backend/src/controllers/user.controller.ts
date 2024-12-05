@@ -1,6 +1,6 @@
 import * as userBl from "../bl/user.bl"
 import { Request, Response } from 'express';
-import { User } from "../models/user.model";
+import { User, UserDetails } from "../models/user.model";
 
 
 export class ValidationError extends Error {
@@ -20,7 +20,7 @@ export class ValidationError extends Error {
  *         - email
  *         - password
  *         - name
- *         - id 
+ *         - _id 
  *       properties:
  *         email:
  *           type: string
@@ -31,11 +31,31 @@ export class ValidationError extends Error {
  *         name:
  *           type: string
  *           description: The user's name
- *         id:
+ *         _id:
  *           type: string
  *           description: The user's id
  *       example:
- *         id: 'dfvdfbv*fg-ffb'
+ *         email: 'user@example.com'
+ *         password: 'password123'
+ *         name: 'John Doe'
+ *         _id: '454'
+ *     UserDetails:
+ *       type: UserDetails
+ *       required:
+ *         - email
+ *         - password
+ *         - name
+ *       properties:
+ *         email:
+ *           type: string
+ *           description: The user's email
+ *         password:
+ *           type: string
+ *           description: The user's password
+ *         name:
+ *           type: string
+ *           description: The user's name
+ *       example:
  *         email: 'user@example.com'
  *         password: 'password123'
  *         name: 'John Doe'
@@ -52,7 +72,7 @@ export class ValidationError extends Error {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/User'
+ *             $ref: '#/components/schemas/UserDetails'
  *     responses:
  *       201:
  *         description: User created successfully
@@ -67,13 +87,13 @@ export class ValidationError extends Error {
  */
 const postSignUp = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { email, password, name } = req.body;
-        if (!email || !password || !name) {
+        const user:UserDetails = req.body;
+        if (!user.email || !user.password || !user.name) {
             res.status(400).send({ error: "Email, password, and name are required" });
         }
-        const user = await userBl.signup(email, password, name);
+        const newUser:User = await userBl.signup(user);
         if (user) {
-            res.status(201).send(user);
+            res.status(201).send(newUser);
         } else {
             res.status(400).send({ error: "User could not be created" });
         }

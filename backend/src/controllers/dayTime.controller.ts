@@ -35,6 +35,21 @@ import { DayTimes } from '../models/dayTimes.model';
  *         _id: '1dfv-dvfdv-fvf'
  *         date: '2025-03-03T21:50:59.744Z'
  *         times: []
+ *     DayTimesDetails:
+ *       type: DayTimesDetails
+ *       required:
+ *         - date
+ *         - times
+ *       properties:
+ *         date:
+ *           type: string
+ *           description: The date field in the format YYYY-MM-DDTHH:MM:SS.sssZ
+ *         times:
+ *           type: TimeRange[]
+ *           description: The time range in this date
+ *       example:
+ *         date: '2025-03-03T21:50:59.744Z'
+ *         times: []
  */
 
 
@@ -109,7 +124,7 @@ const getAllDayTimes = async(req: Request, res: Response)=>{
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/DayTimes'
+ *             $ref: '#/components/schemas/DayTimesDetails'
  *     responses:
  *       201:
  *         description: Daytime created successfully

@@ -1,7 +1,7 @@
 
-import { userModel, User } from '../models/user.model'; 
+import { userModel, User, UserDetails } from '../models/user.model'; 
 
-const createUser = async (userData: User): Promise<User> => {
+const createUser = async (userData: UserDetails): Promise<User> => {
   try {
     const newUser = new userModel(userData);
     const savedUser = await newUser.save();
@@ -23,7 +23,7 @@ const getUserByEmail = async (email: string): Promise<User | null> => {
 
 const getUserById = async (id :string ) =>{
   try {
-    const user:User | null = await userModel.findOne({id});    
+    const user:User | null = await userModel.findById(id);    
     return user;
   } catch{
     throw new Error("Failed");
@@ -33,7 +33,7 @@ const getUserById = async (id :string ) =>{
 
 const updateUser = async (id: string , userData:User)=>{
   try{
-    await userModel.updateOne({id}, userData);
+    await userModel.findByIdAndUpdate(id , userData);
   }
   catch{
     throw new Error("Faild");
