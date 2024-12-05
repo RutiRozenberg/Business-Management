@@ -1,6 +1,6 @@
 
 export interface Business{
-    id: string;
+    _id: string;
     address: string;
     name: string;
     email: string;
