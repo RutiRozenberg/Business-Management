@@ -20,7 +20,7 @@ const currentUserAuthorization = async (req: AuthRequest, res: Response, next: N
            id = req.body.id;
         }
         const user: User = await userBl.getUserById(id);
-        if (currentUserRole?._id != user.email) {
+        if (currentUserRole?._id.toString() !== user.email) {
             return res.status(403).send("Forbidden: current User does not have the necessary role");
         }
         else {            

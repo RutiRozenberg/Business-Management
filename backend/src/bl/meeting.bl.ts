@@ -1,9 +1,9 @@
 
 import { Meeting } from "../models/meeting.model"
 import * as meetingService from "../services/meeting.service"
-import { catchTime, getTimeById } from "./time.bl"
+import { catchTime, isValidTimes } from "./time.bl"
 import { getServiceById } from "./service.bl";
-import { Time } from "../models/time.model";
+
 const getAllMeetings = async () => {
     try {
         const meetings: Meeting[] = (await meetingService.getAllMeeting()) as unknown[] as Meeting[];
@@ -35,12 +35,16 @@ const getMeetingById = async (id: string) => {
 
 const createMeeting = async (newMeeting: Meeting) => {
     try {
-        if (newMeeting.timeId != null) {
-            const time: Time = await getTimeById(newMeeting.timeId);
-            if (newMeeting.serviceId != null && (await getServiceById(newMeeting.serviceId)) && !time.isCatch) {
-                catchTime(time.id);
-                return await meetingService.createMeeting(newMeeting) as Meeting;
-            }
+        if (await isValidMeeting(newMeeting)) {            
+            await catchTime(newMeeting.startTime, newMeeting.endTime);
+            const meet = {
+                userId: newMeeting.userId, 
+                serviceId:newMeeting.serviceId,
+                startTime: newMeeting.startTime,
+                endTime: newMeeting.endTime,
+                textMessage: newMeeting.textMessage
+             }
+            return await meetingService.createMeeting(meet) as Meeting;
         }
         throw new Error("Invalid parameters");
     }
@@ -53,22 +57,19 @@ const updateMeeting = async (id: string, meeting: Meeting) => {
     if (id != meeting.id) {
         throw new Error("Invalid parameters");
     }
-    const meetingToUpdate = (await meetingService.getMeetingById(id)) as unknown as Meeting;
-    if (meeting.timeId && await getTimeById(meeting.timeId)) {
-        meetingToUpdate.timeId = meeting.timeId;
-    }
-    if (meeting.serviceId && await getServiceById(meeting.serviceId)) {
-        meetingToUpdate.serviceId = meeting.serviceId;
-    }
-
-
     try {
-        await meetingService.updateMeeting(id, meetingToUpdate);
-
+        const meetingToUpdate: Meeting | null = (await meetingService.getMeetingById(id));
+        if (meetingToUpdate) {
+            if (meeting.textMessage) {
+                meetingToUpdate.textMessage = meeting.textMessage;
+            }
+            await meetingService.updateMeeting(id, meetingToUpdate);
+        }
     }
     catch (err) {
         throw new Error("The update failed");
     }
+
 }
 
 
@@ -79,6 +80,18 @@ const deleteMeeting = async (id: string) => {
     catch {
         throw new Error("The deletion failed");
     }
+}
+
+const isValidMeeting = async (meeting: Meeting) => {
+    if (!meeting.startTime ||
+        !meeting.endTime ||
+        !meeting.serviceId ||
+        !isValidTimes(meeting.startTime, meeting.endTime) ||
+        !(await getServiceById(meeting.serviceId))
+    ) {        
+        return false;
+    }    
+    return true;
 }
 
 

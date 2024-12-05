@@ -6,11 +6,9 @@ import { authentication } from "../middlewares/authentication.middleware";
 
 const timeRouter = express.Router();
 
-timeRouter.get('/time/:id', authentication , timeController.getTimeById);
-timeRouter.get('/times' , timeController.getAllTimes);
-timeRouter.post('/time' , authentication , authorization , timeController.createTime);
-timeRouter.put('/time/:id' , authentication, authorization , timeController.updateTime);
-timeRouter.put('/time/:id/catch' , authentication, timeController.catchTime);
-timeRouter.delete('/time/:id' , authentication , authorization , timeController.deleteTime);
+timeRouter.get('/timerange/:daytimeId/:timerangeId', authentication , timeController.getTimeById);
+timeRouter.post('/timerange/:daytimeId' , authentication , authorization , timeController.createTime);
+timeRouter.put('/timerange/:daytimeId' , authentication, authorization , timeController.updateTime);
+timeRouter.delete('/timerange/:daytimeId/:timerangeId' , authentication , authorization , timeController.deleteTime);
 
 export default timeRouter ;

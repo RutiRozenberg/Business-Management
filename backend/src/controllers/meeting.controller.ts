@@ -17,13 +17,14 @@ import { Request, Response } from 'express';
  *     Meeting:
  *       type: Meeting
  *       required:
- *         - id
+ *         - _id
  *         - userId
  *         - serviceId
- *         - timeId
+ *         - startTime
+ *         - endTime
  *         - textMessage
  *       properties:
- *         id:
+ *         _id:
  *           type: string
  *           description: The unique identifier of the meeting
  *         userId:
@@ -32,17 +33,18 @@ import { Request, Response } from 'express';
  *         serviceId:
  *           type: string
  *           description: The unique identifier of the meeting service
- *         timeId:
+ *         endTime:
  *           type: string
- *           description: The unique identifier of the meeting time
+ *           description: The end time of meeting
  *         textMessage:
  *           type: string
  *           description: A text message from the user to the admin
  *       example:
- *         id: '1dfv-dvfdv-fvf'
- *         userId: '1dfv-dvfdv-fv7878'
+ *         _id: '1dfvdvfdvfvf'
+ *         userId: '1dfvfdv878'
  *         serviceId: '1dfv-dvfdv-fvfdsgdf'
- *         timeId: '1dfv-dvfdv-fvfdsvdv'
+ *         startTime: '2025-03-03T14:50:59.744Z'
+ *         endTime: '2025-03-03T21:50:59.744Z'
  *         textMessage: 'hhhhhh'
  */
 
@@ -131,7 +133,7 @@ const getAllMeetings = async(req: Request, res: Response)=>{
  */
 const createMeeting = async (req: Request, res: Response): Promise<void> => {
     try {
-        const meeting: Meeting | null = req.body as unknown as Meeting;
+        const meeting: Meeting = req.body as unknown as Meeting;
         const newMeeting: Meeting = await meetingBl.createMeeting(meeting);
         res.status(201).send(newMeeting);
     } catch (err) {

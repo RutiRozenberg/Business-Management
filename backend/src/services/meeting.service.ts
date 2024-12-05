@@ -2,7 +2,7 @@
 import { Meeting, meetingModel } from "../models/meeting.model"
 
 
-const createMeeting = async (meetingData : Meeting)=>{
+const createMeeting = async (meetingData: unknown)=>{
     try {
         const newMeeting  = new meetingModel(meetingData);
         const savedMeeting = await newMeeting.save();
@@ -28,7 +28,7 @@ const getAllMeeting = async () => {
 
 const getMeetingById = async (id:string)=>{
     try{
-        const meeting = await meetingModel.findOne({id});
+        const meeting = await meetingModel.findById(id);
         return meeting
     }
     catch{
@@ -41,7 +41,7 @@ const getMeetingById = async (id:string)=>{
 
 const updateMeeting = async ( id :string , updatedData : Meeting ) => {
     try {
-        const updatedObject = await meetingModel.updateOne({id} , updatedData);
+        const updatedObject = await meetingModel.findByIdAndUpdate(id , updatedData);
         return updatedObject;
     } catch (error) {
         throw new Error('Failed to update meeting in the database');
@@ -51,7 +51,7 @@ const updateMeeting = async ( id :string , updatedData : Meeting ) => {
 
 const deleteMeeting = async (id:unknown) =>{
     try{        
-        await meetingModel.deleteOne({id});
+        await meetingModel.findByIdAndDelete(id);
     }
     catch{
         throw new Error("The deletion failed");
