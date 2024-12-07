@@ -17,6 +17,7 @@ import urlnotFound from './middlewares/url.not.found.middleware';
 import userRouter from './routes/user.route';
 import dayTimeRouter from './routes/daytime.route';
 import logConfig from './config/log.config'
+import homePageRouter from './routes/homePage.route';
 
 const app: Express = express();
 
@@ -42,6 +43,7 @@ app.use(serviceRouter);
 app.use(timeRouter);
 app.use(meetingRouter);
 app.use(dayTimeRouter);
+app.use(homePageRouter);
 app.use(userRouter);
 
 app.use(urlnotFound);
