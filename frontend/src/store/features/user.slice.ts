@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 interface UserJwt{
     _id:string; 
     name:string;
+    email: string
 }
 
 interface UserState{
@@ -30,8 +31,13 @@ export const fetchUser = () => async (dispatch: Dispatch) => {
         const token:string | null = sessionStorage.getItem('token');
         if(token){
             const userDecode: unknown = jwtDecode(token);
-            const {name , _id} = userDecode as UserJwt;
-            const userData:User = {name , email: _id, id:'' , password: ''};
+            const {name , email , _id} = userDecode as UserJwt;
+            const userData:User = {
+                name, 
+                email, 
+                password: '',
+                _id
+            };
             dispatch(setUser(userData));
         } else {
             dispatch(setUser(null));

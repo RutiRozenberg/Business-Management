@@ -1,8 +1,6 @@
+import { UserDetails } from "./userDetails";
 
-export interface User {
+export interface User extends UserDetails{
     _id: string;
-    name: string;
-    email: string;
-    password: string;
 }
   

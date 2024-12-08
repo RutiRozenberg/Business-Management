@@ -1,12 +1,12 @@
 import axios, { AxiosError, isAxiosError, Method } from "axios";
-import { StatusAndMessageError } from "../../models/statusAndmessageError.model";
+import { StatusAndMessageError } from "../../models/statusAndMessageError.model";
 
 const API_URL: string = import.meta.env.VITE_BASE_URL_SERVER ?? '';
 
 const sendRequest = async <T>(endpoint: string, method: Method, data?: unknown , token?:string): Promise<T | null> => {
     try {
         const url = `${API_URL}${endpoint}`;
-        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        const headers = token ? { authorization: `Bearer ${token}` } : {};
         const response = await axios.request<T>({
             url,
             method,
@@ -28,7 +28,7 @@ const sendRequest = async <T>(endpoint: string, method: Method, data?: unknown ,
 };
 
 const getAllData = async <T>(endpoint:string, token?:string) => {
-    return sendRequest<T[]>(endpoint, 'GET', token);
+    return sendRequest<T[]>(endpoint, 'GET', null, token);
 };
 
 const getDataById = async <T>(endpoint:string, token?:string) => {

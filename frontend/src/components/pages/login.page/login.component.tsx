@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import { TextField, Button, Grid, Card, CardContent, Container, CircularProgress, IconButton } from '@mui/material';
 import * as yup from 'yup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import GridColumnCenter from './login.page.components/gridColumnCenter';
+import GridColumnCenter from '../../utils.components/gridColumnCenter';
 import ResponsiveTypography from '../../utils.components/responsiveTypography.component';
 import { User } from '../../../models/user.model';
 import { useNavigate } from 'react-router-dom';
 import { postData } from '../../../utils/api/crud.api';
 import { useAppDispatch } from '../../../store/store';
 import { fetchUser } from '../../../store/features/user.slice';
-import { StatusAndMessageError } from '../../../models/statusAndmessageError.model';
+import { StatusAndMessageError } from '../../../models/statusAndMessageError.model';
 import CustomErrorAlert from './login.page.components/customErrorAlert';
+import { UserDetails } from '../../../models/userDetails';
 
 
 interface emailandpass {
@@ -53,7 +54,7 @@ const Login: React.FC = () => {
         name: '',
         email: '',
         password: '',
-        id: '',
+        _id: '',
     });
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [showAlert, setShowAlert] = useState(false);
@@ -97,8 +98,8 @@ const Login: React.FC = () => {
     };
 
     const handleSignUp = async () => {
-        const userData: User = {
-            id: '', email: formData.email,
+        const userData: UserDetails = {
+            email: formData.email,
             name: formData.name,
             password: formData.password,
         };
