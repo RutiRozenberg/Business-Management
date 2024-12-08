@@ -26,7 +26,7 @@ const serviceSlice = createSlice({
 
 export const fetchServices = () => async (dispatch: Dispatch) => {
     try {
-        const servicesData: Service[] | null = await getAllData<Service>('services');
+        const servicesData: Service[] | null = await getAllData<Service>({endpoint:'services'});
 
         if (servicesData !== null) {
             const services: Service[] = servicesData;

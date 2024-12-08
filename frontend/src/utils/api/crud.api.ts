@@ -1,10 +1,12 @@
-import axios, { AxiosError, isAxiosError, Method } from "axios";
+import axios, { AxiosError, isAxiosError } from "axios";
 import { StatusAndMessageError } from "../../models/statusAndMessageError.model";
+import { APIRequest } from "../../models/apiRequest.model";
 
 const API_URL: string = import.meta.env.VITE_BASE_URL_SERVER ?? '';
 
-const sendRequest = async <T>(endpoint: string, method: Method, data?: unknown , token?:string): Promise<T | null> => {
-    try {
+const sendRequest = async <T>(apiRequest: APIRequest<T>): Promise<T | null> => {
+    const { endpoint, method, token, data } = apiRequest;
+    try { 
         const url = `${API_URL}${endpoint}`;
         const headers = token ? { authorization: `Bearer ${token}` } : {};
         const response = await axios.request<T>({
@@ -27,24 +29,29 @@ const sendRequest = async <T>(endpoint: string, method: Method, data?: unknown ,
     }
 };
 
-const getAllData = async <T>(endpoint:string, token?:string) => {
-    return sendRequest<T[]>(endpoint, 'GET', null, token);
+const getAllData = async <T>(apiRequest:APIRequest<T>) => {
+    const { endpoint, token } = apiRequest;
+    return sendRequest<T[]>({ endpoint, method:'GET', token, });
 };
 
-const getDataById = async <T>(endpoint:string, token?:string) => {
-    return sendRequest<T>( endpoint, 'GET', token);
+const getDataById = async <T>(apiRequest:APIRequest<T>) => {
+    const { endpoint, token } = apiRequest;
+    return sendRequest<T>({ endpoint, method:'GET', token });
 };
 
-const postData = async <T>(endpoint:string, newData: T, token?:string) => {
-    return sendRequest<T>(endpoint, 'POST', newData, token);
+const postData = async <T>(apiRequest:APIRequest<T>) => {
+    const { endpoint, token, data } = apiRequest;
+    return sendRequest<T>({ endpoint, method:'POST', data, token });
 };
 
-const putData = async <T>(endpoint:string, updatedData: T, token?:string) => {
-    return sendRequest<T>( endpoint, 'PUT', updatedData, token);
+const putData = async <T>(apiRequest:APIRequest<T>) => {
+    const { endpoint, token, data } = apiRequest;
+    return sendRequest<T>({ endpoint, method:'PUT', data, token });
 };
 
-const deleteData = async (endpoint:string, token?:string) => {
-    return sendRequest<unknown>( endpoint , 'DELETE', token);
+const deleteData = async<T> (apiRequest:APIRequest<T>) => {
+    const { endpoint, token } = apiRequest;
+    return sendRequest<unknown>({ endpoint , method:'DELETE', token });
 };
 
 export { 

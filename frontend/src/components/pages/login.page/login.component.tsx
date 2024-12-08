@@ -78,7 +78,10 @@ const Login: React.FC = () => {
     const handleSignIn = async () => {
         const emps: emailandpass = { email: formData.email, password: formData.password }
         try {
-            const response: unknown = await postData('signin', emps);
+            const response: unknown = await postData({
+                endpoint:'signin', 
+                data:emps
+            });
             if (response) {
                 sessionStorage.setItem('token', response as string);
                 dispatch(fetchUser);
@@ -104,7 +107,10 @@ const Login: React.FC = () => {
             password: formData.password,
         };
         try {
-            await postData('signup', userData);
+            await postData({
+                endpoint:'signup', 
+                data: userData
+            });
             handleSignIn();
         } catch (error) {
             if (error as StatusAndMessageError) {
