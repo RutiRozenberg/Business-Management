@@ -164,7 +164,9 @@ const Login: React.FC = () => {
                                     <GridColumnCenter spacing='5'>
 
                                         <Grid item>
-                                            <ResponsiveTypography additionalText={isSignUp ? 'Sign Up' : 'Sign In'} variant={{ xs: 'h6', md: 'h5' }}></ResponsiveTypography>
+                                            <ResponsiveTypography variant={{ xs: 'h6', md: 'h5' }}>
+                                                {isSignUp ? 'Sign Up' : 'Sign In'}
+                                                </ResponsiveTypography>
                                         </Grid>
 
                                         <Grid item>

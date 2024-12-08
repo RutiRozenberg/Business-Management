@@ -1,10 +1,7 @@
 import { Grid } from "@mui/material"
-import { ReactNode } from "react";
+import { GridColumnCenterProps } from "../../models/props.models/gridColymnCenter.props";
 
-interface GridColumnCenterProps{
-    spacing:string,
-    children: ReactNode,
-}
+
 const GridColumnCenter: React.FC<GridColumnCenterProps> = ({spacing, children}) =>{
     return <Grid 
     container 

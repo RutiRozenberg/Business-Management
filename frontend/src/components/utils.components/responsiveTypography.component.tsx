@@ -1,15 +1,9 @@
-import React from 'react';
-import { Typography, TypographyProps, useMediaQuery } from '@material-ui/core';
+import { Typography, useMediaQuery } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
+import { ResponsiveTypographyProps, Variant } from '../../models/props.models/responsiveTypography.propds';
 
-type Variant = "inherit" | "button" | "caption" | "overline" | "subtitle1" | "subtitle2" | "body1" | "body2" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
-interface ResponsiveTypographyProps extends Omit<TypographyProps, 'variant'> {
-  variant: { xs?: Variant; sm?: Variant; md?: Variant; lg?: Variant; xl?: Variant };
-  additionalText: string; 
-}
-
-const ResponsiveTypography: React.FC<ResponsiveTypographyProps> = ({ variant, additionalText, ...otherProps }) => {
+const ResponsiveTypography: React.FC<ResponsiveTypographyProps> = ({ variant, children}) => {
     const theme = useTheme();
 
     const isXl = useMediaQuery(theme.breakpoints.up('xl'));
@@ -32,8 +26,8 @@ const ResponsiveTypography: React.FC<ResponsiveTypographyProps> = ({ variant, ad
     }
   
     return (
-      <Typography {...otherProps} variant={selectedVariant}>
-        {additionalText}
+      <Typography variant={selectedVariant}>
+        {children}
       </Typography>
     );
   };

@@ -1,14 +1,10 @@
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { Service } from '../../../../models/service.model';
 import { Box, useTheme } from '@mui/material';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import PaidIcon from '@mui/icons-material/Paid';
 import ResponsiveTypography from '../../../utils.components/responsiveTypography.component';
-
-interface ServiceCardProps {
-  service: Service;
-}
+import { ServiceCardProps } from '../../../../models/props.models/serviceCard.props';
 
 const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
 
@@ -28,15 +24,17 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
 
         <ResponsiveTypography
           variant={{ xs: 'h5', lg: 'h4', xl: 'h3' }}
-          additionalText={name}
           color='textPrimary'
-        />
+        >
+          {name}
+        </ResponsiveTypography>
 
         <ResponsiveTypography
           variant={{ xs: 'body1', md: 'h6', lg: 'h5', xl: 'h4' }}
-          additionalText={description}
           color='textPrimary'
-        />
+        >
+        {description}
+        </ResponsiveTypography>
 
         <Box
           color={theme.palette.secondary.main}>
@@ -45,18 +43,20 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
             <AccessTimeFilledIcon fontSize='small'></AccessTimeFilledIcon>
             <ResponsiveTypography
               variant={{ xs: 'body2',  md: 'body1', xl: 'h6' }}
-              additionalText={formattedDuration}
               color='textPrimary'
-            />
+            >
+              {formattedDuration}
+            </ResponsiveTypography>
           </Box>
 
           <Box display='flex' mt={1}>
             <PaidIcon fontSize='small'></PaidIcon>
             <ResponsiveTypography
               variant={{ xs: 'body2', md: 'body1', xl: 'h6' }}
-              additionalText={String(price)}
               color='textPrimary'
-            />
+            >
+              {String(price)}
+            </ResponsiveTypography>
           </Box>
 
         </Box>
