@@ -138,6 +138,42 @@ const getAllMeetings = async(req: Request, res: Response)=>{
 
 /**
  * @swagger
+ * /meeting/user/{userId}:
+ *   get:
+ *     summary: Get all meeting by user ID
+ *     tags: [Meeting]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of user
+ *     responses:
+ *       200:
+ *         description: All meetings by user ID
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Meeting'
+ *       404:
+ *         description: Meetings not found
+ */
+const getMeetingsByUserId = async (req:Request, res:Response) => {
+    try {
+        const userId: string = req.params.userId;
+        const meetingsByUserId: Meeting[] = await meetingBl.getMeetingsByUserId(userId);
+        res.status(200).send(meetingsByUserId);
+    } catch (error) {
+        res.status(400).send("Not found");
+    }
+}
+
+
+/**
+ * @swagger
  * /meeting:
  *   post:
  *     summary: Create a new meeting
@@ -240,4 +276,11 @@ const deleteMeeting = async (req: Request, res: Response): Promise<void> => {
     }
 }
 
-export { createMeeting, updateMeeting, getMeetingById, deleteMeeting , getAllMeetings }
+export { 
+    createMeeting, 
+    updateMeeting, 
+    getMeetingById, 
+    deleteMeeting , 
+    getAllMeetings,
+    getMeetingsByUserId 
+}

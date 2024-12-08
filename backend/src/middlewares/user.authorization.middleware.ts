@@ -8,9 +8,16 @@ import { User } from '../models/user.model';
 const currentUserAuthorization = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
         const currentUserRole = req.user;
-        const id: string = req.body.userId;
-        if(!id){
+        const idBody: string = req.body.userId;
+        const idParams:string = req.params.userId;
+        if(!idBody && !idParams){
             return res.status(400).send('Invalid parameters');
+        }
+        let id;
+        if(idBody){
+            id = idBody;
+        } else {
+            id = idParams;
         }
         const user: User = await userBl.getUserById(id);
         if (currentUserRole?._id.toString() !== user._id.toString()) {

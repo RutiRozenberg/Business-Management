@@ -32,6 +32,21 @@ const getMeetingById = async (id: string) => {
     }
 }
 
+const getMeetingsByUserId = async (userId: string) => {
+    try {
+        const allMeetings: Meeting[] = await getAllMeetings();
+        const meetingByUserId: Meeting[] = allMeetings.filter(
+            meeting => meeting.userId.toString() === userId.toString()
+        );
+        if(meetingByUserId.length > 0){
+            return meetingByUserId;
+        }
+        throw new Error("Not Faound");  
+    } catch (error) {
+        throw new Error("Faild");
+    }
+}
+
 
 const createMeeting = async (newMeeting: MeetingDetails) => {
     try {
@@ -88,4 +103,11 @@ const isValidMeeting = async (meeting: MeetingDetails) => {
 }
 
 
-export { getMeetingById, getAllMeetings, createMeeting, updateMeeting, deleteMeeting } 
+export { 
+    getMeetingById, 
+    getAllMeetings, 
+    createMeeting, 
+    updateMeeting, 
+    deleteMeeting,
+    getMeetingsByUserId
+} 

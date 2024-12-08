@@ -8,6 +8,7 @@ const meetingRouter = express.Router();
 
 meetingRouter.get('/meeting/:id', authentication , authorization, meetingController.getMeetingById );
 meetingRouter.get('/meetings', authentication , authorization, meetingController.getAllMeetings );
+meetingRouter.get('/meeting/user/:userId', authentication , currentUserAuthorization, meetingController.getMeetingsByUserId )
 meetingRouter.post('/meeting' , authentication , currentUserAuthorization , meetingController.createMeeting);
 meetingRouter.put('/meeting/:id', authentication , authorization,   meetingController.updateMeeting);
 meetingRouter.delete('/meeting/:id',  authentication , authorization,  meetingController.deleteMeeting );
