@@ -3,7 +3,7 @@ import { Business } from "../../models/business.model";
 import { getDataById } from "../../utils/api/crud.api";
 
 const defaultBusiness: Business = {
-    id: '',
+    _id: '',
     address: '',
     name: '',
     email: '',
@@ -30,7 +30,7 @@ const businessSlice = createSlice({
 
 export const fetchBusiness = () => async (dispatch: Dispatch) => {
     try {
-        const businessData: Business | null = await getDataById<Business>('business');
+        const businessData: Business | null = await getDataById<Business>({endpoint:'business'});
 
         if (businessData != null) {
             const business: Business = businessData;
