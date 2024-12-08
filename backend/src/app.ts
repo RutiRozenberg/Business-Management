@@ -27,12 +27,27 @@ const envPath = path.join(__dirname, '../config', '.env');
 dotenv.config({ path: envPath });
 
 const port = process.env.PORT;
+const client = process.env.CLIENT
+const allowedOrigins = [
+    client,
+];
+const corsOptions = {
+    origin: (origin: string | undefined, callback: (arg0: Error | null, arg1?: boolean | undefined) => void) => {
+        if (allowedOrigins.includes(origin) || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
+};
+
+
 
 swaggerSetup(app);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.use(CheckBody);
 
