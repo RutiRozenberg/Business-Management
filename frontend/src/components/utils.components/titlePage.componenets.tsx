@@ -2,13 +2,9 @@ import { Helmet } from "react-helmet"
 import React, { useEffect } from "react";
 import { fetchBusiness } from "../../store/features/business.slice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
+import { TitleProps } from "../../models/props.models/title.props.model";
 
-
-interface TitlePageProps {
-    title: string;
-}
-
-const TitlePage: React.FC<TitlePageProps> = ({ title }) => {
+const TitlePage: React.FC<TitleProps> = ({ title }) => {
 
     const business = useAppSelector((state) => state.business.business);
     const dispatch = useAppDispatch();

@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../store/store"
 import { fetchServices } from "../../../store/features/services.slice";
-import { Box, ImageList, ImageListItem, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Box, ImageList, ImageListItem, useMediaQuery, useTheme } from "@mui/material";
 import ServiceCard from "./service.page.components/serviceCard.component";
 import TitlePage from "../../utils.components/titlePage.componenets";
+import TitleTypography from "../../utils.components/titleTypography.component";
 
 export default function Services() {
 
@@ -32,35 +33,12 @@ export default function Services() {
     <>
       <TitlePage title="Service"></TitlePage>
 
-      <Box
-        sx={{
-          width: '100%',
-          background: `linear-gradient(90deg, ${theme.palette.primary.main} 40%, ${theme.palette.primary.dark} 80%)`,
-          paddingTop: '10vh',
-          paddingBottom: '10vh',
-          display: 'flex',
-          justifyContent: 'center',
-          boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        }}
-      >
-        <Typography
-          variant="h3"
-          align="center"
-          sx={{
-            color: theme.palette.secondary.dark,
-            fontSize: '3rem',
-            letterSpacing: '0.1em',
-            fontWeight: 700,
-          }}
-        >
-          Our Services
-        </Typography>
-      </Box>
+      <TitleTypography title="Our Servises"></TitleTypography>
 
-      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+      <Box marginTop={10} sx={{ display: 'flex', justifyContent: 'center' }}>
         <ImageList variant="masonry" cols={cols} gap={35} sx={{ width: '90%' }}>
           {services.map((service) => (
-            <ImageListItem key={service.id}>
+            <ImageListItem key={service._id}>
               <ServiceCard service={service} />
             </ImageListItem>
           ))}
