@@ -1,8 +1,7 @@
 import { MenuItem, Tooltip, Button, Avatar, Container, Menu, Box, AppBar, Toolbar, IconButton, Typography, useTheme } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate} from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import { fetchUser } from '../store/features/user.slice';
 
