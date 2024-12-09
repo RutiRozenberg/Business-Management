@@ -1,12 +1,7 @@
 import { createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
-import { User } from "../../models/user.model";
+import { User } from "../../models/user.models/user.model";
 import { jwtDecode } from "jwt-decode";
-
-interface UserJwt{
-    _id:string; 
-    name:string;
-    email: string
-}
+import { UserJwt } from "../../models/user.models/userJWT.model";
 
 interface UserState{
     user: User | null ;
