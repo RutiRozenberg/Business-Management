@@ -10,6 +10,7 @@ import { theme } from './utils/style/themeObject'
 import Login from './components/pages/login.page/login.component'
 import UserAppBar from './components/userAppBar.component'
 import AdminAppBar from './components/adminAppBar';
+import NotFound from './components/pages/notfound.page/notfound.component';
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
                 <Route index element={<Home />} />
                 <Route path="/services" element={<Services />} />
                 <Route path='/meetings' element={<Meetings />} />
+                <Route path='*' element={<NotFound/>}/>
               </Route>
               <Route path='/login' element={<Login/>}/>
               <Route path='/admin' element={<AdminAppBar/>}>
