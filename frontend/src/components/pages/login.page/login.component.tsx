@@ -4,14 +4,13 @@ import * as yup from 'yup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import GridColumnCenter from '../../utils.components/gridColumnCenter';
 import ResponsiveTypography from '../../utils.components/responsiveTypography.component';
-import { User } from '../../../models/user.model';
 import { useNavigate } from 'react-router-dom';
 import { postData } from '../../../utils/api/crud.api';
 import { useAppDispatch } from '../../../store/store';
 import { fetchUser } from '../../../store/features/user.slice';
 import { StatusAndMessageError } from '../../../models/statusAndMessageError.model';
 import CustomErrorAlert from './login.page.components/customErrorAlert';
-import { UserDetails } from '../../../models/userDetails';
+import { UserDetails } from '../../../models/user.models/userDetails';
 
 
 interface emailandpass {
@@ -50,12 +49,12 @@ const Login: React.FC = () => {
 
     const [isSignUp, setIsSignUp] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [formData, setFormData] = useState<User>({
+    const [formData, setFormData] = useState<UserDetails>({
         name: '',
         email: '',
         password: '',
-        _id: '',
     });
+
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [showAlert, setShowAlert] = useState(false);
 
@@ -170,7 +169,7 @@ const Login: React.FC = () => {
                                     <GridColumnCenter spacing='5'>
 
                                         <Grid item>
-                                            <ResponsiveTypography variant={{ xs: 'h6', md: 'h5' }}>
+                                            <ResponsiveTypography customeVariant={{ xs: 'h6', md: 'h5' }}>
                                                 {isSignUp ? 'Sign Up' : 'Sign In'}
                                                 </ResponsiveTypography>
                                         </Grid>

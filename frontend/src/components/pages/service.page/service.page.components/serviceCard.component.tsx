@@ -23,14 +23,14 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
       <CardContent>
 
         <ResponsiveTypography
-          variant={{ xs: 'h5', lg: 'h4', xl: 'h3' }}
+          customeVariant={{ xs: 'h5', lg: 'h4', xl: 'h3' }}
           color='textPrimary'
         >
           {name}
         </ResponsiveTypography>
 
         <ResponsiveTypography
-          variant={{ xs: 'body1', md: 'h6', lg: 'h5', xl: 'h4' }}
+          customeVariant={{ xs: 'body1', md: 'h6', lg: 'h5', xl: 'h4' }}
           color='textPrimary'
         >
         {description}
@@ -42,7 +42,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
           <Box display='flex' alignItems='center' mt={1}>
             <AccessTimeFilledIcon fontSize='small'></AccessTimeFilledIcon>
             <ResponsiveTypography
-              variant={{ xs: 'body2',  md: 'body1', xl: 'h6' }}
+              customeVariant={{ xs: 'body2',  md: 'body1', xl: 'h6' }}
               color='textPrimary'
             >
               {formattedDuration}
@@ -52,7 +52,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
           <Box display='flex' mt={1}>
             <PaidIcon fontSize='small'></PaidIcon>
             <ResponsiveTypography
-              variant={{ xs: 'body2', md: 'body1', xl: 'h6' }}
+              customeVariant={{ xs: 'body2', md: 'body1', xl: 'h6' }}
               color='textPrimary'
             >
               {String(price)}
