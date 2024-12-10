@@ -6,7 +6,7 @@ const pages = [{ text: 'Business', url: '/business' },{ text: 'Services', url: '
   
 const AdminAppBar = () => {
     return (
-        <ResponsiveAppBar pages={pages}></ResponsiveAppBar>
+        <ResponsiveAppBar pages={pages} isAdmin={true}></ResponsiveAppBar>
     )
 }
 

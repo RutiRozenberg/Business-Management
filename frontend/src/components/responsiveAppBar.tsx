@@ -8,6 +8,7 @@ import { fetchAdmin } from '../store/features/admin.slice';
 
 interface ResponsiveAppBarProps {
   pages: responsiveAppBarObjectProps[];
+  isAdmin: boolean;
 }
 
 interface responsiveAppBarObjectProps {
@@ -16,7 +17,7 @@ interface responsiveAppBarObjectProps {
 }
 
 
-const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({ pages }) => {
+const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({ pages  , isAdmin}) => {
 
   const signOut = () => {
     sessionStorage.removeItem('token');
@@ -27,7 +28,6 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({ pages }) => {
 
   const theme = useTheme();
   const user = useAppSelector(state => state.user.user);
-  const admin = useAppSelector(state => state.admin.admin);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -40,7 +40,6 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({ pages }) => {
     (dispatch(fetchUser()));
     (dispatch(fetchAdmin()));
   }, [dispatch, isSignOut]);
-
 
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -129,7 +128,8 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({ pages }) => {
                 </Button>
               ))}
             </Box>
-            {admin ? <Typography>Admin</Typography>
+
+            {isAdmin ? <Typography>Admin</Typography>
               : <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open profile">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -170,8 +170,8 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({ pages }) => {
                     <Typography textAlign="center">Sign In</Typography>
                   </MenuItem>}
                 </Menu>
-              </Box>
-            }
+              </Box>}
+
           </Toolbar>
         </Container>
       </AppBar>

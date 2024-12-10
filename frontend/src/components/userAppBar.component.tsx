@@ -6,7 +6,7 @@ const pages = [{ text: 'Home', url: '/' },{ text: 'Services', url: '/services' }
   
 const UserAppBar = () => {
     return (
-        <ResponsiveAppBar pages={pages}></ResponsiveAppBar>
+        <ResponsiveAppBar pages={pages} isAdmin={false}></ResponsiveAppBar>
     )
 }
 

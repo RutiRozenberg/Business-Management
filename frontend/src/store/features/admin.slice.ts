@@ -26,15 +26,21 @@ export const fetchAdmin = () => async (dispatch: Dispatch) => {
         const token:string | null = sessionStorage.getItem('token');
         if(token){
             const adminDecode: unknown = jwtDecode(token);
-            const {name , email , _id} = adminDecode as AdminJwt;
-            const adminData:Admin = {
-                name,
-                email,
-                password: '',
-                adminPassword: '',
-                _id,
-            };
-            dispatch(setAdmin(adminData));
+            const {name , email , _id , isAdmin} = adminDecode as AdminJwt;
+            if(isAdmin){
+                const adminData:Admin = {
+                    name,
+                    email,
+                    password: '',
+                    adminPassword: '',
+                    _id,
+                };
+                dispatch(setAdmin(adminData));
+            } else {
+                dispatch(setAdmin(null));
+                console.error('Error Authoraize'); 
+            }
+            
         } else {
             dispatch(setAdmin(null));
             console.error('Error Authoraize');  
