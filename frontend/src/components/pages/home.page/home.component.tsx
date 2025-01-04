@@ -3,7 +3,7 @@ import ResponsiveTypography from '../../utils.components/responsiveTypography.co
 import TitlePage from '../../utils.components/titlePage.componenets';
 import { Homepage } from '../../../models/homepage.model';
 import { getDataById } from '../../../utils/api/crud.api';
-import { Container } from '@material-ui/core';
+import { Container } from '@mui/material';
 import { useAppSelector } from '../../../store/store';
 import HomeCard from './home.page.components/home.card.components';
 

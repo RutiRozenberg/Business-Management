@@ -1,4 +1,4 @@
-import { CardContent, CircularProgress, Card } from "@material-ui/core";
+import { CardContent, CircularProgress, Card } from "@mui/material";
 import ResponsiveTypography from "../../../utils.components/responsiveTypography.component";
 import { useEffect, useState } from "react";
 import { HomecardProps } from "../../../../models/props.models/homeCardProps";

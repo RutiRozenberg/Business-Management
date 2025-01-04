@@ -1,4 +1,4 @@
-import { Typography, TypographyProps, useMediaQuery } from '@material-ui/core';
+import { Typography, TypographyProps, useMediaQuery } from '@mui/material';
 import { useTheme } from '@material-ui/core/styles';
 import { ResponsiveTypographyProps, Variant } from '../../models/props.models/responsiveTypography.propds';
 
@@ -26,7 +26,7 @@ const ResponsiveTypography: React.FC<ResponsiveTypographyProps> = ({ customeVari
     }
   
     return (
-      <Typography  variant={selectedVariant} {...props as TypographyProps} style={{ ...props.style}}>
+      <Typography  variant={selectedVariant} {...props as TypographyProps} style={{ ...props.style}} >
         {children}
       </Typography>
     );
