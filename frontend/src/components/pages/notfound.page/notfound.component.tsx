@@ -5,13 +5,13 @@ import { useNavigate } from "react-router-dom";
 
 const NotFound = () => {
     const theme = useTheme();
-    const naigate = useNavigate();
+    const navigate = useNavigate();
 
     const hundleGoBack = () => {
-        naigate(-1);
+        navigate(-1);
     }
     const hundleGoHome = () => {
-        naigate('/')
+        navigate('/');
     }
 
     return (
@@ -33,6 +33,7 @@ const NotFound = () => {
                         md: 'h6',
                         lg: 'h5'
                     }}
+                    sx={{ margin: '0vh 10vw'}}
                 >
                     Oops! The page you’re looking for doesn’t exist.
                     It might have been removed, had its name changed,
@@ -42,7 +43,7 @@ const NotFound = () => {
                 <Button 
                     variant="contained" 
                     color="primary" 
-                    onClick={() => hundleGoBack} 
+                    onClick={hundleGoBack} 
                     sx={{ m: 2 }}
                 >
                     Go Back
@@ -50,7 +51,7 @@ const NotFound = () => {
                 <Button 
                     variant="contained" 
                     color="primary" 
-                    onClick={() => hundleGoHome} 
+                    onClick={hundleGoHome} 
                     sx={{ m: 2 }}
                 >
                     Go Home Page 
