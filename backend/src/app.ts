@@ -1,7 +1,6 @@
 
 import express, { Express } from 'express';
 import bodyParser from 'body-parser';
-import cors from 'cors'
 import path from 'path';
 import dotenv from 'dotenv';
 import './config/db.config';
@@ -18,6 +17,7 @@ import userRouter from './routes/user.route';
 import dayTimeRouter from './routes/daytime.route';
 import logConfig from './config/log.config'
 import homePageRouter from './routes/homePage.route';
+import { corsMiddleware } from './middlewares/cors.middleware';
 
 const app: Express = express();
 
@@ -27,27 +27,14 @@ const envPath = path.join(__dirname, '../config', '.env');
 dotenv.config({ path: envPath });
 
 const port = process.env.PORT;
-const client = process.env.CLIENT
-const allowedOrigins = [
-    client,
-];
-const corsOptions = {
-    origin: (origin: string | undefined, callback: (arg0: Error | null, arg1?: boolean | undefined) => void) => {
-        if (allowedOrigins.includes(origin) || !origin) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    }
-};
 
-
+app.use(corsMiddleware);
 
 swaggerSetup(app);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors(corsOptions));
+
 
 app.use(CheckBody);
 
