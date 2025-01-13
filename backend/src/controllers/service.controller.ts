@@ -17,13 +17,13 @@ import { Request, Response } from 'express';
  *     Service:
  *       type: Service
  *       required:
- *         - id
+ *         - _id
  *         - name
  *         - duration
  *         - price
- *         - countPhoto
+ *         - description
  *       properties:
- *         id:
+ *         _id:
  *           type: string
  *           description: The unique identifier for the service
  *         name:
@@ -35,15 +35,40 @@ import { Request, Response } from 'express';
  *         price:
  *           type: number
  *           description: The price of the service
- *         countPhoto:
- *           type: number
- *           description: The photo number in the service
+ *         description:
+ *           type: strind
+ *           description: The description of the service
  *       example:
- *         id: '1'
+ *         _id: '1'
  *         name: 'Photography session'
  *         duration: 120
  *         price: 100
- *         countPhoto: 15
+ *         description: "hdbfjwbdiufbweubcuwebu"
+ *     ServiceDetails:
+ *       type: ServiceDetails
+ *       required:
+ *         - name
+ *         - duration
+ *         - price
+ *         - description
+ *       properties:
+ *         name:
+ *           type: string
+ *           description: The name of the service
+ *         duration:
+ *           type: number
+ *           description: The duration of the service
+ *         price:
+ *           type: number
+ *           description: The price of the service
+ *         description:
+ *           type: strind
+ *           description: The description of the service
+ *       example:
+ *         name: 'Photography session'
+ *         duration: 120
+ *         price: 100
+ *         description: "hdbfjwbdiufbweubcuwebu"
  */
 
 
@@ -118,7 +143,7 @@ const getAllServices = async(req: Request, res: Response)=>{
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Service'
+ *             $ref: '#/components/schemas/ServiceDetails'
  *     responses:
  *       201:
  *         description: Service created successfully

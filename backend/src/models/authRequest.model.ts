@@ -6,7 +6,8 @@ interface AuthRequest extends Request {
     user?: {
         _id: string;
         name: string;
-        isAdmin?: boolean; 
+        isAdmin?: boolean;
+        email: string; 
     };
 }
 

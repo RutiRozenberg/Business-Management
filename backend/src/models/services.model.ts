@@ -1,33 +1,24 @@
 
-import mongoose, { Schema, Document, Model } from 'mongoose';
-import { v4 as uuidv4 } from 'uuid';
+import mongoose, { Schema, Model } from 'mongoose';
 
-interface Service extends Document {
-    id : string ;
+interface ServiceDetails{
     price: number;
     name: string;
     duration : number; 
-    countPhoto: number;
+    description: string;
+}
+
+interface Service extends ServiceDetails{
+    _id: string;
 }
 
 const serviceSchema: Schema = new Schema({
-    id: {
-        type: String,
-        default: uuidv4, 
-        unique: true
-    },
     price: Number,
     name: String,
     duration : Number, 
-    countPhoto: Number,
-    
-});
-
-serviceSchema.pre('save', function (next) {
-    this.id = uuidv4();
-    next();
+    description: String,
 });
 
 const servicetModel: Model<Service> = mongoose.model<Service>('services', serviceSchema);
 
-export { servicetModel  , Service};
+export { servicetModel  , Service, ServiceDetails};

@@ -1,32 +1,27 @@
 
-import mongoose, { Schema, Document, Model } from 'mongoose';
-import { v4 as uuidv4 } from 'uuid';
+import mongoose, { Schema, Model } from 'mongoose';
 
-interface Meeting extends Document {
-  id: string;
+interface MeetingDetails{
   userId: string;
-  timeId: string;
+  startTime: Date;
+  endTime: Date;
   serviceId: string;
   textMessage: string;
 }
 
+interface Meeting extends MeetingDetails {
+  _id: string;
+}
+
 const meetingSchema: Schema = new Schema({
-  id: {
-    type: String,
-    default: uuidv4,
-    unique: true
-  },
   userId: String,
-  timeId: String,
+  startTime: Date,
+  endTime: Date,
   serviceId: String,
   textMessage: String,
 });
 
-meetingSchema.pre('save', function (next) {
-  this.id = uuidv4();
-  next();
-});
 
 const meetingModel: Model<Meeting> = mongoose.model<Meeting>('meeting', meetingSchema);
 
-export { meetingModel, Meeting };
+export { meetingModel, Meeting, MeetingDetails };

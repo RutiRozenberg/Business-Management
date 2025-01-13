@@ -1,162 +1,150 @@
-import { Time } from "../models/time.model";
+import { TimeRange } from "../models/timeRange.model";
 import * as timeBL from '../bl/time.bl';
 import { Request, Response } from 'express';
 
 /**
  * @swagger
  * tags:
- *   name: Time
- *   description: APIs for managing times
+ *   name: TimeRange
+ *   description: APIs for managing time ranges
  */
 
 /**
  * @swagger
  * components:
  *   schemas:
- *     Time:
- *       type: object
+ *     TimeRange:
+ *       type: TimeRange
  *       required:
- *         - id
- *         - date
- *         - isCatch
+ *         - _id
+ *         - start
+ *         - end
  *       properties:
- *         id:
+ *         _id:
  *           type: string
- *         date:
+ *         start:
  *           type: string
- *           description: The time field in the format YYYY-MM-DDTHH:MM:SS.sssZ
- *         isCatch:
- *           type: boolean
- *           description: Indicates if time is caught
+ *           description: The start field in the format YYYY-MM-DDTHH:MM:SS.sssZ
+ *         end:
+ *           type: string
+ *           description: The end field in the format YYYY-MM-DDTHH:MM:SS.sssZ
  *       example:
- *         id: '1dsvds-dvds'
- *         date: '2024-08-03T18:50:59.744Z'
- *         isCatch: false
+ *         _id: '1dsvds-dvds'
+ *         start: '2024-08-03T18:50:59.744Z'
+ *         end: '2024-08-03T21:50:59.744Z'
  */
 
 /**
  * @swagger
- * /time/{id}:
+ * /timerange/{daytimeId}/{timerangeId}:
  *   get:
- *     summary: Get a time by ID
- *     tags: [Time]
+ *     summary: Get a time range by ID
+ *     tags: [TimeRange]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: daytimeId
  *         required: true
  *         schema:
  *           type: string
- *           description: ID of the time to retrieve
+ *           description: ID of the daytime to retrieve
+ *       - in: path
+ *         name: timerangeId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           description: ID of the time range to retrieve
  *     responses:
  *       200:
- *         description: Time details retrieved successfully
+ *         description: Time range details retrieved successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Time'
+ *               $ref: '#/components/schemas/TimeRange'
  *       404:
- *         description: Time not found
+ *         description: Time range not found
  */
 const getTimeById = async (req: Request, res: Response): Promise<void> => {
     try {
-        const id = req.params.id;
-        const time: Time = await timeBL.getTimeById(id);
+        const daytimeId = req.params.daytimeId;
+        const timerangeId = req.params.timerangeId;
+        const time: TimeRange = await timeBL.getTimeById(daytimeId , timerangeId);
         res.status(200).send(time);
     } catch (err) {
-        res.status(404).send("Time not found");
+        res.status(404).send("Time range not found");
     }
 }
 
-/**
- * @swagger
- * /times:
- *   get:
- *     summary: Get all times
- *     tags: [Time]
- *     responses:
- *       200:
- *         description: List of all times
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Time'
- */
-const getAllTimes = async(req: Request, res: Response) => {
-    try {
-        const allTimes: Time[] = await timeBL.getAllTimes();
-        res.status(200).send(allTimes);
-    } catch (err) {
-        res.status(404).send("Not found");
-    }
-}
 
 /**
  * @swagger
- * /time:
+ * /timerange/{daytimeId}:
  *   post:
- *     summary: Create a new time
- *     tags: [Time]
+ *     summary: Create a new time range
+ *     tags: [TimeRange]
+ *     parameters:
+ *       - in: path
+ *         name: daytimeId
+ *         required: true
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Time'
+ *             $ref: '#/components/schemas/TimeRange'
  *     responses:
  *       201:
- *         description: Time created successfully
+ *         description: Time range created successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Time'
+ *               $ref: '#/components/schemas/TimeRange'
  *       400:
- *         description: Invalid time details
+ *         description: Invalid time range details
  */
 const createTime = async (req: Request, res: Response): Promise<void> => {
     try {        
-        const time: Time | null = req.body as unknown as Time;
-        const newTime: Time = await timeBL.createTime(time);
-        res.status(201).send(newTime);
+        const time: TimeRange | null = req.body as unknown as TimeRange;
+        const daytimeId = req.params.daytimeId ;
+        await timeBL.createTime(time , daytimeId);
+        res.status(201).send("newTime created");
     } catch (err) {
-        res.status(400).send("Invalid time details");
+        res.status(400).send("Invalid time range details");
     }
 }
 
 /**
  * @swagger
- * /time/{id}:
+ * /timerange/{daytimeId}:
  *   put:
  *     summary: Update a time by ID
- *     tags: [Time]
+ *     tags: [TimeRange]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: daytimeId
  *         required: true
  *         schema:
  *           type: string
- *         description: ID of the time to update
+ *           description: ID of the daytime to retrieve
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Time'
+ *             $ref: '#/components/schemas/TimeRange'
  *     responses:
  *       200:
- *         description: Time updated successfully
+ *         description: Time range updated successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Time'
+ *               $ref: '#/components/schemas/TimeRange'
  *       400:
- *         description: Time update failed
+ *         description: Time range update failed
  */
 const updateTime = async (req: Request, res: Response): Promise<void> => {
     try {
-        const id = req.params.id;
-        const timeToUpdate: Time = req.body;
+        const id = req.params.daytimeId;
+        const timeToUpdate: TimeRange = req.body;
         await timeBL.updateTime(id, timeToUpdate);
         res.status(200).send("The update was successful");
     } catch (err) {
@@ -166,62 +154,38 @@ const updateTime = async (req: Request, res: Response): Promise<void> => {
 
 /**
  * @swagger
- * /time/{id}:
+ /timerange/{daytimeId}/{timerangeId}:
  *   delete:
- *     summary: Delete a time by ID
- *     tags: [Time]
+ *     summary: Delete a time range by ID
+ *     tags: [TimeRange]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: daytimeId
  *         required: true
  *         schema:
  *           type: string
- *         description: ID of the time to delete
+ *           description: ID of the daytime to retrieve
+ *       - in: path
+ *         name: timerangeId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           description: ID of the time range to retrieve
  *     responses:
  *       200:
- *         description: Time deleted successfully
+ *         description: Time range deleted successfully
  *       400:
- *         description: Time deletion failed
+ *         description: Time range deletion failed
  */
 const deleteTime = async (req: Request, res: Response): Promise<void> => {
     try {
-        const id = req.params.id;
-        await timeBL.deleteTime(id);
+        const timeId = req.params.timerangeId;
+        const daytimeId = req.params.daytimeId;
+        await timeBL.deleteTime(timeId, daytimeId);
         res.status(200).send("Time deletion successful");
     } catch (err) {
         res.status(400).send("Time deletion failed");
     }
 }
 
-/**
- * @swagger
- * /time/{id}/catch:
- *   put:
- *     summary: Mark a time as caught by ID
- *     tags: [Time]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: ID of the time to mark as caught
- *     responses:
- *       200:
- *         description: Time marked as caught successfully
- *       400:
- *         description: Marking time as caught failed
- */
-const catchTime = async (req:Request , res:Response):Promise<void> =>{
-    try{
-        const parts = decodeURIComponent(req.url).split('/');
-        const id = parts[2]; 
-        await timeBL.catchTime(id);
-        res.status(200).send("successful");
-    }
-    catch{
-        res.status(400).send("faild")
-    }
-}
-
-export { createTime, updateTime, getTimeById, deleteTime, getAllTimes , catchTime};
+export { createTime, updateTime, getTimeById, deleteTime};

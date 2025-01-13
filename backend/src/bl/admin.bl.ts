@@ -1,5 +1,5 @@
 
-import { Admin } from "../models/admin.model";
+import { Admin, AdminDetails } from "../models/admin.model";
 import { comparePassword, hashPassword } from "./bcrypt.bl";
 import path from 'path';
 import dotenv from 'dotenv';
@@ -11,20 +11,16 @@ const envPath = path.join(__dirname, '../config', '.env');
 dotenv.config({ path: envPath });
 
 
-const signup = async (email: string, password: string, name: string , adminPassword: string) => {
+const signup = async (newAdmin: AdminDetails) => {    
     const existingAdmin: Admin | unknown = await getAdmin();
     if ( (existingAdmin as unknown[] ).length > 0) {
         throw new Error('Admin already exists');
     }
     try{
-        const hashedPassword = await hashPassword(password);
-        const hashedAdminpassword = await hashPassword(adminPassword);
-        const newAdmin: Admin = {
-            email,
-            password : hashedPassword,
-            name,
-            adminPassword :hashedAdminpassword
-        } as Admin;
+        const hashedPassword = await hashPassword(newAdmin.password);
+        const hashedAdminpassword = await hashPassword(newAdmin.adminPassword);
+        newAdmin.password = hashedPassword;
+        newAdmin.adminPassword = hashedAdminpassword;
         const admin = await createAdmin(newAdmin);
         return admin;
     }
@@ -45,7 +41,7 @@ const signin = async (email :string , password :string , adminPassword:string):P
             && await comparePassword(password, admin.password) 
             && await comparePassword(adminPassword , admin.adminPassword)){
     
-            return await createToken(admin.email , admin.name , true);
+            return await createToken(admin._id, admin.email , admin.name , true);
         }
     }
     return null;

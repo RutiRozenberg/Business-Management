@@ -1,5 +1,5 @@
 
-import { User } from "../models/user.model";
+import { User, UserDetails } from "../models/user.model";
 import { comparePassword, hashPassword } from "./bcrypt.bl";
 import jwt from 'jsonwebtoken';
 import path from 'path';
@@ -11,18 +11,14 @@ const envPath = path.join(__dirname, '../config', '.env');
 dotenv.config({ path: envPath });
 
 
-const signup = async (email: string, password: string, name: string) => {
-    const existingUser = await userService.getUserByEmail(email);
+const signup = async (newUser: UserDetails) => {
+    const existingUser = await userService.getUserByEmail(newUser.email);
     if (existingUser) {
         throw new Error('User with this email already exists');
     }
     try{
-        const hashedPassword = await hashPassword(password);
-        const newUser: User = {
-            email,
-            password : hashedPassword,
-            name,
-        } as User;
+        const hashedPassword = await hashPassword(newUser.password);
+        newUser.password = hashedPassword;
         const user = await userService.createUser(newUser);
         return user;
     }
@@ -36,16 +32,16 @@ const signup = async (email: string, password: string, name: string) => {
 const signin = async (email :string , password :string ) => {
     const user: User | null = await userService.getUserByEmail(email);
     if( user && await comparePassword(password, user.password)){
-        return await createToken(user.email , user.password , false);
+        return await createToken(user._id, user.email , user.name , false);
     }
     return null;
 }
 
 
-const createToken = async( email : string , password: string , isAdmin:boolean)=>{
+const createToken = async( _id:string, email : string , name: string , isAdmin:boolean)=>{
     const secret:string | undefined = process.env.SECRET;
     if(secret){
-        const token = jwt.sign({ _id:email, password , isAdmin},
+        const token = jwt.sign({ _id, email, name , isAdmin},
             secret, {
                 expiresIn: "2h",
             }
@@ -87,7 +83,7 @@ const getAllUsers = async ()=>{
 
 const updateUser= async (id:string , userData:User)=>{
   try{
-    if(id!=userData.id){
+    if(id!=userData._id){
         throw new Error("");  
     }
     const userToUpdate:User = await getUserById(id);

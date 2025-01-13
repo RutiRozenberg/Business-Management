@@ -1,8 +1,8 @@
 
-import { adminModel, Admin } from '../models/admin.model'; 
+import { adminModel, Admin, AdminDetails } from '../models/admin.model'; 
 
 
-const createAdmin = async (adminData: Admin): Promise<Admin> => {
+const createAdmin = async (adminData: AdminDetails): Promise<Admin> => {
   try {
     const newAdmin = new adminModel(adminData);
     const savedAdmin = await newAdmin.save();
@@ -20,7 +20,7 @@ const getAdmin = async () :Promise<Admin | unknown> => {
 
 const updateAdmin = async (id: string , updatedData:Admin ):Promise<void> =>{
     try {
-        await adminModel.updateOne({id}, updatedData);
+        await adminModel.findByIdAndUpdate(id, updatedData);
     } catch (error) {
         throw new Error('Failed to update admin in the database');
     }
