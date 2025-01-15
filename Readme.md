@@ -16,12 +16,31 @@ The project is divided into two parts:
 1. Clone the repository:
    ```git clone https://github.com/RutiRozenberg/Business-Management.git```
 2. Install dependencies for the server:
- - ```cd .\backend\```
- - ```npm i```
+   - ```cd .\backend\```
+   - ```npm i```
+   - Create .env file in ```.\backend\src\config\``` . 
+     
+     example:
+     ```
+     PORT = 3000 
+     DB_URL = mongodb://127.0.0.1:27017/business_managment 
+     SECRET = ferufbyhegrjeirng!!&&chkvvbfdjbvekjr454!<>?ho 
+     CLIENT=http://localhost:5173 
+     SWAGGER=http://localhost:3000
+     ```
+
+
+
 
 3. Install dependencies for the client:
- - ```cd .\frontend\```
- - ```npm i```
+   - ```cd .\frontend\```
+   - ```npm i```
+   - Create .env file in ```.\frontend\``` . 
+     
+     example:
+     
+     `VITE_BASE_URL_SERVER=http://localhost:3000/`
+
 
 ## Running the Project
 
