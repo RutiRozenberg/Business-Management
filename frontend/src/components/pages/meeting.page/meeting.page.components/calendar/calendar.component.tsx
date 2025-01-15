@@ -4,22 +4,27 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { isAfter, isSameDay } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { getAllData } from '../../../../../utils/api/crud.api';
-import { DayTimes } from '../../../../../models/daytimes.model';
+import { DayTimes } from '../../../../../models/date.and.time.models/daytimes.model';
 import { CircularProgress, Grid } from '@mui/material';
 import GridColumnCenter from '../../../../utils.components/gridColumnCenter';
 import './calendar.style.css';
-
+import { getToken } from '../../../../../utils/api/token';
+import { Dayjs } from 'dayjs';
+import { useAppDispatch } from '../../../../../store/store';
+import { setDate } from '../../../../../store/features/date.slice';
 
 const BasicDateCalendar = () => {
 
 
   const dateArray: Date[] = [];
   const currentDate: Date = new Date();
-  const token = sessionStorage.getItem('token');
+  const token = getToken();
 
   let daytimesData: DayTimes[] | null = []
   const [disabledDates, setDisableDates] = useState(dateArray);
   const [isLoadDates, SetIsLoadDates] = useState(true);
+  
+  const dispatch = useAppDispatch();
 
   const fetchDisableDate = async () => {
 
@@ -36,14 +41,20 @@ const BasicDateCalendar = () => {
     }
   }
 
+  const shouldDisableDate = (date: Dayjs): boolean => {
+    return !disabledDates.some(disabledDate => isSameDay(date.toDate(), disabledDate));
+  };
+
+  const handleDateChange = (date: Dayjs | null) => {   
+    if(date){
+      dispatch(setDate({ date: new Date(date.toDate()) }));
+    }
+  }
 
   useEffect(() => {
     fetchDisableDate();
   }, []);
 
-  const shouldDisableDate = (date:string|number|Date) => {
-    return !disabledDates.some(disabledDate => isSameDay(date, disabledDate));
-  };
 
   return (
     <>
@@ -55,7 +66,11 @@ const BasicDateCalendar = () => {
         </GridColumnCenter>
         : 
         <LocalizationProvider dateAdapter={AdapterDayjs} >
-          <DateCalendar shouldDisableDate={shouldDisableDate} sx={{width: '90%' , height: '50%' }}/>
+          <DateCalendar 
+            shouldDisableDate={shouldDisableDate} 
+            onChange={handleDateChange}
+            sx={{width: '90%' , height: '50%' }}
+          />
         </LocalizationProvider>
       }
     </>

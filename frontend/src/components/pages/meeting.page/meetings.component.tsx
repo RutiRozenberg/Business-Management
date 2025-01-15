@@ -1,49 +1,82 @@
 import { useNavigate } from "react-router-dom";
-import BasicDateCalendar from "./meeting.page.components/calendar/calendar.component";
-import { useAppSelector } from "../../../store/store";
-import TitlePage from "../../utils.components/titlePage.componenets";
-import TitleTypography from "../../utils.components/titleTypography.component";
 import { Autocomplete, Box, Button, CircularProgress, Grid, MenuItem, TextField, Typography } from "@mui/material";
 import * as yup from 'yup';
-import { theme } from "../../../utils/style/themeObject";
-import GridColumnCenter from "../../utils.components/gridColumnCenter";
 import { useEffect, useState } from "react";
-import { MeetingDetails } from "../../../models/meetingDetails.model";
-import { postData } from "../../../utils/api/crud.api";
 import { grey } from "@mui/material/colors";
 
-interface Option {
-  value: string;
-  label: string;
-};
+import BasicDateCalendar from "./meeting.page.components/calendar/calendar.component";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
+import TitlePage from "../../utils.components/titlePage.componenets";
+import TitleTypography from "../../utils.components/titleTypography.component";
+import { theme } from "../../../utils/style/themeObject";
+import GridColumnCenter from "../../utils.components/gridColumnCenter";
+import { getDataById, postData } from "../../../utils/api/crud.api";
+import { getToken } from "../../../utils/api/token";
+import { DayTimes } from "../../../models/date.and.time.models/daytimes.model";
+import { Time } from "../../../models/date.and.time.models/time.model";
+import { fetchServices } from "../../../store/features/services.slice";
+import { getFormatDate } from "../../../utils/functions/date";
+import { TimeRange } from "../../../models/date.and.time.models/timeRange.model";
+import { CreateMeeting } from "../../../models/meeting.models/createMeeting.model";
+import { getDuration, getEndTime, getTimefromStringTime, getTimesArr, mergeDateAndTime } from "./meeting.functions";
+import { Option } from '../../../models/option.model'
+import { fetchUser } from "../../../store/features/user.slice";
+import { User } from "../../../models/user.models/user.model";
 
-const meetingSchema = yup.object().shape({
-  service: yup.string().required('Servise is required'),
-  date: yup.date().required('Date is required'),
-  time: yup.date().required('Time is required'),
-  message: yup.string(),
-});
 
 const Meetings = () => {
 
+  const meetingSchema = yup.object().shape({
+    service: yup.string().required('Servise is required'),
+    date: yup.date().required('Date is required'),
+    time: yup.date().required('Time is required').test(
+      'is-valid-time',
+      'The selected time is not sufficient for the appointment. Please choose an earlier time or a different day.',
+      (value) => {
+        const selectedDuration = services.find(service => service._id === formData.service.label)?.duration;
+        console.log(value, selectedDuration);
+        if (selectedDuration) {
+          const filter: TimeRange[] | undefined = daytime?.times.filter(time => getDuration(value, time.end) >= selectedDuration);
+          if (filter && filter?.length > 0) {
+            return true;
+          }
+        }
+        return false;
+      }),
+    message: yup.string(),
+  });
 
   const navigate = useNavigate();
-  const user = useAppSelector(state => state.user.user);
-  const services = useAppSelector(state => state.service.services);
-  const [allservicesNames, setAllservicesNames] = useState<Option[]>([]);
-  const predefinedTimes = ['09:00', '12:00', '15:00'];
+  const token: string | null = getToken();
 
+  const user: User | null = useAppSelector(state => state.user.user);
+  const services = useAppSelector(state => state.service.services);
+  const dateState = useAppSelector(state => state.date.date);
+  const dispatch = useAppDispatch();
+
+
+  const [allservicesNames, setAllservicesNames] = useState<Option[]>([]);
+  const [predefinedTimes, setPredefinedTimes] = useState<Time[]>([]);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [showTimes, setShowTimes] = useState(false);
+  const [daytime, setdaytime] = useState<DayTimes | null>();
+  const [isLoadingUser, setIsLoadingUser] = useState(true);
   const [formData, setFormData] = useState({
     date: new Date(),
     time: '',
-    servise: { value: '', label: '' },
+    service: { value: '', label: '' },
     message: '',
   });
 
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [isLoading, setIsLoading] = useState(false);
+  const fetchTimesRange = async (date: Date) => {
+    const daytimeData: DayTimes | null = await getDataById({ endpoint: `daytime/date/${getFormatDate(date)}`, token: token! });
+    if (daytimeData) {
+      setdaytime(daytimeData);
+      setPredefinedTimes(getTimesArr(daytime!));
+    }
+  }
 
-  const token: string | null = sessionStorage.getItem('token');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -51,37 +84,24 @@ const Meetings = () => {
   };
 
   const handleSelectChange = (event: unknown, newValue: Option | null) => {
-    setFormData({ ...formData, servise: newValue || { value: '', label: '' } });
+    setFormData({ ...formData, service: newValue || { value: '', label: '' } });
   };
-
-
-  const mergeDateAndTime = (date: Date, timeString: string): Date => {
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-    const [hours, minutes] = timeString.split(':').map(Number);
-    return new Date(year, month, day, hours, minutes);
-  };
-
-  const getEndTime = (startDate: Date, durationInMinutes: number): Date => {
-    const endDate = new Date(startDate);
-    endDate.setMinutes(endDate.getMinutes() + durationInMinutes);
-    return endDate;
-  }
 
 
   const handleMeeting = async () => {
     try {
-      const duration: number | undefined = services.find(service => service._id === formData.servise.label)?.duration;
+      const duration: number | undefined = services.find(service => service._id === formData.service.label)?.duration;
       const startTime: Date = mergeDateAndTime(formData.date, formData.time);
-      const meeting: MeetingDetails = {
+      const meeting: CreateMeeting = {
         userId: user!._id,
-        serviceId: formData.servise.label,
-        startTime,
-        endTime: getEndTime(startTime, duration!),
+        serviceId: formData.service.label,
+        startTime: getFormatDate(startTime),
+        endTime: getFormatDate(getEndTime(startTime, duration!)),
         textMessage: formData.message,
       }
-      await postData({ endpoint: '/meeting', data: meeting, token: token! });
+      console.log(meeting);
+
+      await postData({ endpoint: 'meeting', data: meeting, token: token! });
     } catch {
       console.error('Faild create meeting');
     }
@@ -93,10 +113,20 @@ const Meetings = () => {
     try {
       const formDataWithDate = {
         ...formData,
-        time: new Date(`2025-01-01T${formData.time}`),
+        time: new Date(),
+        service: formData.service.label,
+        date: dateState
       };
+      console.log(formDataWithDate);
+
+      const { hour, minute } = getTimefromStringTime(formData.time);
+      formDataWithDate.time.setHours(hour);
+      formDataWithDate.time.setMinutes(minute);
+      console.log(formDataWithDate);
+
       await meetingSchema.validate(formDataWithDate, { abortEarly: false });
-      handleMeeting();
+      await handleMeeting();
+
     } catch (error: unknown) {
       const validationErrors: { [key: string]: string } = {};
       if (error instanceof yup.ValidationError) {
@@ -112,20 +142,53 @@ const Meetings = () => {
     }
   };
 
+
+
   useEffect(() => {
+    if (services.length === 0) {
+      dispatch(fetchServices());
+    }
+  },)
+
+
+  const checkUser = async () => {
     if (!user) {
+      await dispatch(fetchUser());
+    }
+    setIsLoadingUser(false);
+  };
+
+
+  useEffect(() => {
+    checkUser();
+  }, [user]);
+
+
+  useEffect(() => {
+    if (!isLoadingUser && !user) {
       navigate('/notlogin');
     }
-  }, [user, navigate]);
+  }, [isLoadingUser, user]);
+
 
   useEffect(() => {
     setAllservicesNames(services.map(
       servise => ({
-        value: servise._id,
-        label: servise.name,
+        value: servise.name,
+        label: servise._id,
       })
     ));
   }, [services]);
+
+
+  useEffect(() => {
+    if (dateState) {
+      setShowTimes(true);
+      setFormData({ ...formData, date: dateState });
+      fetchTimesRange(dateState);
+
+    }
+  }, [dateState, dispatch]);
 
   return (
     <>
@@ -156,8 +219,9 @@ const Meetings = () => {
 
             <Grid item width={{ xs: 250, sm: 339 }}>
               <Autocomplete
-                options={allservicesNames.length > 0 ? allservicesNames : [{ value: '', label: 'Please wait...' }]}
-                getOptionLabel={(option) => option.label}
+                options={allservicesNames.length > 0 ? allservicesNames : [{ value: 'Please wait...', label: 'Please wait...' }]}
+                getOptionLabel={(option) => option.value}
+                isOptionEqualToValue={(option, value) => option.value === value.value}
                 onChange={handleSelectChange}
                 renderInput={(params) => (
                   <TextField
@@ -169,6 +233,12 @@ const Meetings = () => {
                     variant="outlined"
                     fullWidth
                   />
+
+                )}
+                renderOption={(props, option) => (
+                  <li {...props} key={option.label}>
+                    {option.value}
+                  </li>
                 )}
               />
             </Grid>
@@ -193,7 +263,7 @@ const Meetings = () => {
               </Box>
             </Grid>
 
-            <Grid item width={{ xs: 250, sm: 339 }} >
+            {showTimes && <Grid item width={{ xs: 250, sm: 339 }} >
               <TextField
                 select
                 label="Choose time"
@@ -205,13 +275,15 @@ const Meetings = () => {
                 helperText={errors.time}
                 fullWidth
               >
-                {predefinedTimes.map((time) => (
-                  <MenuItem key={time} value={time}>
-                    {time}
-                  </MenuItem>
-                ))}
+                {!predefinedTimes ? 'Please wait...'
+                  : predefinedTimes.map((time) => (
+                    <MenuItem key={`${time.hour}:${time.minute}`} value={`${time.hour}:${time.minute}`}>
+                      {time.hour}:{time.minute >= 10 ? time.minute : "0" + time.minute}
+                    </MenuItem>
+                  ))}
               </TextField>
-            </Grid>
+
+            </Grid>}
 
             <Grid item m={5}>
               <Button type="submit" variant="contained" color="primary">

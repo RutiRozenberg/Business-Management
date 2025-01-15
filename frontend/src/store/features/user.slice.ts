@@ -2,6 +2,7 @@ import { createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
 import { User } from "../../models/user.models/user.model";
 import { jwtDecode } from "jwt-decode";
 import { UserJwt } from "../../models/user.models/userJWT.model";
+import { getToken } from "../../utils/api/token";
 
 interface UserState{
     user: User | null ;
@@ -23,9 +24,11 @@ const userSlice = createSlice({
 
 export const fetchUser = () => async (dispatch: Dispatch) => {
     try {
-        const token:string | null = sessionStorage.getItem('token');
-        if(token){
-            const userDecode: unknown = jwtDecode(token);
+        const token:string | null = getToken();
+        if(token !== null){                        
+            const userDecode: unknown = await jwtDecode(token);
+            console.log("\\\\\\\\\\\\",userDecode);
+            
             const {name , email , _id} = userDecode as UserJwt;
             const userData:User = {
                 name, 
@@ -34,6 +37,8 @@ export const fetchUser = () => async (dispatch: Dispatch) => {
                 _id
             };
             dispatch(setUser(userData));
+            console.log("User", userData);
+            
         } else {
             dispatch(setUser(null));
             console.error('Error Authoraize');  

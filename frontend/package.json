@@ -19,6 +19,8 @@
     "@types/material-ui": "^0.21.17",
     "axios": "^1.7.4",
     "date-fns": "^4.1.0",
+    "date-fns-tz": "^3.2.0",
+    "dayjs": "^1.11.13",
     "dotenv": "^16.4.5",
     "jwt-decode": "^4.0.0",
     "react": "^18.3.1",
