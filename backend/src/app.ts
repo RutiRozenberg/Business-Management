@@ -18,6 +18,7 @@ import dayTimeRouter from './routes/daytime.route';
 import logConfig from './config/log.config'
 import homePageRouter from './routes/homePage.route';
 import { corsMiddleware } from './middlewares/cors.middleware';
+import { jsonErrorMiddleware } from './middlewares/json.error.middleware';
 
 const app: Express = express();
 
@@ -34,8 +35,7 @@ swaggerSetup(app);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
-
+app.use(jsonErrorMiddleware);
 app.use(CheckBody);
 
 app.use(authAdminRouter);
