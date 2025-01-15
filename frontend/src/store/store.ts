@@ -4,6 +4,7 @@ import serviceReducer from './features/services.slice';
 import businessReducer from './features/business.slice';
 import userReducer from './features/user.slice';
 import adminReducer from './features/admin.slice';
+import dateReducer from './features/date.slice'
 
 export const store = configureStore({
     reducer:{
@@ -11,6 +12,7 @@ export const store = configureStore({
       business: businessReducer,
       user: userReducer,
       admin: adminReducer,
+      date: dateReducer,
     },
 });
 

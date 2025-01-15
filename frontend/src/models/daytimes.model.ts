@@ -1,7 +1,5 @@
-import { TimeRange } from "./timeRange.model";
+import { DayTimesDetails } from "./date.and.time.models/daytimeDetails.model";
 
-export interface DayTimes{
+export interface DayTimes extends DayTimesDetails{
     _id: string;
-    date: Date;
-    times: TimeRange[];
 }

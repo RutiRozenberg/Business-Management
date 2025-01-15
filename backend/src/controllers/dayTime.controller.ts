@@ -86,6 +86,42 @@ const getDayTimesById = async (req: Request, res: Response): Promise<void> => {
     }
 }
 
+
+/**
+ * @swagger
+ * /daytime/date/{date}:
+ *   get:
+ *     summary: Get a daytime by date
+ *     tags: [Daytimes]
+ *     parameters:
+ *       - in: path
+ *         name: date
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Date of the daytime to retrieve.
+ *     responses:
+ *       200:
+ *         description: Daytimes details retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/DayTimes'
+ *       404:
+ *         description: Daytime not found
+ */
+const getDayTimeByDate = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const dateData:Date = new Date(req.params.date);
+        const timeByDate = await dayTimeBl.getDayTimeByDate(dateData);
+        res.status(200).send(timeByDate);
+    } catch (error) {
+        res.status(404).send("Daytime does not exist");
+    }
+}
+
 /**
  * @swagger
  * /daytimes:
@@ -216,4 +252,4 @@ const deleteDayTimes = async (req: Request, res: Response): Promise<void> => {
     }
 }
 
-export { getAllDayTimes, getDayTimesById, createDayTimes, updateDayTimes, deleteDayTimes}
+export { getAllDayTimes, getDayTimesById, createDayTimes, updateDayTimes, deleteDayTimes, getDayTimeByDate}
