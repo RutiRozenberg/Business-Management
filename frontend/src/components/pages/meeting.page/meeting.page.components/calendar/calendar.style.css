@@ -1,0 +1,21 @@
+
+@media (max-width: 600px) {
+
+    .css-1rtg91x-MuiDateCalendar-root {
+        width: 100%;
+        height: 80%;
+    }
+
+    .css-dplwbx-MuiPickersCalendarHeader-label {
+        font-size: 14px;
+    }
+
+    .css-1vs7z2v-MuiYearCalendar-root {
+        width: 100%;
+    }
+}
+
+
+.css-1t0788u-MuiPickersSlideTransition-root-MuiDayCalendar-slideTransition{
+    min-height: 206px;
+}

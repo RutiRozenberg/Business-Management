@@ -1,9 +1,5 @@
+import { MeetingDetails } from "./meetingDetails.model";
 
-export interface Meeting {
+export interface Meeting extends MeetingDetails {
     _id: string;
-    userId: string;
-    startTime: Date;
-    endTime: Date;
-    serviceId: string;
-    textMessage: string;
-  }
+}
