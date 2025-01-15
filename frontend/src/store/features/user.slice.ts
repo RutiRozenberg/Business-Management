@@ -27,7 +27,6 @@ export const fetchUser = () => async (dispatch: Dispatch) => {
         const token:string | null = getToken();
         if(token !== null){                        
             const userDecode: unknown = await jwtDecode(token);
-            console.log("\\\\\\\\\\\\",userDecode);
             
             const {name , email , _id} = userDecode as UserJwt;
             const userData:User = {
@@ -37,7 +36,6 @@ export const fetchUser = () => async (dispatch: Dispatch) => {
                 _id
             };
             dispatch(setUser(userData));
-            console.log("User", userData);
             
         } else {
             dispatch(setUser(null));
