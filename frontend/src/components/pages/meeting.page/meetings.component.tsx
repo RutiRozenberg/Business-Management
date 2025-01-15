@@ -34,7 +34,6 @@ const Meetings = () => {
       'The selected time is not sufficient for the appointment. Please choose an earlier time or a different day.',
       (value) => {
         const selectedDuration = services.find(service => service._id === formData.service.label)?.duration;
-        console.log(value, selectedDuration);
         if (selectedDuration) {
           const filter: TimeRange[] | undefined = daytime?.times.filter(time => getDuration(value, time.end) >= selectedDuration);
           if (filter && filter?.length > 0) {
@@ -99,7 +98,6 @@ const Meetings = () => {
         endTime: getFormatDate(getEndTime(startTime, duration!)),
         textMessage: formData.message,
       }
-      console.log(meeting);
 
       await postData({ endpoint: 'meeting', data: meeting, token: token! });
     } catch {
@@ -117,12 +115,10 @@ const Meetings = () => {
         service: formData.service.label,
         date: dateState
       };
-      console.log(formDataWithDate);
 
       const { hour, minute } = getTimefromStringTime(formData.time);
       formDataWithDate.time.setHours(hour);
       formDataWithDate.time.setMinutes(minute);
-      console.log(formDataWithDate);
 
       await meetingSchema.validate(formDataWithDate, { abortEarly: false });
       await handleMeeting();
