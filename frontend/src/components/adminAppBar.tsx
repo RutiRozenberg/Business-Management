@@ -1,7 +1,7 @@
 import ResponsiveAppBar from "./responsiveAppBar";
 
 
-const pages = [{ text: 'Business', url: '/business' },{ text: 'Services', url: '/services' }, { text: 'Meetings', url: '/meetings' }];
+const pages = [{ text: 'Business', url: '/admin' },{ text: 'Services', url: '/admin/services' }, { text: 'Meetings', url: '/admin/meetings' }];
  
   
 const AdminAppBar = () => {
