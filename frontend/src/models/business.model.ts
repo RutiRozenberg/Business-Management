@@ -1,8 +1,5 @@
+import { BusinessDetails } from "./business.details.model";
 
-export interface Business{
+export interface Business extends BusinessDetails{
     _id: string;
-    address: string;
-    name: string;
-    email: string;
-    phone: string;
 }
