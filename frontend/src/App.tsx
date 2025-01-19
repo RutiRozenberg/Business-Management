@@ -12,6 +12,8 @@ import UserAppBar from './components/userAppBar.component'
 import AdminAppBar from './components/adminAppBar';
 import NotFound from './components/pages/notfound.page/notfound.component';
 import NotLogin from './components/pages/notLogin.page/notLogin.component';
+import { Box } from '@mui/material';
+import BusinessAdmin from './components/pages/admin.pages/business.page/business.admin.component';
 
 
 function App() {
@@ -22,15 +24,20 @@ function App() {
         <BrowserRouter >
           <ThemeProvider theme={theme}>
             <Routes>
-              <Route path="/" element={<UserAppBar />} >
+
+              <Route path="" element={<UserAppBar />} >
                 <Route index element={<Home />} />
-                <Route path="/services" element={<Services />} />
-                <Route path='/meetings' element={<Meetings />} />
-                <Route path='/notLogin' element={<NotLogin/>} />
+                <Route path="services" element={<Services />} />
+                <Route path='meetings' element={<Meetings />} />
+                <Route path='notLogin' element={<NotLogin/>} />
                 <Route path='*' element={<NotFound/>}/>
               </Route>
-              <Route path='/login' element={<Login/>}/>
-              <Route path='/admin' element={<AdminAppBar/>}>
+
+              <Route path='login' element={<Login/>}/>
+              
+              <Route path='admin' element={<AdminAppBar/>}>
+                <Route index element={<BusinessAdmin/>}/>
+                <Route path='*' element={<Box>Not found</Box>}/>
               </Route>
             </Routes>
           </ThemeProvider>
