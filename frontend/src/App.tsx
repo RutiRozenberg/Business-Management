@@ -14,6 +14,7 @@ import NotFound from './components/pages/notfound.page/notfound.component';
 import NotLogin from './components/pages/notLogin.page/notLogin.component';
 import { Box } from '@mui/material';
 import BusinessAdmin from './components/pages/admin.pages/business.page/business.admin.component';
+import ServicesAdmin from './components/pages/admin.pages/servises.admin.page/services.sdmin.component';
 
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
               
               <Route path='admin' element={<AdminAppBar/>}>
                 <Route index element={<BusinessAdmin/>}/>
+                <Route path='services' element={<ServicesAdmin />}/>
                 <Route path='*' element={<Box>Not found</Box>}/>
               </Route>
             </Routes>
