@@ -1,8 +1,5 @@
+import { ServiceDetails } from "./service.details.model";
 
-export interface Service {
+export interface Service extends ServiceDetails {
     _id : string ;
-    price: number;
-    name: string;
-    duration : number; 
-    description: string;
 }

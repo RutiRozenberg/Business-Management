@@ -4,7 +4,7 @@ import { APIRequest } from "../../models/apiRequest.model";
 
 const API_URL: string = import.meta.env.VITE_BASE_URL_SERVER ?? '';
 
-const sendRequest = async <T>(apiRequest: APIRequest<T>): Promise<T | null> => {
+const sendRequest = async <E, T>(apiRequest: APIRequest<E>): Promise<T | null> => {
     const { endpoint, method, token, data } = apiRequest;
     try { 
         const url = `${API_URL}${endpoint}`;
@@ -31,27 +31,27 @@ const sendRequest = async <T>(apiRequest: APIRequest<T>): Promise<T | null> => {
 
 const getAllData = async <T>(apiRequest:APIRequest<T>) => {
     const { endpoint, token } = apiRequest;
-    return sendRequest<T[]>({ endpoint, method:'GET', token, });
+    return sendRequest<unknown, T[]>({ endpoint, method:'GET', token, });
 };
 
 const getDataById = async <T>(apiRequest:APIRequest<T>) => {
     const { endpoint, token } = apiRequest;
-    return sendRequest<T>({ endpoint, method:'GET', token });
+    return sendRequest<unknown, T>({ endpoint, method:'GET', token });
 };
 
-const postData = async <T>(apiRequest:APIRequest<T>) => {
+const postData = async <E, T>(apiRequest:APIRequest<E>) => {
     const { endpoint, token, data } = apiRequest;
-    return sendRequest<T>({ endpoint, method:'POST', data, token });
+    return sendRequest<E, T>({ endpoint, method:'POST', data, token });
 };
 
-const putData = async <T>(apiRequest:APIRequest<T>) => {
+const putData = async <E, T>(apiRequest:APIRequest<E>) => {
     const { endpoint, token, data } = apiRequest;
-    return sendRequest<T>({ endpoint, method:'PUT', data, token });
+    return sendRequest<E, T>({ endpoint, method:'PUT', data, token });
 };
 
-const deleteData = async<T> (apiRequest:APIRequest<T>) => {
+const deleteData = async <T>(apiRequest:APIRequest<T>) => {
     const { endpoint, token } = apiRequest;
-    return sendRequest<unknown>({ endpoint , method:'DELETE', token });
+    return sendRequest<T, unknown>({ endpoint , method:'DELETE', token });
 };
 
 export { 
