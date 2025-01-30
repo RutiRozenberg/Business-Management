@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { useEffect, useState } from "react";
 import { grey } from "@mui/material/colors";
 
-import BasicDateCalendar from "./meeting.page.components/calendar/calendar.component";
+import BasicDateCalendar from "../../utils.components/calendar/calendar.component";
 import { useAppDispatch, useAppSelector } from "../../../store/store";
 import TitlePage from "../../utils.components/titlePage.componenets";
 import TitleTypography from "../../utils.components/titleTypography.component";
@@ -254,7 +254,7 @@ const Meetings = () => {
                 >
                   Choose date
                 </Typography>
-                <BasicDateCalendar />
+                <BasicDateCalendar disableAllDates={false} />
 
               </Box>
             </Grid>
