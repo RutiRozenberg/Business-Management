@@ -25,8 +25,16 @@ const isSameTime = (dateData1:Date , dateData2:Date ) =>{
 const isBeforeTime = (dateData1:Date , dateData2:Date) => {
     const date1:Date = new Date(dateData1);
     const date2:Date = new Date(dateData2);
-    return date1.getUTCHours() <= date2.getUTCHours() &&
-    date1.getUTCMinutes() < date2.getUTCMinutes() ; 
+    if(date1.getUTCHours() < date2.getUTCHours()) {
+        return true;
+    }
+    if(date1.getUTCHours() === date2.getUTCHours()){
+        if(date1.getUTCMinutes() < date2.getUTCMinutes()){
+            return true;
+        }
+    }
+
+    return false;  
 }
 
 
@@ -197,12 +205,12 @@ const catchTime = async (start:Date , end:Date) => {
         throw new Error("Invalid parameters");
     }
     try{
-        const daytime:DayTimes| undefined= await dayTimeBl.getDayTimeByDate(start);        
+        const daytime:DayTimes| undefined= await dayTimeBl.getDayTimeByDate(start);   
         if(!daytime){
             logger.error(`Not found Date : ${start}`)
             throw new Error("Not Found Date");
         }
-
+        
         const timeToCatch = daytime.times.find(t=> 
             ( isSameTime(t.start , start) ||  isBefore(t.start , start)) 
             && (isSameTime(t.end , end) || isAfter(t.end , end))
@@ -229,6 +237,8 @@ const catchTime = async (start:Date , end:Date) => {
             await createTime(newTime , daytime._id);
         }
     } catch (error) {
+        console.log(error);
+        
         logger.error(`Faild catch time at: ${start}`, error);
         throw new Error("Faild save new time range");
     }
@@ -245,6 +255,7 @@ export {
     deleteTime,
     isValidTimes,
     catchTime,
-    isSameDate
+    isSameDate,
+    isBeforeTime,
 } 
 
