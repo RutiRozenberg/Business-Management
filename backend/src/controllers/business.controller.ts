@@ -123,9 +123,7 @@ const createBusiness = async (req: Request, res: Response): Promise<void> => {
         const business: BusinessDetails = req.body;           
         const newBusiness: Business = await businessBl.createBusiness(business);
         res.status(201).send(newBusiness);
-    } catch (err) {
-        console.log(err);
-        
+    } catch (err) {        
         res.status(400).send("Business created faild");
     }
 }
