@@ -18,8 +18,7 @@ const isSameDate = (dateData1: Date , dateData2: Date) => {
 const isSameTime = (dateData1:Date , dateData2:Date ) =>{
     const date1:Date = new Date(dateData1);
     const date2:Date = new Date(dateData2);
-    return date1.getUTCHours === date2.getUTCHours && 
-    date1.getUTCMinutes === date2.getUTCMinutes;
+    return date1.getHours() === date2.getHours() && date1.getMinutes() === date2.getMinutes();
 }
 
 const isBeforeTime = (dateData1:Date , dateData2:Date) => {
@@ -55,21 +54,30 @@ const isValidTimes = (start: Date, end: Date) => {
     return true;
 }
 
-const checkIfExistPartTime = async (dayTime: DayTimes, newTime: TimeRange) => {
-    let existPart = false;
+const existTime = async (dayTime: DayTimes, newTime: TimeRange) => {
+
+    let existTime = false;
 
     dayTime.times.forEach((timerange) => {
-        if ( 
-            (isBefore(newTime.start , timerange.start) && (isAfter(newTime.end , timerange.start))) ||
-            (isAfter(newTime.start , timerange.start) && (isBefore(newTime.end, timerange.end))) ||
-            (isBefore(newTime.start , timerange.end) && isAfter(newTime.end, timerange.end)) ||
-            (isEqual(newTime.start, timerange.start) || isEqual(newTime.end, timerange.end))
-        ) {
-            existPart = true;
-        }
-    });
 
-    return existPart;
+        if(isEqual(newTime.start, timerange.start)){
+            if(isEqual(newTime.end, timerange.end) || isBefore(newTime.end, timerange.end)){
+                existTime = true;        
+            }
+        } else {
+            if (isEqual(newTime.end, timerange.end)){
+                if(isAfter(newTime.start, timerange.start)){
+                    existTime = true;
+                }
+            } else {
+                if(isAfter(newTime.start, timerange.start) && isBefore(newTime.end, timerange.end)){
+                    existTime = true;
+                }
+            }
+        } 
+    })
+
+    return existTime;
 }
 
 const existdayTime = async (id:string) => {
@@ -95,9 +103,6 @@ const isValidTimeRange = async (timeRange: TimeRange , daytime: DayTimes) => {
         if (!isSameDate(daytime.date , start)) {
             throw new Error("Not the same date");
         }
-        if(await checkIfExistPartTime(daytime ,timeRange)){
-            throw new Error("Exist part of time");
-        }
     } catch(error){
         logger.error(`Invalid time range details: ${timeRange} when trying to create a time range`, error);
         throw new Error("Invalid time details");
@@ -121,6 +126,9 @@ const createTime = async (newTime:TimeRange , dayTimeId:string) => {
     try {
         const existdaytime: DayTimes = await existdayTime(dayTimeId);
         await isValidTimeRange(newTime ,existdaytime);
+        if(await existTime(existdaytime, newTime)){
+            throw new Error("Exist time");
+        }
         newTime._id = '';
         await pushAndUpdatetDaytime(newTime, existdaytime);
         logger.info(`TimeRange: ${newTime} added to Daytime: ${dayTimeId}`);
@@ -181,10 +189,10 @@ const updateTime = async (daytimeId: string, time: TimeRange) => {
 
 const deleteTime = async (timeId: string , daytimeId:string ) => {
     try {
-        const daytime = await dayTimeBl.getDayTimeById(daytimeId);
+        const daytime = await dayTimeBl.getDayTimeById(daytimeId);        
         if(daytime && daytime.times){
-            const lengthTimes = daytime.times.length;
-            daytime.times = daytime.times.filter(t=> t._id.toString() !== timeId);
+            const lengthTimes = daytime.times.length;            
+            daytime.times = daytime.times.filter(t=> t._id.toString() !== timeId.toString());
             if(lengthTimes !== daytime.times.length){
                 await dayTimeBl.updateTimesInDayTimes(daytime);
                 return; 
@@ -205,21 +213,25 @@ const catchTime = async (start:Date , end:Date) => {
         throw new Error("Invalid parameters");
     }
     try{
-        const daytime:DayTimes| undefined= await dayTimeBl.getDayTimeByDate(start);   
+        const daytime:DayTimes| undefined= await dayTimeBl.getDayTimeByDate(start);           
         if(!daytime){
             logger.error(`Not found Date : ${start}`)
             throw new Error("Not Found Date");
         }
         
-        const timeToCatch = daytime.times.find(t=> 
-            ( isSameTime(t.start , start) ||  isBefore(t.start , start)) 
+        const timeToCatch = daytime.times.find(t=>{ 
+            (isSameTime(t.start , start) ||  isBefore(t.start , start)) 
             && (isSameTime(t.end , end) || isAfter(t.end , end))
-        );        
+        }
+                        
+        ); 
+       
         if(!timeToCatch){
             logger.error(`Invalid parameters- catch time at DayTime: ${daytime._id}`);
             throw new Error('Invalid parameters')
         }
-        daytime.times = daytime.times.filter(t=> t._id.toString() !== timeToCatch._id.toString());
+        await deleteTime(timeToCatch._id, daytime._id);
+        
         if (isBefore(timeToCatch.start, start)) {
             const newTime: TimeRange = {
                 start: timeToCatch.start,
@@ -236,9 +248,7 @@ const catchTime = async (start:Date , end:Date) => {
             }
             await createTime(newTime , daytime._id);
         }
-    } catch (error) {
-        console.log(error);
-        
+    } catch (error) {        
         logger.error(`Faild catch time at: ${start}`, error);
         throw new Error("Faild save new time range");
     }
@@ -257,5 +267,6 @@ export {
     catchTime,
     isSameDate,
     isBeforeTime,
-} 
+    existTime,
+}; 
 
