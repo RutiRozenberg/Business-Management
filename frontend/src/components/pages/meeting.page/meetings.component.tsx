@@ -50,7 +50,7 @@ const Meetings = () => {
 
   const user: User | null = useAppSelector(state => state.user.user);
   const services = useAppSelector(state => state.service.services);
-  const dateState = useAppSelector(state => state.date.date);
+  const dateState = useAppSelector(state => state.date);
   const dispatch = useAppDispatch();
 
 
@@ -72,7 +72,10 @@ const Meetings = () => {
     const daytimeData: DayTimes | null = await getDataById({ endpoint: `daytime/date/${getFormatDate(date)}`, token: token! });
     if (daytimeData) {
       setdaytime(daytimeData);
-      setPredefinedTimes(getTimesArr(daytime!));
+      if(daytime){
+        setPredefinedTimes(getTimesArr(daytime));
+        setShowTimes(true);
+      }
     }
   }
 
@@ -177,14 +180,12 @@ const Meetings = () => {
   }, [services]);
 
 
-  useEffect(() => {
-    if (dateState) {
-      setShowTimes(true);
-      setFormData({ ...formData, date: dateState });
-      fetchTimesRange(dateState);
-
+  useEffect(() => {  
+    if (dateState.valid) {
+      setFormData({ ...formData, date: dateState.date });
+      fetchTimesRange(dateState.date);
     }
-  }, [dateState, dispatch]);
+  }, [dateState, dispatch, fetchTimesRange, formData]);
 
   return (
     <>
