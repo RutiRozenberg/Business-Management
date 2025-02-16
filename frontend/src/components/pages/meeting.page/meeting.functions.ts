@@ -1,9 +1,9 @@
 import { Time } from "../../../models/date.and.time.models/time.model";
 import { DayTimes } from "../../../models/daytimes.model";
 
-export const getTimesArr = (daytimes:DayTimes) => {
+export const getTimesArr = (daytimes:DayTimes) => {  
     const timesArr: Time[] = [];
-  
+
     daytimes.times.forEach(daytime => {
       let { end, start } = daytime;
       end = new Date(end);

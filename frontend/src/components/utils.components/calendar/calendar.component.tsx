@@ -50,8 +50,13 @@ const BasicDateCalendar: React.FC<BasicDateCalendarProps> = ({ disableAllDates }
   };
 
   const handleDateChange = (date: Dayjs | null) => {   
-    if(date){
-      dispatch(setDate({ date: new Date(date.toDate()) }));
+    if(date){ 
+      console.log("==========",(date.toDate()));
+           
+      dispatch(setDate({ 
+        date: new Date(date.toDate()),
+        valid: true,
+      }));
     }
   }
 

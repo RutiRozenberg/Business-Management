@@ -1,19 +1,22 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface DateState{
-    date: Date | null;
+    date: Date;
+    valid: boolean
 }
 
 const initialState: DateState = {
-    date: null
+    date: new Date(),
+    valid: false,
 }
 
 const dateSlice = createSlice({
     name: 'date',
     initialState,
     reducers: {
-        setDate(state, action: PayloadAction<DateState>) {
+        setDate(state, action: PayloadAction<DateState>) {            
             state.date = action.payload.date;
+            state.valid = action.payload.valid;
         }
     }
 })
