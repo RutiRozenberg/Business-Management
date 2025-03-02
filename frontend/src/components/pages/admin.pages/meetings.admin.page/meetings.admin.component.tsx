@@ -1,69 +1,84 @@
-import BasicDateCalendar from "../../../utils.components/calendar/calendar.component"
 import TitleTypography from "../../../utils.components/titleTypography.component"
 import GridColumnCenter from "../../../utils.components/gridColumnCenter"
-import { 
-    Grid, Card, Box, Paper, Container,  
-    TableContainer, Table, TableRow, 
-    TableCell, TableBody, TableHead, 
-    useTheme,
-} from "@mui/material"
-import ResponsiveTypography from "../../../utils.components/responsiveTypography.component"
-import { useEffect, useState } from "react"
+import { SetStateAction, useEffect, useState } from "react"
 import { Meeting } from "../../../../models/meeting.models/meeting.model"
 import { getAllData } from "../../../../utils/api/crud.api"
 import { getToken } from "../../../../utils/api/token"
+import {
+    Grid, Box, Paper, Container, useTheme, CircularProgress,
+    TableContainer, Table, TableRow, TableCell, TableBody, TableHead,
+    TableSortLabel,
+} from "@mui/material"
+
+
+
+type OrderType = "asc" | "desc";
+
 
 const MeetingsAdmin = () => {
 
+    const [sortedMeetings, setSortedMeetings] = useState<Meeting[]>([]);
     const [meetings, setMeetings] = useState<Meeting[]>([]);
-
+    const [order, setOrder] = useState<OrderType>('asc');
+    const [orderBy, setOrderBy] = useState('date');
     const theme = useTheme();
     const token = getToken();
 
     const fetchMeetings = async () => {
-        const allMeetings: Meeting[] | null = await getAllData({endpoint: 'meetings', token: token || ''});
-        if(allMeetings && allMeetings.length > 1){
+        const allMeetings: Meeting[] | null = await getAllData({ endpoint: 'meetings', token: token || '' });
+        if (allMeetings && allMeetings.length > 1) {
             setMeetings(allMeetings);
-            console.log(meetings); 
         } else {
             console.log("error or not found");
         }
     }
 
-    useEffect(()=>{
-       fetchMeetings();
-    },[])
+    const handleRequestSort = (property: SetStateAction<string>) => {
+        const isAsc = orderBy === property && order === 'asc';
+        setOrder(isAsc ? 'desc' : 'asc');
+        setOrderBy(property);
+    };
+
+    const sortByDate = (a: string | Date , b: string| Date) => {
+        return new Date(a).getTime() - new Date(b).getTime();
+    }
+ 
+    const sortByName = (a:string , b:string) => {
+        const nameA = a.toLowerCase();
+        const nameB = b.toLowerCase();
+        return nameA === nameB ? 0 : nameA < nameB? -1 : 1;
+    }
+
+
+    useEffect(() => {
+        fetchMeetings();
+    }, [])
+
+    useEffect(() => {
+        const sorted = meetings.sort((a: Meeting, b: Meeting) => {
+            if (orderBy === 'date') {
+                const sortedDate = sortByDate(a.startTime, b.startTime);
+                return order === 'asc' ? sortedDate : sortedDate*(-1);
+            } else if (orderBy === 'user') {
+                const sortedName = sortByName(a.userId , b.userId);
+                return order === 'asc' ? sortedName : sortedName*(-1);
+            }
+            return 0;
+        });
+        setSortedMeetings(sorted);
+    }, [meetings, order, orderBy]);
+
+
+    
 
     return (<>
-        <TitleTypography title="Your Meeting Calendar" />
+        <TitleTypography title="Your Meetings" />
 
         <Box mt={7}>
             <GridColumnCenter spacing={'2'}>
-                <Grid item >
-                    <Card>
-                        <Box
-                            sx={{
-                                width: '100%',
-                                backgroundColor: theme.palette.primary.light,
-                                color: theme.palette.secondary.dark,
-                                p: '2vh 3vw',
-                                mb: 5,
-                            }}
-                        >
-                            <ResponsiveTypography
-                                customeVariant={{
-                                    xs: 'h6',
-                                    md: 'h5',
-                                }}
-                            >
-                                Choose Date
-                            </ResponsiveTypography>
-                        </Box>
-                        <BasicDateCalendar disableAllDates={true} />
-                    </Card>
-                </Grid>
+
                 <Grid>
-                <Container>
+                    <Container>
                         <TableContainer component={Paper} >
                             <Table>
 
@@ -73,41 +88,85 @@ const MeetingsAdmin = () => {
                                             backgroundColor: theme.palette.primary.light,
                                         }}
                                     >
+                                        <TableCell sx={{ color: theme.palette.secondary.dark, }}>
+                                            <TableSortLabel
+                                                active={orderBy === 'date'}
+                                                direction={orderBy === 'date' ? order : 'asc'}
+                                                onClick={() => handleRequestSort('date')}
+                                            >
+                                                Date
+                                            </TableSortLabel>
+                                        </TableCell>
                                         <TableCell sx={{ color: theme.palette.secondary.dark, }}>Start Time</TableCell>
                                         <TableCell sx={{ color: theme.palette.secondary.dark, }}>End Time</TableCell>
                                         <TableCell sx={{ color: theme.palette.secondary.dark, }}>Service</TableCell>
-                                        <TableCell sx={{ color: theme.palette.secondary.dark, }}>User Name</TableCell>
+                                        <TableCell sx={{ color: theme.palette.secondary.dark, }}>
+                                            <TableSortLabel
+                                                active={orderBy === 'user'}
+                                                direction={orderBy === 'user' ? order : 'asc'}
+                                                onClick={() => handleRequestSort('user')}
+                                            >
+                                                User Name
+                                            </TableSortLabel>
+                                        </TableCell>
+
                                     </TableRow>
                                 </TableHead>
 
-                                <TableBody>
-                                    {meetings.map((meeting) => (
-                                        <TableRow key={meeting._id}>
-                                            
+                                {meetings.length <= 0 ?
+                                    <TableBody>
+                                        <TableRow>
                                             <TableCell>
-                                                {meeting.startTime.getHours()} : {meeting.startTime.getMinutes()}
+                                                <CircularProgress />
                                             </TableCell>
                                             <TableCell>
-                                                {(new Date(meeting.endTime)).getHours()} : {(new Date(meeting.endTime)).getMinutes()}
+                                                <CircularProgress />
                                             </TableCell>
                                             <TableCell>
-                                                {meeting.serviceId}
+                                                <CircularProgress />
                                             </TableCell>
                                             <TableCell>
-                                                {meeting.userId}
+                                                <CircularProgress />
                                             </TableCell>
-                                            
+                                            <TableCell>
+                                                <CircularProgress />
+                                            </TableCell>
                                         </TableRow>
-                                    ))}
+                                    </TableBody>
+                                    :
+                                    <TableBody>
 
-                                </TableBody>
+                                        {sortedMeetings.map((meeting) => (
+                                            <TableRow key={meeting._id}>
 
+                                                <TableCell>
+                                                    {(new Date(meeting.startTime)).getDate()}/
+                                                    {(new Date(meeting.startTime)).getMonth()}/
+                                                    {(new Date(meeting.startTime)).getFullYear()}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {(new Date(meeting.startTime)).getHours()} : {(new Date(meeting.startTime)).getMinutes()}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {(new Date(meeting.endTime)).getHours()} : {(new Date(meeting.endTime)).getMinutes()}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {meeting.serviceId}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {meeting.userId}
+                                                </TableCell>
 
-                       
+                                            </TableRow>
+                                        ))}
+
+                                    </TableBody>
+                                }
+
                             </Table>
-                            </TableContainer>
+                        </TableContainer>
 
-                            </Container>
+                    </Container>
                 </Grid>
             </GridColumnCenter>
         </Box>
