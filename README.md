@@ -3,13 +3,14 @@ A web application designed for any business owner providing appointment services
 
 ## Project Structure
 The project is divided into two parts:
-- **Client**: The front-end built with Vite, React, TypeScript.
-- **Server**: The back-end built with Node.js and Express.
+- **Client**: The front-end built with Vite, React and TypeScript.
+- **Server**: The back-end built with Node.js, TypeScript and Express.
 
 
 ## System Requirements
 - Node.js
 - npm
+- MongoDB
 
 ## Installation
 
@@ -52,6 +53,12 @@ Start the server:
 Start the client:
  - ```cd .\frontend\```
  - ```npm run dev```
+
+## Running Tests
+To run the tests for the server, follow these steps:
+
+ - Ensure you are in the backend directory: `cd .\backend\`
+ - Run the tests using npm: `npm test`
 
 ## Usage
 The server runs at:
