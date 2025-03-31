@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Autocomplete, Box, Button, CircularProgress, Grid, MenuItem, TextField, Typography } from "@mui/material";
+import { Alert, Autocomplete, Box, Button, CircularProgress, Grid, MenuItem, TextField, Typography } from "@mui/material";
 import * as yup from 'yup';
 import { useEffect, useState } from "react";
 import { grey } from "@mui/material/colors";
@@ -54,6 +54,8 @@ const Meetings = () => {
   const dispatch = useAppDispatch();
 
 
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [isFaild, setIsFaild] = useState<boolean>(false);
   const [allservicesNames, setAllservicesNames] = useState<Option[]>([]);
   const [predefinedTimes, setPredefinedTimes] = useState<Time[]>([]);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -103,7 +105,9 @@ const Meetings = () => {
       }
 
       await postData({ endpoint: 'meeting', data: meeting, token: token! });
+      setIsSuccess(true);
     } catch {
+      setIsFaild(true);
       console.error('Faild create meeting');
     }
   };
@@ -185,7 +189,7 @@ const Meetings = () => {
       setFormData({ ...formData, date: dateState.date });
       fetchTimesRange(dateState.date);
     }
-  }, [dateState, dispatch, fetchTimesRange, formData]);
+  }, [dateState, dispatch, formData]);
 
   return (
     <>
@@ -294,6 +298,8 @@ const Meetings = () => {
 
         </form>
       </Box>
+      {isSuccess && <Alert severity="success" onClose={() => setIsSuccess(false)}>Success</Alert>}
+      {isFaild && <Alert severity="error" onClose={() => setIsFaild(false)}>Faild</Alert>}
     </>
   );
 };
