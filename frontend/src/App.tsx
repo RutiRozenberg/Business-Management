@@ -9,13 +9,14 @@ import { store } from './store/store'
 import { theme } from './utils/style/themeObject'
 import Login from './components/pages/login.page/login.component'
 import UserAppBar from './components/userAppBar.component'
-import AdminAppBar from './components/adminAppBar';
 import NotFound from './components/pages/notfound.page/notfound.component';
 import NotLogin from './components/pages/notLogin.page/notLogin.component';
 import { Box } from '@mui/material';
 import BusinessAdmin from './components/pages/admin.pages/business.page/business.admin.component';
 import ServicesAdmin from './components/pages/admin.pages/servises.admin.page/services.admin.component';
 import MeetingsAdmin from './components/pages/admin.pages/meetings.admin.page/meetings.admin.component';
+import MainAdmin from './components/pages/admin.pages/main.admin/main.admin';
+import AdminLogin from './components/pages/admin.pages/login.admin.page/login.admin.component';
 
 
 function App() {
@@ -37,10 +38,11 @@ function App() {
 
               <Route path='login' element={<Login/>}/>
               
-              <Route path='admin' element={<AdminAppBar/>}>
+              <Route path='admin' element={<MainAdmin/>}>
                 <Route index element={<BusinessAdmin/>}/>
                 <Route path='services' element={<ServicesAdmin />}/>
                 <Route path='meetings' element={<MeetingsAdmin/>}/>
+                <Route path='login' element={<AdminLogin/>}/>
                 <Route path='*' element={<Box>Not found</Box>}/>
               </Route>
             </Routes>
