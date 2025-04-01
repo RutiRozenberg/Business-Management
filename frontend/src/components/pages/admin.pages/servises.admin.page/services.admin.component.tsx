@@ -8,19 +8,8 @@ import { deleteData, postData, putData } from '../../../../utils/api/crud.api';
 import { getToken } from '../../../../utils/api/token';
 import GridColumnCenter from '../../../utils.components/gridColumnCenter';
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Button,
-    TextField,
-    useTheme,
-    Paper,
-    Grid,
-    Alert,
-    Container,
+    Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+    Button, TextField, useTheme, Paper, Grid, Alert, Container,
 } from '@mui/material';
 import TitleTypography from '../../../utils.components/titleTypography.component';
 
@@ -35,7 +24,7 @@ interface AlertDetails {
 
 const ServicesAdmin: React.FC = () => {
     const [services, setServices] = useState<Service[]>([]);
-    const [editAbleRow, seteditAbleRow] = useState<string | null>(null);
+    const [editAbleRow, seteditAbleRow] = useState<Service | null>(null);
     const [showAlert, setShowAlert] = useState<AlertDetails>({
         type: 'error',
         message: '',
@@ -58,8 +47,8 @@ const ServicesAdmin: React.FC = () => {
         console.log(newService);
 
         try {
-            const createdService: Service | null = await postData<ServiceDetails, Service>({ 
-                endpoint: 'service', data: newService, token: token || '' 
+            const createdService: Service | null = await postData<ServiceDetails, Service>({
+                endpoint: 'service', data: newService, token: token || ''
             });
             if (createdService) {
                 setServices([...services, createdService]);
@@ -84,19 +73,41 @@ const ServicesAdmin: React.FC = () => {
         }
     };
 
-    const handleUpdateService = async (id: string, updatedService: ServiceDetails) => {
+    const handleUpdateService = async (id: string) => {
         try {
-            await putData({ endpoint: `service/${id}`, token: token || '' });
-            const updatedServices = services.map((service) =>
-                service._id === id ? { ...updatedService, _id: id } : service
-            );
-            setServices(updatedServices);
-            seteditAbleRow(null);
-            setShowAlert({ type: 'success', message: 'Service updated successfully', show: true });
+            if (editAbleRow) {
+                const updatedService: Service = {
+                    _id: id,
+                    price: editAbleRow.price,
+                    name: editAbleRow.name,
+                    duration: editAbleRow.duration,
+                    description: editAbleRow.description,
+                };
+
+                await putData({ endpoint: `service/${id}`, token: token || '', data: updatedService });
+                const updatedServices = services.map((service) =>
+                    service._id === id ? updatedService : service
+                );
+                setServices(updatedServices);
+                seteditAbleRow(null);
+                setShowAlert({ type: 'success', message: 'Service updated successfully', show: true });
+            }
         } catch {
             setShowAlert({ type: 'error', message: 'Faild updated', show: true });
         }
 
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        console.log('==============', name, value, editAbleRow);
+        
+        if (editAbleRow) {
+            seteditAbleRow({
+                ...editAbleRow,
+                [name]: name === 'price' || name === 'duration' ? Number(value) : value
+            });
+        }
     };
 
     useEffect(() => {
@@ -157,39 +168,42 @@ const ServicesAdmin: React.FC = () => {
                                     {services.map((service) => (
                                         <TableRow key={service._id}>
                                             <TableCell>
-                                                {editAbleRow === service._id ? (
+                                                {editAbleRow?._id === service._id ? (
                                                     <TextField
-                                                        value={service.name}
-                                                        onChange={(e) => handleUpdateService(service._id, { ...service, name: e.target.value })}
+                                                        value={editAbleRow.name}
+                                                        onChange={handleChange}
+                                                        name='name'
                                                     />
                                                 ) : (
                                                     service.name
                                                 )}
                                             </TableCell>
                                             <TableCell>
-                                                {editAbleRow === service._id ? (
+                                                {editAbleRow?._id === service._id ? (
                                                     <TextField
                                                         type="number"
-                                                        value={service.price}
-                                                        onChange={(e) => handleUpdateService(service._id, { ...service, price: +e.target.value })}
+                                                        value={editAbleRow.price}
+                                                        onChange={handleChange}
+                                                        name='price'
                                                     />
                                                 ) : (
                                                     service.price
                                                 )}
                                             </TableCell>
                                             <TableCell>
-                                                {editAbleRow === service._id ? (
+                                                {editAbleRow?._id === service._id ? (
                                                     <TextField
                                                         type="number"
-                                                        value={service.duration}
-                                                        onChange={(e) => handleUpdateService(service._id, { ...service, duration: +e.target.value })}
+                                                        value={editAbleRow.duration}
+                                                        onChange={handleChange}
+                                                        name='duration'
                                                     />
                                                 ) : (
                                                     service.duration
                                                 )}
                                             </TableCell>
                                             <TableCell>
-                                                {editAbleRow === service._id ? (
+                                                {editAbleRow?._id === service._id ? (
                                                     <TextField
                                                         multiline
                                                         minRows={1}
@@ -197,18 +211,19 @@ const ServicesAdmin: React.FC = () => {
                                                         sx={{
                                                             resize: 'vertical',
                                                         }}
-                                                        value={service.description}
-                                                        onChange={(e) => handleUpdateService(service._id, { ...service, description: e.target.value })}
+                                                        value={editAbleRow.description}
+                                                        onChange={handleChange}
+                                                        name='description'
                                                     />
                                                 ) : (
                                                     service.description
                                                 )}
                                             </TableCell>
                                             <TableCell>
-                                                {editAbleRow === service._id ? (
-                                                    <Button onClick={() => handleUpdateService(service._id, service)}>Save</Button>
+                                                {editAbleRow?._id === service._id ? (
+                                                    <Button onClick={() => handleUpdateService(service._id)}>Save</Button>
                                                 ) : (
-                                                    <Button onClick={() => seteditAbleRow(service._id)}>Update</Button>
+                                                    <Button onClick={() => seteditAbleRow(service)}>Update</Button>
                                                 )}
                                             </TableCell>
                                             <TableCell>
