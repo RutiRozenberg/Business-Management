@@ -99,9 +99,7 @@ const ServicesAdmin: React.FC = () => {
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        console.log('==============', name, value, editAbleRow);
-        
+        const { name, value } = e.target;        
         if (editAbleRow) {
             seteditAbleRow({
                 ...editAbleRow,
