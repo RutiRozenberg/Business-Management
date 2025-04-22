@@ -12,6 +12,7 @@ import ServicesAdmin from './pages/admin.pages/servises.admin.page/services.admi
 import MeetingsAdmin from './pages/admin.pages/meetings.admin.page/meetings.admin.component';
 import AdminLogin from './pages/admin.pages/login.admin.page/login.admin.component';
 import Home from './pages/home.page/home.component';
+import UsersAdmin from './pages/admin.pages/users.page/users.admin.component';
 
 
 const AppRoutes = () => {
@@ -33,6 +34,7 @@ const AppRoutes = () => {
           <Route path='services' element={<ServicesAdmin />}/>
           <Route path='meetings' element={<MeetingsAdmin/>}/>
           <Route path='login' element={<AdminLogin/>}/>
+          <Route path='users' element={<UsersAdmin/>}/>
           <Route path='*' element={<Box>Not found</Box>}/>
         </Route>
       </Routes>
