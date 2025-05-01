@@ -19,6 +19,11 @@ import logConfig from './config/log.config'
 import homePageRouter from './routes/homePage.route';
 import { corsMiddleware } from './middlewares/cors.middleware';
 import { jsonErrorMiddleware } from './middlewares/json.error.middleware';
+import http from 'http';
+import { Server as SocketServer } from 'socket.io';
+import discussionRouter from './routes/discussion.route';
+import { setupSocketServer } from './socketServer';
+
 
 const app: Express = express();
 
@@ -28,6 +33,7 @@ const envPath = path.join(__dirname, '../config', '.env');
 dotenv.config({ path: envPath });
 
 const port = process.env.PORT;
+const server = http.createServer(app);
 
 app.use(corsMiddleware);
 
@@ -37,7 +43,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(jsonErrorMiddleware);
 app.use(CheckBody);
-
 app.use(authAdminRouter);
 app.use(authUserRouter);
 app.use(businessRouter);
@@ -47,9 +52,20 @@ app.use(meetingRouter);
 app.use(dayTimeRouter);
 app.use(homePageRouter);
 app.use(userRouter);
-
+app.use(discussionRouter);
 app.use(urlnotFound);
 
-app.listen(port, () => {
-    console.log('Server is running on port ' + port); 
+export const io = new SocketServer(server, {
+    cors: {
+        origin: "http://localhost:5173", 
+        methods: ["GET", "POST", "PUT"],
+        allowedHeaders: ["Content-Type"],
+        credentials: true
+    }
+});
+setupSocketServer(io);
+
+
+server.listen(port, () => {
+    console.log('Server listening on port 3000');
 });

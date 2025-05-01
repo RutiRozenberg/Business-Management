@@ -6,7 +6,8 @@ interface CustomSyntaxError extends SyntaxError {
 
 export const jsonErrorMiddleware = (err: CustomSyntaxError, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof SyntaxError && err.message.includes('JSON')) {
-    return res.status(400).json({ error: 'Invalid JSON' });
+    res.status(400).json({ error: 'Invalid JSON' });
+    return;
   }
   next(err);
 };
