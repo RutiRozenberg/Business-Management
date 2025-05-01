@@ -1,30 +1,44 @@
 
 import { Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { AuthRequest } from '../models/authRequest.model';
+import { AuthRequest, AuthSocket } from '../models/authUser.model';
+import { SocketNextFunction } from '../models/nextFunctionSocket.model';
 
+
+const verifyToken = (token: string | undefined) => {
+    if (!token) {
+        throw new Error("Token not provided");
+    }
+    const decoded = jwt.verify(token, process.env.SECRET || '');
+    return typeof decoded === 'string' ? JSON.parse(decoded) : decoded;
+};
 
 
 const authentication = (req: AuthRequest, res: Response, next: NextFunction) => {
-    const authHeader = req.headers['authorization'];    
+    const authHeader = req.headers['authorization'];
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        throw new Error("Missing or invalid authorization header");
+    }
+    const token = authHeader.split(' ')[1];
 
     try {
-        if (!authHeader || !authHeader.startsWith('Bearer ')) {
-            throw new Error("Missing or invalid authorization header");
-        }
-    
-        const token = authHeader.split(' ')[1];
-        if (!token) {
-            throw new Error("Token not provided");
-        }
-
-        const decoded = jwt.verify(token, process.env.SECRET || '') as AuthRequest;
-        req.user  = typeof decoded === 'string' ? JSON.parse(decoded) : decoded as AuthRequest;
+        req.user = verifyToken(token);
         next();
     } catch (err) {
-        return res.status(401).send("Unauthorized: Invalid Token");
+        res.status(401).send("Unauthorized: Invalid Token");
     }
 };
 
-export { authentication };
 
+const socketAuthentication = (socket: AuthSocket, next: SocketNextFunction) => {    
+    const token = socket.handshake.auth.token;
+    try {
+        socket.user  = verifyToken(token);
+        next();
+    } catch (err) {
+        next(new Error("Unauthorized: Invalid Token"));
+    }
+};
+
+export { authentication, socketAuthentication };
