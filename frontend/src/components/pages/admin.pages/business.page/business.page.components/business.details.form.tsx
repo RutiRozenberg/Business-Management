@@ -11,6 +11,7 @@ import { postData, putData } from "../../../../../utils/api/crud.api";
 import { Business } from "../../../../../models/business.model";
 import { BusinessDetails } from "../../../../../models/business.details.model";
 import { checkValidationErrors } from "../../../../../utils/forms/form.errors";
+import { handleChange } from "../../../../../utils/forms/forms.function";
 
 
 const BusinessDetailsForm = () => {
@@ -44,13 +45,6 @@ const BusinessDetailsForm = () => {
         name: yup.string()
             .required('Name is a required field'),
     });
-
-
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
 
     const handleBusiness = async (businessData: Business) => {
         setFormIsLoadinf(true);
@@ -142,7 +136,7 @@ const BusinessDetailsForm = () => {
                                             fullWidth
                                             error={!!errors.name}
                                             helperText={errors.name}
-                                            onChange={handleChange}
+                                            onChange={handleChange(setFormData)}
                                             value={formData.name || ''}
                                             multiline
                                         />
@@ -157,7 +151,7 @@ const BusinessDetailsForm = () => {
                                             fullWidth
                                             error={!!errors.email}
                                             helperText={errors.email}
-                                            onChange={handleChange}
+                                            onChange={handleChange(setFormData)}
                                             value={formData.email || ''}
                                             multiline
                                         />
@@ -172,7 +166,7 @@ const BusinessDetailsForm = () => {
                                             fullWidth
                                             error={!!errors.address}
                                             helperText={errors.address}
-                                            onChange={handleChange}
+                                            onChange={handleChange(setFormData)}
                                             value={formData.address || ''}
                                             multiline
                                         />
@@ -187,7 +181,7 @@ const BusinessDetailsForm = () => {
                                             fullWidth
                                             error={!!errors.phone}
                                             helperText={errors.phone}
-                                            onChange={handleChange}
+                                            onChange={handleChange(setFormData)}
                                             value={formData.phone || ''}
                                             multiline
                                         />

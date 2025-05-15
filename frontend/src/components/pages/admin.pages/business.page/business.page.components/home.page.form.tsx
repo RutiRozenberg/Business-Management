@@ -9,6 +9,7 @@ import { Homepage } from "../../../../../models/homepage.model";
 import { getAdminToken } from "../../../../../utils/api/token";
 import { HomepageDetails } from "../../../../../models/homepage.details.model";
 import { checkValidationErrors } from "../../../../../utils/forms/form.errors";
+import { handleChange } from "../../../../../utils/forms/forms.function";
 
 
 const HomePageForm = () => {
@@ -34,12 +35,6 @@ const HomePageForm = () => {
         conact: yup.string(),
     });
 
-
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
 
     const handleHomePage = async (homePageData: Homepage) => {
         setIsLoading(true);
@@ -127,7 +122,7 @@ const HomePageForm = () => {
                                             fullWidth
                                             error={!!errors.about}
                                             helperText={errors.about}
-                                            onChange={handleChange}
+                                            onChange={handleChange(setFormData)}
                                             value={formData.about || ''}
                                             multiline
                                         />
@@ -142,7 +137,7 @@ const HomePageForm = () => {
                                             fullWidth
                                             error={!!errors.contact}
                                             helperText={errors.contact}
-                                            onChange={handleChange}
+                                            onChange={handleChange(setFormData)}
                                             value={formData.contact || ''}
                                             multiline
                                         />

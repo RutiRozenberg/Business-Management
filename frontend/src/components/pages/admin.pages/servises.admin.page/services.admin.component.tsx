@@ -12,6 +12,7 @@ import {
     Button, TextField, useTheme, Paper, Grid, Alert, Container,
 } from '@mui/material';
 import TitleTypography from '../../../utils.components/titleTypography.component';
+import { handleChange } from '../../../../utils/forms/forms.function';
 
 
 type types = 'success' | 'error';
@@ -98,7 +99,7 @@ const ServicesAdmin: React.FC = () => {
 
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeRow = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;        
         if (editAbleRow) {
             seteditAbleRow({
@@ -168,7 +169,7 @@ const ServicesAdmin: React.FC = () => {
                                                 {editAbleRow?._id === service._id ? (
                                                     <TextField
                                                         value={editAbleRow.name}
-                                                        onChange={handleChange}
+                                                        onChange={handleChangeRow}
                                                         name='name'
                                                     />
                                                 ) : (
@@ -180,7 +181,7 @@ const ServicesAdmin: React.FC = () => {
                                                     <TextField
                                                         type="number"
                                                         value={editAbleRow.price}
-                                                        onChange={handleChange}
+                                                        onChange={handleChangeRow}
                                                         name='price'
                                                     />
                                                 ) : (
@@ -192,7 +193,7 @@ const ServicesAdmin: React.FC = () => {
                                                     <TextField
                                                         type="number"
                                                         value={editAbleRow.duration}
-                                                        onChange={handleChange}
+                                                        onChange={handleChangeRow}
                                                         name='duration'
                                                     />
                                                 ) : (
@@ -209,7 +210,7 @@ const ServicesAdmin: React.FC = () => {
                                                             resize: 'vertical',
                                                         }}
                                                         value={editAbleRow.description}
-                                                        onChange={handleChange}
+                                                        onChange={handleChangeRow}
                                                         name='description'
                                                     />
                                                 ) : (
@@ -236,21 +237,24 @@ const ServicesAdmin: React.FC = () => {
                                         <TableCell>
                                             <TextField
                                                 value={newService.name}
-                                                onChange={(e) => setNewService({ ...newService, name: e.target.value })}
+                                                name= 'name'
+                                                onChange={handleChange(setNewService)}
                                             />
                                         </TableCell>
                                         <TableCell>
                                             <TextField
                                                 type="number"
                                                 value={newService.price}
-                                                onChange={(e) => setNewService({ ...newService, price: +e.target.value })}
+                                                name='price'
+                                                onChange={handleChange(setNewService)}
                                             />
                                         </TableCell>
                                         <TableCell>
                                             <TextField
                                                 type="number"
                                                 value={newService.duration}
-                                                onChange={(e) => setNewService({ ...newService, duration: +e.target.value })}
+                                                name='duration'
+                                                onChange={handleChange(setNewService)}
                                             />
                                         </TableCell>
                                         <TableCell>
@@ -259,11 +263,10 @@ const ServicesAdmin: React.FC = () => {
                                                 minRows={1}
                                                 maxRows={3}
                                                 fullWidth
-                                                sx={{
-                                                    resize: 'vertical',
-                                                }}
+                                                sx={{ resize: 'vertical' }}
                                                 value={newService.description}
-                                                onChange={(e) => setNewService({ ...newService, description: e.target.value })}
+                                                name='description'
+                                                onChange={handleChange(setNewService)}
                                             />
                                         </TableCell>
                                         <TableCell>

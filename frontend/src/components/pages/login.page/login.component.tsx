@@ -12,6 +12,7 @@ import { StatusAndMessageError } from '../../../models/statusAndMessageError.mod
 import CustomErrorAlert from './login.page.components/customErrorAlert';
 import { UserDetails } from '../../../models/user.models/userDetails';
 import { checkValidationErrors } from '../../../utils/forms/form.errors';
+import { handleChange } from '../../../utils/forms/forms.function';
 
 
 interface emailandpass {
@@ -64,11 +65,6 @@ const Login: React.FC = () => {
 
     const handleGoBack = () => {
         navigate(-1);
-    };
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
     };
 
     const handleToggleSignUp = () => {
@@ -172,7 +168,7 @@ const Login: React.FC = () => {
                                                         label="Name"
                                                         name="name"
                                                         value={formData.name}
-                                                        onChange={handleChange}
+                                                        onChange={handleChange(setFormData)}
                                                         error={!!errors.name}
                                                         helperText={errors.name}
                                                     />
@@ -185,7 +181,7 @@ const Login: React.FC = () => {
                                                         label="Email"
                                                         name="email"
                                                         value={formData.email}
-                                                        onChange={handleChange}
+                                                        onChange={handleChange(setFormData)}
                                                         error={!!errors.email}
                                                         helperText={errors.email}
                                                     />
@@ -197,7 +193,7 @@ const Login: React.FC = () => {
                                                         name="password"
                                                         type="password"
                                                         value={formData.password}
-                                                        onChange={handleChange}
+                                                        onChange={handleChange(setFormData)}
                                                         error={!!errors.password}
                                                         helperText={errors.password}
                                                     />

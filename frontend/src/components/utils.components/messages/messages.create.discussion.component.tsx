@@ -94,7 +94,7 @@ const CreateDiscussion: React.FC<CreateDiscussionProps> = ({ isOpenSocket }) => 
                             label="Title"
                             name='title'
                             value={formData.title}
-                            onChange={handleChange<DiscussionForm>({ setFormData, formData })}
+                            onChange={handleChange(setFormData)}
                             fullWidth
                             error={Boolean(errors?.title)}
                             helperText={errors?.title}
@@ -105,7 +105,7 @@ const CreateDiscussion: React.FC<CreateDiscussionProps> = ({ isOpenSocket }) => 
                             name='message'
                             label="Message"
                             value={formData.message}
-                            onChange={handleChange<DiscussionForm>({ setFormData, formData })}
+                            onChange={handleChange(setFormData)}
                             fullWidth
                             multiline
                             rows={5}

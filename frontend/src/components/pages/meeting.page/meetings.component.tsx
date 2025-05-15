@@ -23,6 +23,7 @@ import { Option } from '../../../models/option.model'
 import { fetchUser } from "../../../store/features/user.slice";
 import { User } from "../../../models/user.models/user.model";
 import { checkValidationErrors } from "../../../utils/forms/form.errors";
+import { handleChange } from "../../../utils/forms/forms.function";
 
 
 const Meetings = () => {
@@ -83,11 +84,6 @@ const Meetings = () => {
   }
 
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
   const handleSelectChange = (event: unknown, newValue: Option | null) => {
     setFormData({ ...formData, service: newValue || { value: '', label: '' } });
   };
@@ -127,171 +123,171 @@ const Meetings = () => {
     formDataWithDate.time.setHours(hour);
     formDataWithDate.time.setMinutes(minute);
 
-    const isValidForm : boolean = await checkValidationErrors(meetingSchema, formDataWithDate, setErrors);
-    if(isValidForm){
+    const isValidForm: boolean = await checkValidationErrors(meetingSchema, formDataWithDate, setErrors);
+    if (isValidForm) {
       await handleMeeting();
     }
 
     setIsLoading(false);
-};
+  };
 
 
 
-useEffect(() => {
-  if (services.length === 0) {
-    dispatch(fetchServices());
-  }
-},)
+  useEffect(() => {
+    if (services.length === 0) {
+      dispatch(fetchServices());
+    }
+  },)
 
 
-const checkUser = async () => {
-  if (!user) {
-    await dispatch(fetchUser());
-  }
-  setIsLoadingUser(false);
-};
+  const checkUser = async () => {
+    if (!user) {
+      await dispatch(fetchUser());
+    }
+    setIsLoadingUser(false);
+  };
 
 
-useEffect(() => {
-  checkUser();
-}, [user]);
+  useEffect(() => {
+    checkUser();
+  }, [user]);
 
 
-useEffect(() => {
-  if (!isLoadingUser && !user) {
-    navigate('/notlogin');
-  }
-}, [isLoadingUser, user]);
+  useEffect(() => {
+    if (!isLoadingUser && !user) {
+      navigate('/notlogin');
+    }
+  }, [isLoadingUser, user]);
 
 
-useEffect(() => {
-  setAllservicesNames(services.map(
-    servise => ({
-      value: servise.name,
-      label: servise._id,
-    })
-  ));
-}, [services]);
+  useEffect(() => {
+    setAllservicesNames(services.map(
+      servise => ({
+        value: servise.name,
+        label: servise._id,
+      })
+    ));
+  }, [services]);
 
 
-useEffect(() => {
-  if (dateState.valid) {
-    setFormData({ ...formData, date: dateState.date });
-    fetchTimesRange(dateState.date);
-  }
-}, [dateState, dispatch, formData]);
+  useEffect(() => {
+    if (dateState.valid) {
+      setFormData({ ...formData, date: dateState.date });
+      fetchTimesRange(dateState.date);
+    }
+  }, [dateState, dispatch, formData]);
 
-return (
-  <>
-    <TitlePage title="Meeting"></TitlePage>
-    <TitleTypography title="Your Meeting"></TitleTypography>
-    <Box mt={5} mb={10} >
+  return (
+    <>
+      <TitlePage title="Meeting"></TitlePage>
+      <TitleTypography title="Your Meeting"></TitleTypography>
+      <Box mt={5} mb={10} >
 
-      <form onSubmit={hundlesubmit} >
-        <GridColumnCenter spacing="2">
+        <form onSubmit={hundlesubmit} >
+          <GridColumnCenter spacing="2">
 
-          <Grid item width={{ xs: 250, sm: 339 }}>
-            <TextField
-              label="message"
-              type="text"
-              name="message"
-              variant="outlined"
-              fullWidth
-              error={!!errors.message}
-              helperText={errors.message}
-              onChange={handleChange}
-              value={formData.message || ''}
-              multiline
-              minRows={3}
-              maxRows={10}
-              sx={{ resize: 'vertical' }}
-            />
-          </Grid>
+            <Grid item width={{ xs: 250, sm: 339 }}>
+              <TextField
+                label="message"
+                type="text"
+                name="message"
+                variant="outlined"
+                fullWidth
+                error={!!errors.message}
+                helperText={errors.message}
+                onChange={handleChange(setFormData)}
+                value={formData.message || ''}
+                multiline
+                minRows={3}
+                maxRows={10}
+                sx={{ resize: 'vertical' }}
+              />
+            </Grid>
 
-          <Grid item width={{ xs: 250, sm: 339 }}>
-            <Autocomplete
-              options={allservicesNames.length > 0 ? allservicesNames : [{ value: 'Please wait...', label: 'Please wait...' }]}
-              getOptionLabel={(option) => option.value}
-              isOptionEqualToValue={(option, value) => option.value === value.value}
-              onChange={handleSelectChange}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Choose service"
-                  name="Choose service"
-                  error={!!errors.service}
-                  helperText={errors.service}
-                  variant="outlined"
-                  fullWidth
-                />
+            <Grid item width={{ xs: 250, sm: 339 }}>
+              <Autocomplete
+                options={allservicesNames.length > 0 ? allservicesNames : [{ value: 'Please wait...', label: 'Please wait...' }]}
+                getOptionLabel={(option) => option.value}
+                isOptionEqualToValue={(option, value) => option.value === value.value}
+                onChange={handleSelectChange}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Choose service"
+                    name="Choose service"
+                    error={!!errors.service}
+                    helperText={errors.service}
+                    variant="outlined"
+                    fullWidth
+                  />
 
-              )}
-              renderOption={(props, option) => (
-                <li {...props} key={option.label}>
-                  {option.value}
-                </li>
-              )}
-            />
-          </Grid>
+                )}
+                renderOption={(props, option) => (
+                  <li {...props} key={option.label}>
+                    {option.value}
+                  </li>
+                )}
+              />
+            </Grid>
 
-          <Grid item width={{ xs: 250, sm: 339 }}>
-            <Box
-              sx={{
-                border: `0.5px solid ${grey[400]} `,
-                borderRadius: 1,
-                pt: 2
-              }}
-            >
-              <Typography
-                variant="body1"
-                color={theme.palette.primary.main}
-                ml={2}
+            <Grid item width={{ xs: 250, sm: 339 }}>
+              <Box
+                sx={{
+                  border: `0.5px solid ${grey[400]} `,
+                  borderRadius: 1,
+                  pt: 2
+                }}
               >
-                Choose date
-              </Typography>
-              <BasicDateCalendar disableAllDates={false} />
+                <Typography
+                  variant="body1"
+                  color={theme.palette.primary.main}
+                  ml={2}
+                >
+                  Choose date
+                </Typography>
+                <BasicDateCalendar disableAllDates={false} />
 
-            </Box>
-          </Grid>
+              </Box>
+            </Grid>
 
-          {showTimes && <Grid item width={{ xs: 250, sm: 339 }} >
-            <TextField
-              select
-              label="Choose time"
-              name="time"
-              value={formData.time}
-              onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-              variant="outlined"
-              error={!!errors.time}
-              helperText={errors.time}
-              fullWidth
-            >
-              {!predefinedTimes ? 'Please wait...'
-                : predefinedTimes.map((time) => (
-                  <MenuItem key={`${time.hour}:${time.minute}`} value={`${time.hour}:${time.minute}`}>
-                    {time.hour}:{time.minute >= 10 ? time.minute : "0" + time.minute}
-                  </MenuItem>
-                ))}
-            </TextField>
+            {showTimes && <Grid item width={{ xs: 250, sm: 339 }} >
+              <TextField
+                select
+                label="Choose time"
+                name="time"
+                value={formData.time}
+                onChange={handleChange(setFormData)}
+                variant="outlined"
+                error={!!errors.time}
+                helperText={errors.time}
+                fullWidth
+              >
+                {!predefinedTimes ? 'Please wait...'
+                  : predefinedTimes.map((time) => (
+                    <MenuItem key={`${time.hour}:${time.minute}`} value={`${time.hour}:${time.minute}`}>
+                      {time.hour}:{time.minute >= 10 ? time.minute : "0" + time.minute}
+                    </MenuItem>
+                  ))}
+              </TextField>
 
-          </Grid>}
+            </Grid>}
 
-          <Grid item m={5}>
-            <Button type="submit" variant="contained" color="primary">
-              {isLoading ?
-                <CircularProgress size={24} color="inherit" />
-                : 'create'
-              }
-            </Button>
-          </Grid>
-        </GridColumnCenter>
+            <Grid item m={5}>
+              <Button type="submit" variant="contained" color="primary">
+                {isLoading ?
+                  <CircularProgress size={24} color="inherit" />
+                  : 'create'
+                }
+              </Button>
+            </Grid>
+          </GridColumnCenter>
 
-      </form>
-    </Box>
-    {isSuccess && <Alert severity="success" onClose={() => setIsSuccess(false)}>Success</Alert>}
-    {isFaild && <Alert severity="error" onClose={() => setIsFaild(false)}>Faild</Alert>}
-  </>
-);
+        </form>
+      </Box>
+      {isSuccess && <Alert severity="success" onClose={() => setIsSuccess(false)}>Success</Alert>}
+      {isFaild && <Alert severity="error" onClose={() => setIsFaild(false)}>Faild</Alert>}
+    </>
+  );
 };
 
 export default Meetings;

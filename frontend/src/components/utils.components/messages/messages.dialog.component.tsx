@@ -118,7 +118,7 @@ const MessagesDialog: React.FC<MessagesDialogProps> = ({ selectedDiscussion, ope
                                                 value={formData.message}
                                                 multiline
                                                 rows={4}
-                                                onChange={handleChange<MessageText>({ setFormData, formData })}
+                                                onChange={handleChange(setFormData)}
                                                 error={Boolean(errors?.message)}
                                                 helperText={errors?.message}
                                             />
