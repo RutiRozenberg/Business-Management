@@ -10,6 +10,7 @@ import { getAdminToken } from "../../../../../utils/api/token";
 import { postData, putData } from "../../../../../utils/api/crud.api";
 import { Business } from "../../../../../models/business.model";
 import { BusinessDetails } from "../../../../../models/business.details.model";
+import { checkValidationErrors } from "../../../../../utils/forms/form.errors";
 
 
 const BusinessDetailsForm = () => {
@@ -67,26 +68,16 @@ const BusinessDetailsForm = () => {
     }
 
     const hundlesubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        
         e.preventDefault();
         setFormIsLoadinf(true);
-        try {
 
-            await businessSchema.validate(formData, { abortEarly: false });
+        const isValidForm: boolean = await checkValidationErrors(businessSchema, formData, setErrors);
+        if(isValidForm){
             await handleBusiness(formData);
-
-        } catch (error: unknown) {
-            const validationErrors: { [key: string]: string } = {};
-            if (error instanceof yup.ValidationError) {
-                error.inner.forEach((err: yup.ValidationError) => {
-                    if (err.path) {
-                        validationErrors[err.path] = err.message;
-                    }
-                });
-                setErrors(validationErrors);
-            }
-        } finally {
-            setFormIsLoadinf(false);
         }
+
+        setFormIsLoadinf(false);
     }
 
     useEffect(() => {

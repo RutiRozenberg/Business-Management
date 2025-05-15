@@ -29,7 +29,7 @@ const MessagesDialog: React.FC<MessagesDialogProps> = ({ selectedDiscussion, ope
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const isValidForm = await checkValidationErrors(validationSchema, formData, setErrors);
+        const isValidForm: boolean = await checkValidationErrors(validationSchema, formData, setErrors);
         if (!isValidForm) {
             return;
         }
