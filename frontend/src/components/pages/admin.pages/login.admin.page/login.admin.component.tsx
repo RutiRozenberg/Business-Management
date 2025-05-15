@@ -5,6 +5,7 @@ import { postData } from '../../../../utils/api/crud.api';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../../store/store';
 import { fetchAdmin } from '../../../../store/features/admin.slice';
+import { checkValidationErrors } from '../../../../utils/forms/form.errors';
 
 interface LoginAdminData {
     name: string | null;
@@ -56,21 +57,11 @@ const AdminLogin: React.FC = () => {
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         setErrors({});
-        try {
-            if( await validationSchema.validate(formData, { abortEarly: false })){
-                handleLogin();
-            }
-        } catch (error: unknown) {
-            const validationErrors: { [key: string]: string } = {};
-            if (error instanceof yup.ValidationError) {
-                error.inner.forEach((err: yup.ValidationError) => {
-                    if (err.path) {
-                        validationErrors[err.path] = err.message;
-                    }
-                });
-                setErrors(validationErrors);
-            }
-        };
+        const isValidForm: boolean = await checkValidationErrors(validationSchema, formData, setErrors);
+        if(isValidForm){
+            return;
+        }
+        handleLogin();
 
     }
 

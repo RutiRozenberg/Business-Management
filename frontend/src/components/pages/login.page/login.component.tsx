@@ -11,6 +11,7 @@ import { fetchUser } from '../../../store/features/user.slice';
 import { StatusAndMessageError } from '../../../models/statusAndMessageError.model';
 import CustomErrorAlert from './login.page.components/customErrorAlert';
 import { UserDetails } from '../../../models/user.models/userDetails';
+import { checkValidationErrors } from '../../../utils/forms/form.errors';
 
 
 interface emailandpass {
@@ -123,30 +124,19 @@ const Login: React.FC = () => {
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        
         setShowAlert(false);
         e.preventDefault();
         setIsLoading(true);
-        try {
-            if (isSignUp) {
-                await SingupSchema.validate(formData, { abortEarly: false });
-                handleSignUp();
-            } else {
-                await SinginSchema.validate(formData, { abortEarly: false });
-                handleSignIn();
-            }
-        } catch (error: unknown) {
-            const validationErrors: { [key: string]: string } = {};
-            if (error instanceof yup.ValidationError) {
-                error.inner.forEach((err: yup.ValidationError) => {
-                    if (err.path) {
-                        validationErrors[err.path] = err.message;
-                    }
-                });
-                setErrors(validationErrors);
-            }
-        } finally {
-            setIsLoading(false);
-        }
+
+        const shchema = isSignUp? SingupSchema : SinginSchema;
+        const isValidForm: boolean = await checkValidationErrors(shchema, formData, setErrors);
+        if (isValidForm) {
+            const handleForm = isSignUp? handleSignUp : handleSignIn;
+            handleForm();
+        } 
+
+        setIsLoading(false);
     };
 
 

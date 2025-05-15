@@ -8,6 +8,7 @@ import { getDataById, postData, putData } from "../../../../../utils/api/crud.ap
 import { Homepage } from "../../../../../models/homepage.model";
 import { getAdminToken } from "../../../../../utils/api/token";
 import { HomepageDetails } from "../../../../../models/homepage.details.model";
+import { checkValidationErrors } from "../../../../../utils/forms/form.errors";
 
 
 const HomePageForm = () => {
@@ -59,24 +60,13 @@ const HomePageForm = () => {
     const handlesubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsLoading(true);
-        try {
 
-            await homePageSchema.validate(formData, { abortEarly: false });
+        const isValidForm: boolean = await checkValidationErrors(homePageSchema, formData, setErrors);
+        if(isValidForm){
             await handleHomePage(formData);
-
-        } catch (error: unknown) {
-            const validationErrors: { [key: string]: string } = {};
-            if (error instanceof yup.ValidationError) {
-                error.inner.forEach((err: yup.ValidationError) => {
-                    if (err.path) {
-                        validationErrors[err.path] = err.message;
-                    }
-                });
-                setErrors(validationErrors);
-            }
-        } finally {
-            setIsLoading(false);
         }
+        
+        setIsLoading(false);
     }
 
     const fetchHomePageData = async () => {
