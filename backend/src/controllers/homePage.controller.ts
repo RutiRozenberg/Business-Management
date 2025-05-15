@@ -147,7 +147,7 @@ const updateHomePage = async (req: Request , res:Response) => {
         const homePage: HomePage = req.body;
         const id : string = req.params.id;
         const homePageUpdated: HomePage = await homePageBl.updateHomePage(id, homePage);
-        return res.status(200).send(homePageUpdated);
+        res.status(200).send(homePageUpdated);
     } catch (error) {
         res.status(400).send('Home page update failed');
     }
