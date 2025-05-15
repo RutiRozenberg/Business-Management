@@ -13,6 +13,8 @@ import MeetingsAdmin from './pages/admin.pages/meetings.admin.page/meetings.admi
 import AdminLogin from './pages/admin.pages/login.admin.page/login.admin.component';
 import Home from './pages/home.page/home.component';
 import UsersAdmin from './pages/admin.pages/users.page/users.admin.component';
+import MessagesAdmin from './pages/admin.pages/messages.admin.page/messages.admin.component';
+import Messages from './pages/messages.page/message.component';
 
 
 const AppRoutes = () => {
@@ -24,6 +26,7 @@ const AppRoutes = () => {
           <Route path='services' element={<Services />} />
           <Route path='meetings' element={<Meetings />} />
           <Route path='notLogin' element={<NotLogin/>} />
+          <Route path='messages' element={<Messages/>}/>
           <Route path='*' element={<NotFound/>}/>
         </Route>
 
@@ -35,6 +38,7 @@ const AppRoutes = () => {
           <Route path='meetings' element={<MeetingsAdmin/>}/>
           <Route path='login' element={<AdminLogin/>}/>
           <Route path='users' element={<UsersAdmin/>}/>
+          <Route path='messages' element={<MessagesAdmin/>}/>
           <Route path='*' element={<Box>Not found</Box>}/>
         </Route>
       </Routes>

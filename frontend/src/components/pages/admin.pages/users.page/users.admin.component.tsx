@@ -4,13 +4,13 @@ import GridColumnCenter from "../../../utils.components/gridColumnCenter";
 import { useEffect, useState } from "react";
 import { getAllData } from "../../../../utils/api/crud.api";
 import { UserJwt } from "../../../../models/user.models/userJWT.model";
-import { getToken } from "../../../../utils/api/token";
+import { getAdminToken } from "../../../../utils/api/token";
 
 const UsersAdmin: React.FC = () => {
 
     const theme = useTheme();
     const [users, setUsers] = useState<UserJwt[]>([]);
-    const token = getToken();
+    const token = getAdminToken();
 
     const fetchUsers = async () => {
         try{

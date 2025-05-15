@@ -42,7 +42,7 @@ const AdminLogin: React.FC = () => {
         try {
             const response = await postData({ data: formData, endpoint: 'admin/signin' });
             if (response) {
-                sessionStorage.setItem('token', response as string);
+                sessionStorage.setItem('admintoken', response as string);
                 dispatch(fetchAdmin());
                 navigate('/admin');
             } else {

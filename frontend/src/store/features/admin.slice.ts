@@ -23,7 +23,7 @@ const adminSlice = createSlice({
 
 export const fetchAdmin = () => async (dispatch: Dispatch) => {
     try {
-        const token:string | null = sessionStorage.getItem('token');
+        const token:string | null = sessionStorage.getItem('admintoken');
         if(token){
             const adminDecode: unknown = jwtDecode(token);
             const {name , email , _id , isAdmin} = adminDecode as AdminJwt;

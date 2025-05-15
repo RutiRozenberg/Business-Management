@@ -3,7 +3,7 @@ import GridColumnCenter from "../../../utils.components/gridColumnCenter"
 import { SetStateAction, useEffect, useState } from "react"
 import { Meeting } from "../../../../models/meeting.models/meeting.model"
 import { getAllData } from "../../../../utils/api/crud.api"
-import { getToken } from "../../../../utils/api/token"
+import { getAdminToken } from "../../../../utils/api/token"
 import {
     Grid, Box, Paper, Container, useTheme, CircularProgress,
     TableContainer, Table, TableRow, TableCell, TableBody, TableHead,
@@ -22,7 +22,7 @@ const MeetingsAdmin = () => {
     const [order, setOrder] = useState<OrderType>('asc');
     const [orderBy, setOrderBy] = useState('date');
     const theme = useTheme();
-    const token = getToken();
+    const token = getAdminToken();
 
     const fetchMeetings = async () => {
         const allMeetings: Meeting[] | null = await getAllData({ endpoint: 'meetings', token: token || '' });
