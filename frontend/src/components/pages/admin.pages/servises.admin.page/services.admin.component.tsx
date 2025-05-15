@@ -134,13 +134,12 @@ const ServicesAdmin: React.FC = () => {
             }
 
             <TitleTypography title='Your Services'></TitleTypography>
-            <GridColumnCenter spacing={'0'}>
+            <GridColumnCenter spacing={'0'} sx={{m: '7vh 0vw'}}>
                 <Grid
                     item
                     sx={{
                         overflow: 'auto',
-                        width: '100%',
-                        m: '10vh 0',
+                        width: '90%',
                     }}
                 >
                     <Container>
@@ -150,7 +149,7 @@ const ServicesAdmin: React.FC = () => {
                                 <TableHead>
                                     <TableRow
                                         sx={{
-                                            backgroundColor: theme.palette.primary.dark,
+                                            backgroundColor: theme.palette.primary.light,
                                         }}
                                     >
                                         <TableCell sx={{ color: theme.palette.secondary.dark, minWidth: 150 }}>Name</TableCell>
