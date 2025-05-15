@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../../store/store';
 import { fetchAdmin } from '../../../../store/features/admin.slice';
 import { checkValidationErrors } from '../../../../utils/forms/form.errors';
+import { handleChange } from '../../../../utils/forms/forms.function';
 
 interface LoginAdminData {
     name: string | null;
@@ -34,11 +35,6 @@ const AdminLogin: React.FC = () => {
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const navigate = useNavigate();
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
-
     const handleLogin =  async () => {
         try {
             const response = await postData({ data: formData, endpoint: 'admin/signin' });
@@ -58,7 +54,7 @@ const AdminLogin: React.FC = () => {
         event.preventDefault();
         setErrors({});
         const isValidForm: boolean = await checkValidationErrors(validationSchema, formData, setErrors);
-        if(isValidForm){
+        if(!isValidForm){
             return;
         }
         handleLogin();
@@ -76,7 +72,7 @@ const AdminLogin: React.FC = () => {
                         label="name"
                         name='name'
                         value={formData.name}
-                        onChange={handleChange}
+                        onChange={handleChange(setFormData)}
                         error={Boolean(errors.username)}
                         helperText={errors.username}
                     />
@@ -87,7 +83,7 @@ const AdminLogin: React.FC = () => {
                         type="email"
                         name='email'
                         value={formData.email}
-                        onChange={handleChange}
+                        onChange={handleChange(setFormData)}
                         error={Boolean(errors.email)}
                         helperText={errors.email}
                     />
@@ -98,7 +94,7 @@ const AdminLogin: React.FC = () => {
                         type="password"
                         name='password'
                         value={formData.password}
-                        onChange={handleChange}
+                        onChange={handleChange(setFormData)}
                         error={Boolean(errors.password)}
                         helperText={errors.password}
                     />
@@ -109,7 +105,7 @@ const AdminLogin: React.FC = () => {
                         type="password"
                         name='adminPassword'
                         value={formData.adminPassword}
-                        onChange={handleChange}
+                        onChange={handleChange(setFormData)}
                         error={Boolean(errors.adminPassword)}
                         helperText={errors.adminPassword}
                     />

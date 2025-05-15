@@ -23,6 +23,7 @@ import { Option } from '../../../models/option.model'
 import { fetchUser } from "../../../store/features/user.slice";
 import { User } from "../../../models/user.models/user.model";
 import { checkValidationErrors } from "../../../utils/forms/form.errors";
+import { handleChange } from "../../../utils/forms/forms.function";
 
 
 const Meetings = () => {
@@ -83,11 +84,6 @@ const Meetings = () => {
   }
 
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
   const handleSelectChange = (event: unknown, newValue: Option | null) => {
     setFormData({ ...formData, service: newValue || { value: '', label: '' } });
   };
@@ -127,13 +123,13 @@ const Meetings = () => {
     formDataWithDate.time.setHours(hour);
     formDataWithDate.time.setMinutes(minute);
 
-    const isValidForm : boolean = await checkValidationErrors(meetingSchema, formDataWithDate, setErrors);
-    if(isValidForm){
+    const isValidForm: boolean = await checkValidationErrors(meetingSchema, formDataWithDate, setErrors);
+    if (isValidForm) {
       await handleMeeting();
     }
 
     setIsLoading(false);
-};
+  };
 
 
 
@@ -174,12 +170,12 @@ useEffect(() => {
 }, [services]);
 
 
-useEffect(() => {
-  if (dateState.valid) {
-    setFormData({ ...formData, date: dateState.date });
-    fetchTimesRange(dateState.date);
-  }
-}, [dateState, dispatch, formData]);
+  useEffect(() => {
+    if (dateState.valid) {
+      setFormData({ ...formData, date: dateState.date });
+      fetchTimesRange(dateState.date);
+    }
+  }, [dateState, dispatch, formData]);
 
 return (
   <>
@@ -190,23 +186,23 @@ return (
       <form onSubmit={hundlesubmit} >
         <GridColumnCenter spacing="2">
 
-          <Grid item width={{ xs: 250, sm: 339 }}>
-            <TextField
-              label="message"
-              type="text"
-              name="message"
-              variant="outlined"
-              fullWidth
-              error={!!errors.message}
-              helperText={errors.message}
-              onChange={handleChange}
-              value={formData.message || ''}
-              multiline
-              minRows={3}
-              maxRows={10}
-              sx={{ resize: 'vertical' }}
-            />
-          </Grid>
+            <Grid item width={{ xs: 250, sm: 339 }}>
+              <TextField
+                label="message"
+                type="text"
+                name="message"
+                variant="outlined"
+                fullWidth
+                error={!!errors.message}
+                helperText={errors.message}
+                onChange={handleChange(setFormData)}
+                value={formData.message || ''}
+                multiline
+                minRows={3}
+                maxRows={10}
+                sx={{ resize: 'vertical' }}
+              />
+            </Grid>
 
           <Grid item width={{ xs: 250, sm: 339 }}>
             <Autocomplete
@@ -254,25 +250,25 @@ return (
             </Box>
           </Grid>
 
-          {showTimes && <Grid item width={{ xs: 250, sm: 339 }} >
-            <TextField
-              select
-              label="Choose time"
-              name="time"
-              value={formData.time}
-              onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-              variant="outlined"
-              error={!!errors.time}
-              helperText={errors.time}
-              fullWidth
-            >
-              {!predefinedTimes ? 'Please wait...'
-                : predefinedTimes.map((time) => (
-                  <MenuItem key={`${time.hour}:${time.minute}`} value={`${time.hour}:${time.minute}`}>
-                    {time.hour}:{time.minute >= 10 ? time.minute : "0" + time.minute}
-                  </MenuItem>
-                ))}
-            </TextField>
+            {showTimes && <Grid item width={{ xs: 250, sm: 339 }} >
+              <TextField
+                select
+                label="Choose time"
+                name="time"
+                value={formData.time}
+                onChange={handleChange(setFormData)}
+                variant="outlined"
+                error={!!errors.time}
+                helperText={errors.time}
+                fullWidth
+              >
+                {!predefinedTimes ? 'Please wait...'
+                  : predefinedTimes.map((time) => (
+                    <MenuItem key={`${time.hour}:${time.minute}`} value={`${time.hour}:${time.minute}`}>
+                      {time.hour}:{time.minute >= 10 ? time.minute : "0" + time.minute}
+                    </MenuItem>
+                  ))}
+              </TextField>
 
           </Grid>}
 
