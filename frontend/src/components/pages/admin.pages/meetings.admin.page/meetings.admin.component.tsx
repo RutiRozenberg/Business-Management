@@ -75,9 +75,15 @@ const MeetingsAdmin = () => {
         <TitleTypography title="Your Meetings" />
 
         <Box mt={7}>
-            <GridColumnCenter spacing={'2'}>
+            <GridColumnCenter spacing={'0'} sx={{m: '7vh 0vw'}}>
 
-                <Grid>
+                <Grid
+                    item
+                    sx={{
+                        overflow: 'auto',
+                        width: '90%',
+                    }}
+                >
                     <Container>
                         <TableContainer component={Paper} >
                             <Table>

@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, useTheme } from "@mui/material";
+import { CircularProgress, Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, useTheme } from "@mui/material";
 import TitleTypography from "../../../utils.components/titleTypography.component";
 import GridColumnCenter from "../../../utils.components/gridColumnCenter";
 import { useEffect, useState } from "react";
@@ -13,17 +13,17 @@ const UsersAdmin: React.FC = () => {
     const token = getAdminToken();
 
     const fetchUsers = async () => {
-        try{
-            const allUsers:UserJwt[] | null = await getAllData({endpoint: 'users', token: token! });
-            if(allUsers){
+        try {
+            const allUsers: UserJwt[] | null = await getAllData({ endpoint: 'users', token: token! });
+            if (allUsers) {
                 setUsers(allUsers);
             }
-        } catch{
+        } catch {
             console.log('Not Found');
-        }  
+        }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         fetchUsers();
     })
 
@@ -31,61 +31,65 @@ const UsersAdmin: React.FC = () => {
         <>
             <TitleTypography title="Your Users" />
 
-            <Box mt={7}>
-                <GridColumnCenter spacing={'2'}>
+            <GridColumnCenter spacing={'0'} sx={{m: '7vh 0vw'}}>
 
-                    <Grid>
-                        <Container>
-                            <TableContainer component={Paper} >
-                                <Table>
+                <Grid
+                    item
+                    sx={{
+                        overflow: 'auto',
+                        width: '90%',
+                    }}
+                >
+                    <Container>
+                        <TableContainer component={Paper} >
+                            <Table>
 
-                                    <TableHead>
-                                        <TableRow
-                                            sx={{
-                                                backgroundColor: theme.palette.primary.light,
-                                            }}
-                                        >
-                                            <TableCell sx={{ color: theme.palette.secondary.dark, }}>Name</TableCell>
-                                            <TableCell sx={{ color: theme.palette.secondary.dark, }}>Email</TableCell>
+                                <TableHead>
+                                    <TableRow
+                                        sx={{
+                                            backgroundColor: theme.palette.primary.light,
+                                        }}
+                                    >
+                                        <TableCell sx={{ color: theme.palette.secondary.dark, }}>Name</TableCell>
+                                        <TableCell sx={{ color: theme.palette.secondary.dark, }}>Email</TableCell>
+                                    </TableRow>
+                                </TableHead>
+
+                                {users.length <= 0 ?
+                                    <TableBody>
+                                        <TableRow>
+                                            <TableCell>
+                                                <CircularProgress />
+                                            </TableCell>
+                                            <TableCell>
+                                                <CircularProgress />
+                                            </TableCell>
                                         </TableRow>
-                                    </TableHead>
+                                    </TableBody>
+                                    :
+                                    <TableBody>
 
-                                    {users.length <= 0 ?
-                                        <TableBody>
-                                            <TableRow>
+                                        {users.map((user) => (
+                                            <TableRow key={user._id}>
                                                 <TableCell>
-                                                    <CircularProgress />
+                                                    {user.name}
                                                 </TableCell>
                                                 <TableCell>
-                                                    <CircularProgress />
+                                                    {user.email}
                                                 </TableCell>
+
                                             </TableRow>
-                                        </TableBody>
-                                        :
-                                        <TableBody>
+                                        ))}
 
-                                            {users.map((user) => (
-                                                <TableRow key={user._id}>
-                                                    <TableCell>
-                                                        {user.name}
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        {user.email}
-                                                    </TableCell>
+                                    </TableBody>
+                                }
 
-                                                </TableRow>
-                                            ))}
+                            </Table>
+                        </TableContainer>
 
-                                        </TableBody>
-                                    }
-
-                                </Table>
-                            </TableContainer>
-
-                        </Container>
-                    </Grid>
-                </GridColumnCenter>
-            </Box>
+                    </Container>
+                </Grid>
+            </GridColumnCenter>
 
         </>
     )
