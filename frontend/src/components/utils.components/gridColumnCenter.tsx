@@ -1,18 +1,22 @@
-import { Grid } from "@mui/material"
-import { GridColumnCenterProps } from "../../models/props.models/gridColymnCenter.props";
+import { Grid, GridProps } from "@mui/material"
+import { GridColumnCenterProps } from "../../models/props.models/gridColumnCenter.props";
 
 
-const GridColumnCenter: React.FC<GridColumnCenterProps> = ({spacing, children}) =>{
-    return <Grid 
-    container 
-    spacing={parseInt(spacing)} 
-    direction={'column'} 
-    sx={{
-        justifyContent:'center',
-        alignItems:'center'
-        }} 
-    >
-        {children}
-    </Grid>
+const GridColumnCenter: React.FC<GridColumnCenterProps> = ({ spacing, children, ...props }) => {
+    return (
+        <Grid 
+            {...props as GridProps}
+            container
+            spacing={parseInt(spacing)}
+            direction={'column'}
+            sx={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                ...props.sx
+            }}
+        >
+            {children}
+        </Grid>
+    )
 }
 export default GridColumnCenter;

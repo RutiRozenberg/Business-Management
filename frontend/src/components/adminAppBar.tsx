@@ -6,6 +6,7 @@ const pages = [
     { text: 'Services', url: '/admin/services' }, 
     { text: 'Meetings', url: '/admin/meetings' },
     { text: 'Users', url: '/admin/users' },
+    { text: 'Messages', url: '/admin/messages'}
 ];
  
   

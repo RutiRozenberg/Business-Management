@@ -5,7 +5,7 @@ import { ServiceDetails } from '../../../../models/service.details.model';
 import { useAppDispatch, useAppSelector } from '../../../../store/store';
 import { fetchServices } from '../../../../store/features/services.slice';
 import { deleteData, postData, putData } from '../../../../utils/api/crud.api';
-import { getToken } from '../../../../utils/api/token';
+import { getAdminToken } from '../../../../utils/api/token';
 import GridColumnCenter from '../../../utils.components/gridColumnCenter';
 import {
     Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
@@ -39,7 +39,7 @@ const ServicesAdmin: React.FC = () => {
 
     const servicesState = useAppSelector(state => state.service.services);
     const dispatch = useAppDispatch();
-    const token = getToken();
+    const token = getAdminToken();
     const theme = useTheme();
 
 

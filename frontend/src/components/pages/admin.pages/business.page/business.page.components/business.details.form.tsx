@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import * as yup from 'yup';
 import { useAppDispatch, useAppSelector } from "../../../../../store/store";
 import { fetchBusiness } from "../../../../../store/features/business.slice";
-import { getToken } from "../../../../../utils/api/token";
+import { getAdminToken } from "../../../../../utils/api/token";
 import { postData, putData } from "../../../../../utils/api/crud.api";
 import { Business } from "../../../../../models/business.model";
 import { BusinessDetails } from "../../../../../models/business.details.model";
@@ -30,7 +30,7 @@ const BusinessDetailsForm = () => {
 
     const business = useAppSelector(state => state.business.business);
     const dispatch = useAppDispatch();
-    const token = getToken();
+    const token = getAdminToken();
     const theme = useTheme();
 
     const businessSchema = yup.object().shape({

@@ -1,9 +1,9 @@
-import { CardContent, CircularProgress, Card } from "@mui/material";
+import { CardContent, CircularProgress, Card, Box } from "@mui/material";
 import ResponsiveTypography from "../../../utils.components/responsiveTypography.component";
 import { useEffect, useState } from "react";
 import { HomecardProps } from "../../../../models/props.models/homeCardProps";
 
-const HomeCard: React.FC<HomecardProps> = ({text , title}) =>{
+const HomeCard: React.FC<HomecardProps> = ({text , title, children}) =>{
     
     const [isLoading, setIsLoading] = useState(true); 
     const [content, setContent] = useState<HomecardProps>({title, text});
@@ -29,11 +29,14 @@ const HomeCard: React.FC<HomecardProps> = ({text , title}) =>{
             >
               {content.title}
             </ResponsiveTypography>
-            {isLoading? 
-            <CircularProgress size={24} color="inherit" /> 
+            {isLoading ? <CircularProgress size={24} color="inherit" /> 
               : <ResponsiveTypography customeVariant={{md: 'h6', lg: 'h5',}}>
-                {content.text}
-                </ResponsiveTypography>}
+                  {content.text}
+                </ResponsiveTypography>
+            }
+            <Box>
+              {children}
+            </Box>
           </CardContent>
         </Card>
     )

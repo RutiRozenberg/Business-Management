@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import * as yup from 'yup';
 import { getDataById, postData, putData } from "../../../../../utils/api/crud.api";
 import { Homepage } from "../../../../../models/homepage.model";
-import { getToken } from "../../../../../utils/api/token";
+import { getAdminToken } from "../../../../../utils/api/token";
 import { HomepageDetails } from "../../../../../models/homepage.details.model";
 
 
@@ -24,7 +24,7 @@ const HomePageForm = () => {
         _id: '',
     });
 
-    const token = getToken();
+    const token = getAdminToken();
 
     const theme = useTheme();
 
