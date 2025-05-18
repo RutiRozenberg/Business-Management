@@ -1,6 +1,6 @@
 
 import { Response, NextFunction } from 'express';
-import { AuthRequest } from '../models/authUser.model';
+import { AuthRequest } from '../models/auth.user.model';
 
 
 const authorization = (req: AuthRequest, res: Response, next: NextFunction) => {

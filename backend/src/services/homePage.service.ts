@@ -1,4 +1,4 @@
-import { HomePage, HomePageDetails, homePageModel } from "../models/homePage.tmodel"
+import { HomePage, HomePageDetails, homePageModel } from "../models/homepage.model"
 
 const getHomePageText = async () => {
     try{

@@ -1,7 +1,7 @@
 import express from "express";
 import { authentication } from "../middlewares/authentication.middleware";
 import { authorization } from "../middlewares/authorization.middleware";
-import * as daytimeController from "../controllers/dayTime.controller"
+import * as daytimeController from "../controllers/daytime.controller"
 
 
 

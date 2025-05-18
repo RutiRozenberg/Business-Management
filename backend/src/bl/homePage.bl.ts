@@ -1,5 +1,5 @@
-import { HomePage, HomePageDetails } from '../models/homePage.tmodel'
-import * as homePageServise from '../services/homePage.service'
+import { HomePage, HomePageDetails } from '../models/homepage.model'
+import * as homePageServise from '../services/homepage.service'
 
 
 const isValidHomepage = (homePage:HomePageDetails) =>{

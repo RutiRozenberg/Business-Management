@@ -1,4 +1,4 @@
-import { TimeRange } from "../models/timeRange.model";
+import { TimeRange } from "../models/timerange.model";
 import * as timeBL from '../bl/time.bl';
 import { Request, Response } from 'express';
 

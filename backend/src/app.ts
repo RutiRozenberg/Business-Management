@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 import './config/db.config';
 import { swaggerSetup } from './swagger';
 import authUserRouter from './routes/auth.user.route';
-import { CheckBody } from './middlewares/existBody.middleware'
+import { CheckBody } from './middlewares/exist.body.middleware'
 import authAdminRouter from './routes/auth.admin.route';
 import businessRouter from './routes/business.route'
 import serviceRouter from './routes/service.route'
@@ -16,13 +16,13 @@ import urlnotFound from './middlewares/url.not.found.middleware';
 import userRouter from './routes/user.route';
 import dayTimeRouter from './routes/daytime.route';
 import logConfig from './config/log.config'
-import homePageRouter from './routes/homePage.route';
+import homePageRouter from './routes/homepage.route';
 import { corsMiddleware } from './middlewares/cors.middleware';
 import { jsonErrorMiddleware } from './middlewares/json.error.middleware';
 import http from 'http';
 import { Server as SocketServer } from 'socket.io';
 import discussionRouter from './routes/discussion.route';
-import { setupSocketServer } from './socketServer';
+import { setupSocketServer } from './socket.server';
 
 
 const app: Express = express();

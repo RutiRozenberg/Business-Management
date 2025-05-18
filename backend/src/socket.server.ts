@@ -1,5 +1,5 @@
 import { Server } from 'socket.io';
-import { AuthSocket } from './models/authUser.model'; 
+import { AuthSocket } from './models/auth.user.model'; 
 import * as discussionController from './controllers/discussion.controller'; 
 import { socketAuthentication } from './middlewares/authentication.middleware';
 import { DiscussionDetails } from './models/discussion.model';

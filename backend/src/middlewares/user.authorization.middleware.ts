@@ -1,9 +1,9 @@
 
 import { Response, NextFunction } from 'express';
-import { AuthRequest, AuthSocket, AuthUser } from '../models/authUser.model';
+import { AuthRequest, AuthSocket, AuthUser } from '../models/auth.user.model';
 import * as userBl from '../bl/user.bl';
 import { User } from '../models/user.model';
-import { SocketNextFunction } from '../models/nextFunctionSocket.model';
+import { SocketNextFunction } from '../models/next.function.socket.model';
 
 const checkAuthorization = async (currentUserRole: AuthUser, id: string) => {
     try{

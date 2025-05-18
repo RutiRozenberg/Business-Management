@@ -1,4 +1,4 @@
-import { DayTimes, DayTimesDetails, daytimeModel } from "../models/dayTimes.model"
+import { DayTimes, DayTimesDetails, daytimeModel } from "../models/daytimes.model"
 
 
 const getAllDayTimes = async () => {

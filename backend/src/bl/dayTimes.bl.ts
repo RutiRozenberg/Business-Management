@@ -1,6 +1,6 @@
 import { isAfter } from "date-fns";
-import { DayTimes, DayTimesDetails } from "../models/dayTimes.model";
-import  * as dayTimesService from "../services/dayTimes.service";
+import { DayTimes, DayTimesDetails } from "../models/daytimes.model";
+import  * as dayTimesService from "../services/daytimes.service";
 import { isSameDate } from "./time.bl";
 
 const getAllDayTimes = async () => {
