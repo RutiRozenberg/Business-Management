@@ -3,8 +3,8 @@ import * as yup from 'yup';
 import { TextField, Button, Dialog, DialogContent, DialogTitle, Grid } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { getToken } from '../../../utils/api/token';
-import ResponsiveTypography from '../responsiveTypography.component';
-import GridColumnCenter from '../gridColumnCenter';
+import ResponsiveTypography from '../responsive.typography.component';
+import GridColumnCenter from '../grid.column.center';
 import { handleChange } from '../../../utils/forms/forms.function';
 import { DiscussionForm } from '../../../models/discussion.models/discussion.form.model';
 import { checkValidationErrors, FormErrors, YupSchema } from '../../../utils/forms/form.errors';
@@ -13,8 +13,8 @@ import { Discussion } from '../../../models/discussion.models/discussion.model';
 import { Message } from '../../../models/discussion.models/message.models/message.model';
 import { pushNewDiscussion } from '../../../store/features/discussions.slice';
 import DialogClose from '../dialod.close';
-import NotLogin from '../../pages/notLogin.page/notLogin.component';
-import { CreateDiscussionProps } from '../../../models/props.models/createDiscussion.props';
+import NotLogin from '../../pages/not.login.page/not.login.component';
+import { CreateDiscussionProps } from '../../../models/props.models/create.discussion.props';
 
 
 

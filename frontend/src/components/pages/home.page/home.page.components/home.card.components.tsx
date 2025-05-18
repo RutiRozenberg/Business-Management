@@ -1,7 +1,7 @@
 import { CardContent, CircularProgress, Card, Box } from "@mui/material";
-import ResponsiveTypography from "../../../utils.components/responsiveTypography.component";
+import ResponsiveTypography from "../../../utils.components/responsive.typography.component";
 import { useEffect, useState } from "react";
-import { HomecardProps } from "../../../../models/props.models/homeCardProps";
+import { HomecardProps } from "../../../../models/props.models/home.card.props";
 
 const HomeCard: React.FC<HomecardProps> = ({text , title, children}) =>{
     

@@ -1,6 +1,6 @@
 import { Box, Typography, useTheme } from "@mui/material";
 import React from "react";
-import { TitleProps } from "../../models/props.models/title.props.model";
+import { TitleProps } from "../../models/props.models/title.props";
 
 const TitleTypography: React.FC<TitleProps> = ({ title }) =>{
 

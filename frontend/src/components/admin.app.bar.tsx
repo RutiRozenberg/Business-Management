@@ -1,4 +1,4 @@
-import ResponsiveAppBar from "./responsiveAppBar";
+import ResponsiveAppBar from "./responsive.app.bar";
 
 export const meetingPages = [
     { text: 'Your Meetings', url: '/admin/meetings' },

@@ -1,8 +1,8 @@
 import { Drawer, Box } from '@mui/material';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { meetingPages } from '../../../adminAppBar';
-import ListDrawer from '../../../utils.components/listDrawer';
-import { ResponsiveAppBarObjectProps } from '../../../responsiveAppBar';
+import { meetingPages } from '../../../admin.app.bar';
+import ListDrawer from '../../../utils.components/list.drawer';
+import { ResponsiveAppBarObjectProps } from '../../../responsive.app.bar';
 
   
 const drawerWidth = 240;

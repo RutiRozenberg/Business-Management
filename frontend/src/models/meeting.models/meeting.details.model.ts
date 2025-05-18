@@ -1,4 +1,4 @@
-import { MeetingIDsAndMessage } from "./meeting.IDs.and.message";
+import { MeetingIDsAndMessage } from "./meeting.ids.and.message";
 
 export interface MeetingDetails extends MeetingIDsAndMessage {
     startTime: Date;

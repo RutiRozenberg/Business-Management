@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { List, ListItem, Box, useTheme, CircularProgress, alpha, } from '@mui/material';
-import TitleTypography from '../titleTypography.component';
+import TitleTypography from '../title.typography.component';
 import MessagesDialog from './messages.dialog.component';
 import { closeSocket, openSocket } from '../../../utils/socket/socket';
 import { Message } from '../../../models/discussion.models/message.models/message.model';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { pushNewDiscussion, pushNewMessage, setData } from '../../../store/features/discussions.slice';
-import ResponsiveTypography from '../responsiveTypography.component';
+import ResponsiveTypography from '../responsive.typography.component';
 import { Discussion } from '../../../models/discussion.models/discussion.model';
-import { MessageListProps } from '../../../models/props.models/messageList.props';
+import { MessageListProps } from '../../../models/props.models/message.list.props';
 
 
 const MessagesList: React.FC<MessageListProps> = ({ loadData, token }) => {

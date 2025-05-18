@@ -1,6 +1,6 @@
 import axios, { AxiosError, isAxiosError } from "axios";
-import { StatusAndMessageError } from "../../models/statusAndMessageError.model";
-import { APIRequest } from "../../models/apiRequest.model";
+import { StatusAndMessageError } from "../../models/status.and.message.error.model";
+import { APIRequest } from "../../models/api.request.model";
 
 const API_URL: string = import.meta.env.VITE_BASE_URL_SERVER ?? '';
 

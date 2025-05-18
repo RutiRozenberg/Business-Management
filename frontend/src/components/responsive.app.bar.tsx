@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '../store/store';
 import { fetchUser } from '../store/features/user.slice';
 import { fetchAdmin } from '../store/features/admin.slice';
 import CssBaseline from '@mui/material/CssBaseline';
-import ListDrawer from './utils.components/listDrawer';
+import ListDrawer from './utils.components/list.drawer';
 
 
 interface ResponsiveAppBarProps {

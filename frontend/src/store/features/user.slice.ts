@@ -1,7 +1,7 @@
 import { createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
 import { User } from "../../models/user.models/user.model";
 import { jwtDecode } from "jwt-decode";
-import { UserJwt } from "../../models/user.models/userJWT.model";
+import { UserJwt } from "../../models/user.models/user.jwt.model";
 import { getToken } from "../../utils/api/token";
 
 interface UserState{

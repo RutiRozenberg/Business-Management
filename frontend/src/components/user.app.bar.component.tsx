@@ -1,4 +1,4 @@
-import ResponsiveAppBar from "./responsiveAppBar";
+import ResponsiveAppBar from "./responsive.app.bar";
 
 const pages = [
     { text: 'Home', url: '/' },

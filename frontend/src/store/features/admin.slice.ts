@@ -1,7 +1,7 @@
 import { createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
 import { Admin } from "../../models/admin.models/admin.model";
 import { jwtDecode } from "jwt-decode";
-import { AdminJwt } from "../../models/admin.models/adminJWT.model";
+import { AdminJwt } from "../../models/admin.models/admin.jwt.model";
 
 interface AdminState{
     admin: Admin | null ;

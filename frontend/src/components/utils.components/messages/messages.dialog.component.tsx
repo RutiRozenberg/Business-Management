@@ -1,6 +1,6 @@
 import { Button, CircularProgress, Dialog, DialogContent, DialogTitle, Grid, List, ListItem, TextField, useTheme } from "@mui/material"
-import ResponsiveTypography from "../responsiveTypography.component"
-import GridColumnCenter from "../gridColumnCenter";
+import ResponsiveTypography from "../responsive.typography.component"
+import GridColumnCenter from "../grid.column.center";
 import { useState } from "react";
 import { MessageText } from "../../../models/discussion.models/message.models/message.text.model";
 import { handleChange } from "../../../utils/forms/forms.function";
@@ -8,7 +8,7 @@ import { checkValidationErrors, FormErrors, YupSchema } from "../../../utils/for
 import * as yup from 'yup';
 import { addMessage } from "../../../utils/socket/socket";
 import { useAppSelector } from "../../../store/store";
-import { MessagesDialogProps } from "../../../models/props.models/messagesDialod.props";
+import { MessagesDialogProps } from "../../../models/props.models/messages.dialod.props";
 import DialogClose from "../dialod.close";
 
 
