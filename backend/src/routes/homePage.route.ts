@@ -1,5 +1,5 @@
 import express from 'express'
-import * as homePageController from '../controllers/homePage.controller'
+import * as homePageController from '../controllers/homepage.controller'
 import { authorization } from '../middlewares/authorization.middleware';
 import { authentication } from '../middlewares/authentication.middleware';
 

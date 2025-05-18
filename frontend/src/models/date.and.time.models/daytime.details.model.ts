@@ -1,4 +1,4 @@
-import { TimeRange } from "./timeRange.model";
+import { TimeRange } from "./time.range.model";
 
 export interface DayTimesDetails{
     date: Date;

@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { Discussion, DiscussionDetails } from "../models/discussion.model";
 import * as messageBl from '../bl/message.bl';
 import { Message, MessageText } from '../models/message.model';
-import { AuthRequest, AuthSocket } from '../models/authUser.model';
+import { AuthRequest, AuthSocket } from '../models/auth.user.model';
 import {io} from '../app'
 
 /**

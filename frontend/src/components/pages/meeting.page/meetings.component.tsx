@@ -6,18 +6,18 @@ import { grey } from "@mui/material/colors";
 
 import BasicDateCalendar from "../../utils.components/calendar/calendar.component";
 import { useAppDispatch, useAppSelector } from "../../../store/store";
-import TitlePage from "../../utils.components/titlePage.componenets";
-import TitleTypography from "../../utils.components/titleTypography.component";
+import TitlePage from "../../utils.components/title.page.componenets";
+import TitleTypography from "../../utils.components/title.typography.component";
 import { theme } from "../../../utils/style/themeObject";
-import GridColumnCenter from "../../utils.components/gridColumnCenter";
+import GridColumnCenter from "../../utils.components/grid.column.center";
 import { getDataById, postData } from "../../../utils/api/crud.api";
 import { getToken } from "../../../utils/api/token";
 import { DayTimes } from "../../../models/date.and.time.models/daytimes.model";
 import { Time } from "../../../models/date.and.time.models/time.model";
 import { fetchServices } from "../../../store/features/services.slice";
 import { getFormatDate } from "../../../utils/functions/date";
-import { TimeRange } from "../../../models/date.and.time.models/timeRange.model";
-import { CreateMeeting } from "../../../models/meeting.models/createMeeting.model";
+import { TimeRange } from "../../../models/date.and.time.models/time.range.model";
+import { CreateMeeting } from "../../../models/meeting.models/create.meeting.model";
 import { getDuration, getEndTime, getTimefromStringTime, getTimesArr, mergeDateAndTime } from "./meeting.functions";
 import { Option } from '../../../models/option.model'
 import { fetchUser } from "../../../store/features/user.slice";

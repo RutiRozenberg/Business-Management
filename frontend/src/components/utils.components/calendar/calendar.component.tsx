@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { getAllData } from '../../../utils/api/crud.api';
 import { DayTimes } from '../../../models/date.and.time.models/daytimes.model';
 import { CircularProgress, Grid } from '@mui/material';
-import GridColumnCenter from '../gridColumnCenter';
+import GridColumnCenter from '../grid.column.center';
 import './calendar.style.css';
 import { getToken } from '../../../utils/api/token';
 import { Dayjs } from 'dayjs';

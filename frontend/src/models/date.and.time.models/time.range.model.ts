@@ -1,4 +1,4 @@
-import { TimeRangeDetails } from "./timeRangeDetails.model";
+import { TimeRangeDetails } from "./time.range.details.model";
 
 
 export interface TimeRange extends TimeRangeDetails {

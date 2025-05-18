@@ -1,6 +1,6 @@
 import { Alert, Snackbar } from "@mui/material";
 import { useState } from "react";
-import { CustomAlertProps } from "../../../../models/props.models/customAlert.props";
+import { CustomAlertProps } from "../../../../models/props.models/custom.alert.props";
 
 const  CustomErrorAlert:React.FC<CustomAlertProps> =({ message }) =>{
     const [open, setOpen] = useState(true);

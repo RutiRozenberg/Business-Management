@@ -1,6 +1,6 @@
 import { ExpandMore } from "@mui/icons-material";
 import { Box, List, ListItem, ListItemButton, ListItemText, Toolbar } from "@mui/material";
-import { ResponsiveAppBarObjectProps } from "../responsiveAppBar";
+import { ResponsiveAppBarObjectProps } from "../responsive.app.bar";
 import { useState } from "react";
 
 

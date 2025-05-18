@@ -1,9 +1,9 @@
 import { CircularProgress, Container, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, useTheme } from "@mui/material";
-import TitleTypography from "../../../utils.components/titleTypography.component";
-import GridColumnCenter from "../../../utils.components/gridColumnCenter";
+import TitleTypography from "../../../utils.components/title.typography.component";
+import GridColumnCenter from "../../../utils.components/grid.column.center";
 import { useEffect, useState } from "react";
 import { getAllData } from "../../../../utils/api/crud.api";
-import { UserJwt } from "../../../../models/user.models/userJWT.model";
+import { UserJwt } from "../../../../models/user.models/user.jwt.model";
 import { getAdminToken } from "../../../../utils/api/token";
 
 const UsersAdmin: React.FC = () => {

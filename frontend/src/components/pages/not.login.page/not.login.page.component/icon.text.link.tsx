@@ -1,7 +1,7 @@
 import { Box, useTheme } from "@mui/material";
-import ResponsiveTypography from "../../../utils.components/responsiveTypography.component";
+import ResponsiveTypography from "../../../utils.components/responsive.typography.component";
 import { useNavigate } from "react-router-dom";
-import { IconTextLinkProps } from "../../../../models/props.models/icontextLink.props";
+import { IconTextLinkProps } from "../../../../models/props.models/icon.text.link.props";
 
 
 const IconTextLink: React.FC<IconTextLinkProps> = ({ icon: Icon, beforeText, linkText, afterText, url }) => {

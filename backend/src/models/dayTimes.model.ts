@@ -1,6 +1,6 @@
 
 import mongoose, { Schema, Model } from 'mongoose';
-import { TimeRange, timeRangeSchema } from './timeRange.model';
+import { TimeRange, timeRangeSchema } from './timerange.model';
 
 interface DayTimesDetails{
     date: Date;

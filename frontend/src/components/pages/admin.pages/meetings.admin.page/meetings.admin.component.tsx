@@ -9,8 +9,8 @@ import {
     TableSortLabel, Paper,
     Grid, 
 } from "@mui/material"
-import GridColumnCenter from "../../../utils.components/gridColumnCenter"
-import TitleTypography from "../../../utils.components/titleTypography.component"
+import GridColumnCenter from "../../../utils.components/grid.column.center"
+import TitleTypography from "../../../utils.components/title.typography.component"
 
 
 

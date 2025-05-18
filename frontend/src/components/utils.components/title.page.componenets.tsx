@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet"
 import React, { useEffect } from "react";
 import { fetchBusiness } from "../../store/features/business.slice";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { TitleProps } from "../../models/props.models/title.props.model";
+import { TitleProps } from "../../models/props.models/title.props";
 
 const TitlePage: React.FC<TitleProps> = ({ title }) => {
 

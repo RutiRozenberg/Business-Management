@@ -6,12 +6,12 @@ import { useAppDispatch, useAppSelector } from '../../../../store/store';
 import { fetchServices } from '../../../../store/features/services.slice';
 import { deleteData, postData, putData } from '../../../../utils/api/crud.api';
 import { getAdminToken } from '../../../../utils/api/token';
-import GridColumnCenter from '../../../utils.components/gridColumnCenter';
+import GridColumnCenter from '../../../utils.components/grid.column.center';
 import {
     Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
     Button, TextField, useTheme, Paper, Grid, Alert, Container,
 } from '@mui/material';
-import TitleTypography from '../../../utils.components/titleTypography.component';
+import TitleTypography from '../../../utils.components/title.typography.component';
 import { handleChange } from '../../../../utils/forms/forms.function';
 
 

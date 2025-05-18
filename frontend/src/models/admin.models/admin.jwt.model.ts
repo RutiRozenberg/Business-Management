@@ -1,4 +1,4 @@
-import { UserJwt } from "../user.models/userJWT.model";
+import { UserJwt } from "../user.models/user.jwt.model";
 
 export interface AdminJwt extends UserJwt{
     adminPassword: string;

@@ -1,8 +1,8 @@
 
 import { Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { AuthRequest, AuthSocket } from '../models/authUser.model';
-import { SocketNextFunction } from '../models/nextFunctionSocket.model';
+import { AuthRequest, AuthSocket } from '../models/auth.user.model';
+import { SocketNextFunction } from '../models/next.function.socket.model';
 
 
 const verifyToken = (token: string | undefined) => {

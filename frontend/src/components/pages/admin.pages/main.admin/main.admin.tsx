@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAppSelector } from "../../../../store/store";
-import AdminAppBar from "../../../adminAppBar";
+import AdminAppBar from "../../../admin.app.bar";
 import { useNavigate } from "react-router-dom";
 
 const MainAdmin = () => {

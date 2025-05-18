@@ -1,6 +1,6 @@
-import { TimeRange } from "../models/timeRange.model"
-import * as dayTimeBl from "../bl/dayTimes.bl"
-import { DayTimes } from "../models/dayTimes.model";
+import { TimeRange } from "../models/timerange.model"
+import * as dayTimeBl from "./daytimes.bl"
+import { DayTimes } from "../models/daytimes.model";
 import log4js from 'log4js';
 import { isAfter, isBefore, isEqual } from 'date-fns';
 

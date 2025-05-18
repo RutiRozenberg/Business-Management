@@ -1,7 +1,7 @@
-import ResponsiveTypography from "../../utils.components/responsiveTypography.component";
+import ResponsiveTypography from "../../utils.components/responsive.typography.component";
 import { Box, Container, useTheme } from "@mui/material";
 import { Home, Lock, Person, PersonAdd } from "@mui/icons-material";
-import IconTextLink from "./notLogin.page.component/iconTextLink";
+import IconTextLink from "./not.login.page.component/icon.text.link";
 
 const NotLogin = () => {
 

@@ -3,8 +3,8 @@ import CardContent from '@mui/material/CardContent';
 import { Box, useTheme } from '@mui/material';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import PaidIcon from '@mui/icons-material/Paid';
-import ResponsiveTypography from '../../../utils.components/responsiveTypography.component';
-import { ServiceCardProps } from '../../../../models/props.models/serviceCard.props';
+import ResponsiveTypography from '../../../utils.components/responsive.typography.component';
+import { ServiceCardProps } from '../../../../models/props.models/service.card.props';
 
 const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
 

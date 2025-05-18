@@ -1,6 +1,6 @@
-import * as dayTimeBl from '../bl/dayTimes.bl'
+import * as dayTimeBl from '../bl/daytimes.bl'
 import { Request, Response } from 'express';
-import { DayTimes } from '../models/dayTimes.model';
+import { DayTimes } from '../models/daytimes.model';
 
 
 /**

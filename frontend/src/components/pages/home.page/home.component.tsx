@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import ResponsiveTypography from '../../utils.components/responsiveTypography.component';
-import TitlePage from '../../utils.components/titlePage.componenets';
+import ResponsiveTypography from '../../utils.components/responsive.typography.component';
+import TitlePage from '../../utils.components/title.page.componenets';
 import { Homepage } from '../../../models/homepage.model';
 import { getDataById } from '../../../utils/api/crud.api';
 import { Box, Container } from '@mui/material';

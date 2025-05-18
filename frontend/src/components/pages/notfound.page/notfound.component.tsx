@@ -1,6 +1,6 @@
 import { Container, Box, Button, useTheme } from "@mui/material";
 import { ErrorOutline } from "@mui/icons-material";
-import ResponsiveTypography from "../../utils.components/responsiveTypography.component";
+import ResponsiveTypography from "../../utils.components/responsive.typography.component";
 import { useNavigate } from "react-router-dom";
 
 const NotFound = () => {

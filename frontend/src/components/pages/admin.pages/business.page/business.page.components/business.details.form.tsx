@@ -1,7 +1,7 @@
 import { ExpandMore } from "@mui/icons-material";
 import { Accordion, AccordionDetails, AccordionSummary, Alert, Box, Button, CircularProgress, Grid, TextField, useTheme } from "@mui/material"
-import ResponsiveTypography from "../../../../utils.components/responsiveTypography.component";
-import GridColumnCenter from "../../../../utils.components/gridColumnCenter";
+import ResponsiveTypography from "../../../../utils.components/responsive.typography.component";
+import GridColumnCenter from "../../../../utils.components/grid.column.center";
 import { useEffect, useState } from "react";
 import * as yup from 'yup';
 import { useAppDispatch, useAppSelector } from "../../../../../store/store";

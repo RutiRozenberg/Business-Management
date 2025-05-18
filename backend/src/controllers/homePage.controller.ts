@@ -1,5 +1,5 @@
-import { HomePage, HomePageDetails } from '../models/homePage.tmodel'
-import * as homePageBl from '../bl/homePage.bl'
+import { HomePage, HomePageDetails } from '../models/homepage.model'
+import * as homePageBl from '../bl/homepage.bl'
 import { Request, Response } from 'express';
 
 
