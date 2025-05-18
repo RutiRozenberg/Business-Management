@@ -1,57 +1,80 @@
-import { MenuItem, Tooltip, Button, Avatar, Container, Menu, Box, AppBar, Toolbar, IconButton, Typography, useTheme } from '@mui/material';
+import { MenuItem, Tooltip, Button, Avatar, Container, Menu, Box, AppBar, Toolbar, IconButton, Typography, useTheme, Drawer } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import { fetchUser } from '../store/features/user.slice';
 import { fetchAdmin } from '../store/features/admin.slice';
+import CssBaseline from '@mui/material/CssBaseline';
+import ListDrawer from './utils.components/listDrawer';
+
 
 interface ResponsiveAppBarProps {
-  pages: responsiveAppBarObjectProps[];
+  pages: ResponsiveAppBarObjectProps[];
   isAdmin: boolean;
 }
 
-interface responsiveAppBarObjectProps {
+export interface ResponsiveAppBarObjectProps {
   text: string;
   url: string;
+  subNav?: ResponsiveAppBarObjectProps[];
 }
 
+const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({ pages, isAdmin }) => {
 
-const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({ pages  , isAdmin}) => {
+  const drawerWidth = 240;
 
   const signOut = () => {
     sessionStorage.removeItem('token');
     setIsSignOut(true);
   }
 
-  const profile = [{ text: 'profile', url: '/', callback: undefined }, { text: 'Sign Out', url: '/', callback: signOut }];
+  const profile = [{ text: 'Sign Out', url: '/', callback: signOut }];
 
   const theme = useTheme();
   const user = useAppSelector(state => state.user.user);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [isSignOut, setIsSignOut] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(true); 
+  const [openSubNav, setOpenSubNav] = useState<string | null>(null);
 
 
-  useEffect(() => {
-    (dispatch(fetchUser()));
-    (dispatch(fetchAdmin()));
-  }, [dispatch, isSignOut]);
-
-
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
+  const handleDrawerClose = () => {
+    setIsClosing(true);
+    setMobileOpen(false);
+    setOpenSubNav(null);
   };
+
+
+  const handleDrawerToggle = () => {
+    console.log(isClosing, mobileOpen)
+    if (isClosing) {
+      setMobileOpen(!mobileOpen);
+    }
+  };
+
+
+  const handleDrawerTransitionEnd = () => {
+    setIsClosing(true);
+    setOpenSubNav(null);
+  };
+
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = (url: string) => {
-    setAnchorElNav(null);
-    navigate(url);
+  const handleCloseNavMenu = (page: ResponsiveAppBarObjectProps) => {
+    if (page.subNav && mobileOpen) {
+      handleSubNavToggle(page.text);
+    } else {
+      handleDrawerClose();
+      navigate(page.url);
+    }
+
   };
 
   const handleCloseUserMenu = (url: string, callback?: () => void) => {
@@ -62,12 +85,24 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({ pages  , isAdmin}) 
     navigate(url);
   };
 
+  const handleSubNavToggle = (text: string) => {
+    setOpenSubNav(openSubNav === text ? null : text);
+  };
+
+  useEffect(() => {
+    (dispatch(fetchUser()));
+    (dispatch(fetchAdmin()));
+  }, [dispatch, isSignOut]);
+
+
   return (
     <>
+      <CssBaseline />
       <AppBar
-        position="static"
+        position="fixed"
         component="div"
         sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
           color: theme.palette.primary.dark,
           backgroundColor: 'white',
         }}>
@@ -80,42 +115,34 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({ pages  , isAdmin}) 
                 aria-label="Open Navigation Menu"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
-                onClick={handleOpenNavMenu}
+                onClick={handleDrawerToggle}
                 color="inherit"
               >
                 <MenuIcon />
               </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
+              <Drawer
+                variant="temporary"
+                open={mobileOpen}
+                onTransitionEnd={handleDrawerTransitionEnd}
+                onClose={handleDrawerClose}
                 sx={{
                   display: { xs: 'block', md: 'none' },
+                  '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                }}
+                ModalProps={{
+                  keepMounted: true,
                 }}
               >
-                {pages.map((page) => (
-                  <MenuItem key={page.text} onClick={() => handleCloseNavMenu(page.url)} >
-                    <Typography textAlign="center">{page.text}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
+                <ListDrawer pages={pages} handleCloseNavMenu={handleCloseNavMenu}/>
+              </Drawer>
+
             </Box>
 
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               {pages.map((page, index) => (
                 <Button
                   key={index}
-                  onClick={() => handleCloseNavMenu(page.url)}
+                  onClick={() => handleCloseNavMenu(page)}
                   sx=
                   {{
                     my: 2,
@@ -175,7 +202,11 @@ const ResponsiveAppBar: React.FC<ResponsiveAppBarProps> = ({ pages  , isAdmin}) 
           </Toolbar>
         </Container>
       </AppBar>
-      <Outlet />
+      <Box>
+        <Toolbar />
+        <Outlet />
+      </Box>
+
     </>
   );
 }

@@ -1,14 +1,16 @@
-import TitleTypography from "../../../utils.components/titleTypography.component"
-import GridColumnCenter from "../../../utils.components/gridColumnCenter"
+//import TitleTypography from "../../../utils.components/titleTypography.component"
 import { SetStateAction, useEffect, useState } from "react"
 import { Meeting } from "../../../../models/meeting.models/meeting.model"
 import { getAllData } from "../../../../utils/api/crud.api"
 import { getAdminToken } from "../../../../utils/api/token"
 import {
-    Grid, Box, Paper, Container, useTheme, CircularProgress,
+    useTheme, CircularProgress,
     TableContainer, Table, TableRow, TableCell, TableBody, TableHead,
-    TableSortLabel,
+    TableSortLabel, Paper,
+    Grid, 
 } from "@mui/material"
+import GridColumnCenter from "../../../utils.components/gridColumnCenter"
+import TitleTypography from "../../../utils.components/titleTypography.component"
 
 
 
@@ -74,18 +76,10 @@ const MeetingsAdmin = () => {
     return (<>
         <TitleTypography title="Your Meetings" />
 
-        <Box mt={7}>
-            <GridColumnCenter spacing={'0'} sx={{m: '7vh 0vw'}}>
+            <GridColumnCenter spacing={'0'} sx={{mt: 7}}>
 
-                <Grid
-                    item
-                    sx={{
-                        overflow: 'auto',
-                        width: '90%',
-                    }}
-                >
-                    <Container>
-                        <TableContainer component={Paper} >
+                <Grid item width={'90%'}>
+                        <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
                             <Table>
 
                                 <TableHead>
@@ -103,10 +97,10 @@ const MeetingsAdmin = () => {
                                                 Date
                                             </TableSortLabel>
                                         </TableCell>
-                                        <TableCell sx={{ color: theme.palette.secondary.dark, }}>Start Time</TableCell>
-                                        <TableCell sx={{ color: theme.palette.secondary.dark, }}>End Time</TableCell>
-                                        <TableCell sx={{ color: theme.palette.secondary.dark, }}>Service</TableCell>
-                                        <TableCell sx={{ color: theme.palette.secondary.dark, }}>
+                                        <TableCell sx={{ color: theme.palette.secondary.dark, whiteSpace: 'nowrap'}}>Start Time</TableCell>
+                                        <TableCell sx={{ color: theme.palette.secondary.dark, whiteSpace: 'nowrap'}}>End Time</TableCell>
+                                        <TableCell sx={{ color: theme.palette.secondary.dark, whiteSpace: 'nowrap'}}>Service</TableCell>
+                                        <TableCell sx={{ color: theme.palette.secondary.dark, whiteSpace: 'nowrap'}}>
                                             <TableSortLabel
                                                 active={orderBy === 'user'}
                                                 direction={orderBy === 'user' ? order : 'asc'}
@@ -172,10 +166,8 @@ const MeetingsAdmin = () => {
                             </Table>
                         </TableContainer>
 
-                    </Container>
                 </Grid>
             </GridColumnCenter>
-        </Box>
 
     </>
     )
